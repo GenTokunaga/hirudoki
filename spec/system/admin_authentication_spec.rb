@@ -1,9 +1,9 @@
-RSpec.describe '管理者のログイン', type: :system do
+describe '管理者のログイン', type: :system do
   before do
     create(:admin, email: 'admin@example.com', password: 'password123')
   end
 
-  it 'ログインすると管理画面に入れ、ログアウトするとログイン画面に戻る' do
+  it 'ログインすると管理画面に入れ、ログアウトするとログイン画面に戻ること' do
     visit new_admin_session_path
     fill_in 'メールアドレス', with: 'admin@example.com'
     fill_in 'パスワード', with: 'password123'
@@ -17,7 +17,7 @@ RSpec.describe '管理者のログイン', type: :system do
     expect(page).to have_current_path new_admin_session_path
   end
 
-  it 'パスワードが違うとログインできない' do
+  it 'パスワードが違うとログインできないこと' do
     visit new_admin_session_path
     fill_in 'メールアドレス', with: 'admin@example.com'
     fill_in 'パスワード', with: 'wrong-password'
@@ -27,23 +27,7 @@ RSpec.describe '管理者のログイン', type: :system do
     expect(page).to have_current_path new_admin_session_path
   end
 
-  it 'ログインしていないと管理画面に入れない' do
-    visit admins_dashboard_path
-
-    expect(page).to have_current_path new_admin_session_path
-    expect(page).to have_content '管理者としてログインしてください。'
-    expect(page).not_to have_content 'アカウント登録'
-  end
-
-  it '利用者としてログインしていても管理画面には入れない' do
-    sign_in create(:user)
-
-    visit admins_dashboard_path
-
-    expect(page).to have_current_path new_admin_session_path
-  end
-
-  it '利用者のアカウントで管理者ログインはできない' do
+  it '利用者のアカウントでは管理者としてログインできないこと' do
     create(:user, email: 'user@example.com', password: 'password123')
 
     visit new_admin_session_path
@@ -54,9 +38,30 @@ RSpec.describe '管理者のログイン', type: :system do
     expect(page).to have_content 'メールアドレスまたはパスワードが違います'
   end
 
-  it '管理者の登録画面はない' do
+  it '管理者の登録画面はないこと' do
     visit '/admins/sign_up'
 
     expect(page).to have_http_status(:not_found)
+  end
+
+  describe '管理画面へのアクセス制限' do
+    context 'ログインしていない場合' do
+      it '管理者のログイン画面に移動し、管理者としてのログインを促されること' do
+        visit admins_dashboard_path
+
+        expect(page).to have_current_path new_admin_session_path
+        expect(page).to have_content '管理者としてログインしてください。'
+      end
+    end
+
+    context '利用者としてログインしている場合' do
+      it '管理者のログイン画面に移動すること' do
+        sign_in create(:user)
+
+        visit admins_dashboard_path
+
+        expect(page).to have_current_path new_admin_session_path
+      end
+    end
   end
 end

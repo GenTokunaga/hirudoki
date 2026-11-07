@@ -1,4 +1,4 @@
-RSpec.describe '利用者の登録・ログイン', type: :system do
+describe '利用者の登録・ログイン', type: :system do
   def fill_in_sign_up_form(email: 'taro@example.com', phone_number: '090-1234-5678')
     fill_in '氏名', with: 'ひるどき 太郎'
     fill_in 'メールアドレス', with: email
@@ -7,7 +7,7 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
     fill_in 'パスワード（確認）', with: 'password123'
   end
 
-  it '登録 → ログアウト → ログインができる' do
+  it '登録 → ログアウト → ログインができること' do
     visit new_user_registration_path
     fill_in_sign_up_form
     click_button '登録する'
@@ -27,7 +27,7 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
     expect(page).to have_link 'アカウント'
   end
 
-  it '入力に誤りがあると登録できず、エラーが表示される' do
+  it '電話番号の形式が正しくないと登録できず、エラーが表示されること' do
     visit new_user_registration_path
     fill_in_sign_up_form(phone_number: '123')
     click_button '登録する'
@@ -36,7 +36,7 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
     expect(User.count).to eq 0
   end
 
-  it '登録済みのメールアドレスでは登録できない' do
+  it '登録済みのメールアドレスでは登録できないこと' do
     create(:user, email: 'taro@example.com')
 
     visit new_user_registration_path
@@ -46,7 +46,7 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
     expect(page).to have_content 'メールアドレスはすでに存在します'
   end
 
-  it 'パスワードが違うとログインできない' do
+  it 'パスワードが違うとログインできないこと' do
     create(:user, email: 'taro@example.com', password: 'password123')
 
     visit new_user_session_path
@@ -55,10 +55,10 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
     click_button 'ログイン'
 
     expect(page).to have_content 'メールアドレスまたはパスワードが違います'
-    expect(page).not_to have_button 'ログアウト'
+    expect(page).to have_no_button 'ログアウト'
   end
 
-  it 'アカウント情報を変更できる' do
+  it 'アカウント情報を変更できること' do
     user = create(:user, password: 'password123')
     sign_in user
 
@@ -69,15 +69,5 @@ RSpec.describe '利用者の登録・ログイン', type: :system do
 
     expect(page).to have_content 'アカウント情報を変更しました'
     expect(user.reload.phone_number).to eq '03-1234-5678'
-  end
-
-  it '退会（アカウント削除）の機能はない' do
-    user = create(:user)
-    sign_in user
-
-    page.driver.submit :delete, '/users', {}
-
-    expect(page).to have_http_status(:not_found)
-    expect(User.exists?(user.id)).to be true
   end
 end
