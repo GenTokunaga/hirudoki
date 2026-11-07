@@ -162,6 +162,11 @@ GEM
       tilt
     haml-lint (0.999.999)
       haml_lint
+    haml-rails (3.1.0)
+      actionpack (>= 5.1)
+      activesupport (>= 5.1)
+      haml (>= 4.0.6)
+      railties (>= 5.1)
     haml_lint (0.78.0)
       haml (>= 5.0)
       parallel (>= 1.10)
@@ -394,6 +399,7 @@ GEM
     simple_form (5.4.1)
       actionpack (>= 7.0)
       activemodel (>= 7.0)
+    simplecov (1.3.2)
     sshkit (1.25.1)
       base64
       logger
@@ -457,6 +463,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   haml-lint
+  haml-rails
   importmap-rails
   jbuilder
   kamal
@@ -469,6 +476,7 @@ DEPENDENCIES
   selenium-webdriver
   sgcop!
   simple_form
+  simplecov
   stimulus-rails
   thruster
   turbo-rails

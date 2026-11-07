@@ -1,0 +1,4 @@
+linters:
+  # NOTE: 既定の 80 文字だと Bootstrap のクラスを並べた行がすぐ超えるため、RuboCop（sgcop）の Layout/LineLength に合わせている
+  LineLength:
+    max: 160
