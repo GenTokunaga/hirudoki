@@ -1,6 +1,5 @@
 class DeliveryArea < ApplicationRecord
-  # 注文・定期注文設定から参照されているエリアは削除できない（仕様 3-7）。
-  # 配達をやめるときは無効にする。
+  # NOTE: 仕様 3-7。配達をやめるときは削除ではなく無効にする運用のため、参照されていれば削除できなくしている
   has_many :orders, dependent: :restrict_with_error
   has_many :subscriptions, dependent: :restrict_with_error
 

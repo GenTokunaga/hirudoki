@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  # 利用者：ログイン・ログアウト（/users/sign_in）
-  # 退会（利用者の削除）は対象外のため、登録系は destroy を除いて個別に定義する。
+  # NOTE: 退会（利用者の削除）は課題の対象外のため、登録系は destroy を除いて個別に定義している
   devise_for :users, skip: :registrations
   devise_scope :user do
     get 'users/sign_up', to: 'devise/registrations#new', as: :new_user_registration
@@ -10,10 +9,9 @@ Rails.application.routes.draw do
     put 'users', to: 'devise/registrations#update'
   end
 
-  # 管理者：ログイン・ログアウトのみ（/admin/sign_in）。アカウントはシードで作成する。
   devise_for :admins, path: 'admin'
 
-  # 管理画面。コントローラーは app/controllers/admins/、URL は /admin 以下。
+  # NOTE: URL は Devise の管理者ログイン（/admin/sign_in）とそろえて /admin にしている
   namespace :admins, path: 'admin' do
     root 'dashboard#index'
   end

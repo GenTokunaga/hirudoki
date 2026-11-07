@@ -1,10 +1,9 @@
-# 配達エリア。仕様「4. データベース設計 / 配達エリア」に対応する。
 class CreateDeliveryAreas < ActiveRecord::Migration[8.1]
   def change
     create_table :delivery_areas do |t|
-      t.string  :name,        null: false # 例：渋谷区神南一丁目
-      t.string  :postal_code, null: false # ハイフンなし 7 桁
-      t.boolean :active,      null: false, default: true # false のエリアは選択肢に出さない
+      t.string  :name,        null: false
+      t.string  :postal_code, null: false
+      t.boolean :active,      null: false, default: true
 
       t.timestamps
     end

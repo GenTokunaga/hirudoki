@@ -1,6 +1,5 @@
 class DailyMenu < ApplicationRecord
   belongs_to :bento
-  # 注文がある献立は削除できない（仕様 3-7）。
   has_many :orders, dependent: :restrict_with_error
 
   validates :served_on, presence: true

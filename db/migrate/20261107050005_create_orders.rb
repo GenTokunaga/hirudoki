@@ -1,6 +1,4 @@
-# 注文。仕様「4. データベース設計 / 注文」に対応する。
-# 提供日と弁当は日別献立から辿る。
-# 単価・割引単価は注文時点の値を控え、後から弁当の価格や税率が変わっても金額を変えない。
+# NOTE: 単価・割引単価は注文時点の値を控える。後から弁当の価格や税率が変わっても、既存の注文の金額を変えないため
 class CreateOrders < ActiveRecord::Migration[8.1]
   def change
     create_table :orders do |t|
@@ -9,11 +7,11 @@ class CreateOrders < ActiveRecord::Migration[8.1]
       t.integer    :quantity,          null: false
       t.references :delivery_area,     null: false, foreign_key: true
       t.string     :delivery_address,  null: false
-      t.integer    :unit_price,        null: false # 注文時点の税抜価格
-      t.integer    :discount_per_unit, null: false # 注文時点の 1 個あたり割引額（手動注文は 0）
-      t.integer    :total_price,       null: false # 税込の合計金額
-      t.string     :status,            null: false, default: 'ordered' # ordered / received / canceled
-      t.references :subscription,      foreign_key: true # 値があれば定期注文から生成。手動注文は NULL
+      t.integer    :unit_price,        null: false
+      t.integer    :discount_per_unit, null: false
+      t.integer    :total_price,       null: false
+      t.string     :status,            null: false, default: 'ordered'
+      t.references :subscription,      foreign_key: true
 
       t.timestamps
     end

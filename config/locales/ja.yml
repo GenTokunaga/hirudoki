@@ -1,5 +1,4 @@
 ja:
-  # enum の値の表示名。ApplicationRecord.human_enum_name で参照する。
   enums:
     bento:
       bento_type: &bento_types
@@ -16,7 +15,7 @@ ja:
         canceled: キャンセル済
   devise:
     failure:
-      # 管理者は画面から登録できないため、「アカウント登録」を案内しない
+      # NOTE: 管理者は画面から登録できないため、Devise 標準の「アカウント登録してください」を案内しない文言に変えている
       admin:
         unauthenticated: 管理者としてログインしてください。
   activerecord:

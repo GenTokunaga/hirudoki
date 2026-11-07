@@ -1,12 +1,10 @@
 class Bento < ApplicationRecord
-  # 弁当タイプ。定期注文設定（Subscription）でも同じ値を使う。
-  # DB には英語のキーを保存し、画面では ja.yml の訳（和食／洋食／中華／ヘルシー）を表示する。
   BENTO_TYPES = %w[japanese western chinese healthy].index_with(&:itself).freeze
 
   enum :bento_type, BENTO_TYPES, validate: true
 
   has_one_attached :image
-  # 献立から参照されている弁当は削除できない（仕様 3-7）。販売をやめるときは非販売にする。
+  # NOTE: 仕様 3-7。販売をやめるときは削除ではなく非販売にする運用のため、献立から参照されていれば削除できなくしている
   has_many :daily_menus, dependent: :restrict_with_error
 
   validates :name, presence: true, length: { maximum: 50 }
