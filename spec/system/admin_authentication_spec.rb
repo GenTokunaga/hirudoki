@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe '管理者のログイン', type: :system do
   before do
     create(:admin, email: 'admin@example.com', password: 'password123')
