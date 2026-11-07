@@ -9,10 +9,10 @@ gem 'haml-rails'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'kamal', require: false
-# PostgreSQL のドライバ。Rails 8.1 が対応する 1.x 系に固定
+# NOTE: Rails 8.1 が対応する 1.x 系に固定
 gem 'pg', '~> 1.1'
 gem 'propshaft'
-# Web サーバー。Rails 8.1 が前提とする 5.0 以上
+# NOTE: Rails 8.1 が前提とする 5.0 以上
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.1.4'
 gem 'rails-i18n'
