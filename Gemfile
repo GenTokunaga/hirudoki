@@ -6,8 +6,6 @@ gem 'cssbundling-rails'
 gem 'devise'
 gem 'devise-i18n'
 gem 'haml-rails'
-# Active Storage の画像の変換（リサイズなど）。Rails 8.1 の生成時の指定に合わせて 1.x 系に固定
-gem 'image_processing', '~> 1.2'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'kamal', require: false
