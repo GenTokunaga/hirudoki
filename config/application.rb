@@ -24,7 +24,6 @@ module Hirudoki
     config.time_zone = "Tokyo"
 
     config.i18n.default_locale = :ja
-    config.i18n.available_locales = %i[ja en]
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
