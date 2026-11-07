@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   # 管理者：ログイン・ログアウトのみ（/admin/sign_in）。アカウントはシードで作成する。
   devise_for :admins, path: 'admin'
 
-  namespace :admin do
+  # 管理画面。コントローラーは app/controllers/admins/、URL は /admin 以下。
+  namespace :admins, path: 'admin' do
     root 'dashboard#index'
   end
 
