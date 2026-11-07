@@ -1,6 +1,4 @@
-# haml-lint の設定
 linters:
-  # RuboCop（sgcop）の Layout/LineLength と同じ上限にそろえる。
-  # 既定の 80 文字だと、Bootstrap のクラスや aria 属性を並べた行がすぐ超えてしまうため。
+  # NOTE: 既定の 80 文字だと Bootstrap のクラスを並べた行がすぐ超えるため、RuboCop（sgcop）の Layout/LineLength に合わせている
   LineLength:
     max: 160
