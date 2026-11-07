@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   # ヘッダーを管理画面用に切り替えるかどうか。
   # 管理画面（Admin::）と、管理者のログイン画面が対象。
   def admin_area?
-    controller_path.start_with?("admin/") || (devise_controller? && resource_name == :admin)
+    controller_path.start_with?('admin/') || (devise_controller? && resource_name == :admin)
   end
 
   private
