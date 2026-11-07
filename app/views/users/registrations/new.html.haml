@@ -1,0 +1,16 @@
+- content_for :title, '新規登録'
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 新規登録
+        = simple_form_for resource, as: resource_name, url: user_registration_path do |f|
+          = f.input :name, autofocus: true, input_html: { autocomplete: 'name' }
+          = f.input :email, required: true, input_html: { autocomplete: 'email' }
+          = f.input :phone_number, as: :tel, hint: '配達時の連絡先です。例：090-1234-5678', input_html: { autocomplete: 'tel' }
+          = f.input :password, required: true, hint: "#{@minimum_password_length} 文字以上で入力してください。",
+                               input_html: { autocomplete: 'new-password' }
+          = f.input :password_confirmation, required: true, input_html: { autocomplete: 'new-password' }
+          = f.button :submit, '登録する', class: 'btn-primary w-100', data: { turbo_submits_with: '登録中…' }
+        %p.text-center.mt-4.mb-0
+          登録済みの方は #{link_to 'ログイン', new_user_session_path}

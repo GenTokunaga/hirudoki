@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
+gem 'devise'
+gem 'devise-i18n'
 gem 'haml-rails'
 gem 'importmap-rails'
 gem 'jbuilder'
@@ -13,6 +15,7 @@ gem 'propshaft'
 # NOTE: Rails 8.1 が前提とする 5.0 以上
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.1.4'
+gem 'rails-i18n'
 gem 'simple_form'
 gem 'stimulus-rails'
 gem 'thruster', require: false

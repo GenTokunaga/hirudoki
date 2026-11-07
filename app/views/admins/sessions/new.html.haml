@@ -1,0 +1,10 @@
+- content_for :title, '管理者ログイン'
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 管理者ログイン
+        = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+          = f.input :email, required: true, autofocus: true, input_html: { autocomplete: 'email' }
+          = f.input :password, required: true, input_html: { autocomplete: 'current-password' }
+          = f.button :submit, 'ログイン', class: 'btn-dark w-100', data: { turbo_submits_with: 'ログイン中…' }

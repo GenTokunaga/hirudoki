@@ -1,10 +1,28 @@
 %header
-  %nav.navbar.navbar-expand-md.bg-white.border-bottom{ 'aria-label': 'メインナビゲーション' }
+  %nav.navbar.navbar-expand-md.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
     .container
-      = link_to 'ひるどき', root_path, class: 'navbar-brand fw-bold'
+      - if admin_area?
+        = link_to admins_dashboard_path, class: 'navbar-brand fw-bold' do
+          ひるどき
+          %span.badge.text-bg-warning.align-text-top 管理
+      - else
+        = link_to 'ひるどき', root_path, class: 'navbar-brand fw-bold'
       %button.navbar-toggler{ type: 'button', data: { bs_toggle: 'collapse', bs_target: '#global-nav' },
                               aria: { controls: 'global-nav', expanded: 'false', label: 'メニューを開く' } }
         %span.navbar-toggler-icon
       .collapse.navbar-collapse#global-nav
-        %ul.navbar-nav.ms-auto
-          %li.nav-item= nav_link_to '献立', root_path
+        %ul.navbar-nav.ms-auto.align-items-md-center
+          - if admin_area?
+            - if admin_signed_in?
+              %li.nav-item= nav_link_to 'ダッシュボード', admins_dashboard_path
+              %li.nav-item
+                = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link btn btn-link'
+          - else
+            %li.nav-item= nav_link_to '献立', root_path
+            - if user_signed_in?
+              %li.nav-item= nav_link_to 'アカウント', edit_user_registration_path
+              %li.nav-item
+                = button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-link btn btn-link'
+            - else
+              %li.nav-item= nav_link_to 'ログイン', new_user_session_path
+              %li.nav-item= nav_link_to '新規登録', new_user_registration_path

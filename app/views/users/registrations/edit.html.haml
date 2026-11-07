@@ -1,0 +1,18 @@
+- content_for :title, 'アカウント'
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 アカウント
+        = simple_form_for resource, as: resource_name, url: user_registration_path, method: :patch do |f|
+          = f.input :name, input_html: { autocomplete: 'name' }
+          = f.input :email, required: true, input_html: { autocomplete: 'email' }
+          = f.input :phone_number, as: :tel, input_html: { autocomplete: 'tel' }
+          %fieldset.border.rounded.p-3.mb-3
+            %legend.fs-6.float-none.w-auto.px-1.mb-0 パスワードを変更する場合のみ
+            = f.input :password, label: '新しいパスワード', required: false, input_html: { autocomplete: 'new-password' }
+            = f.input :password_confirmation, label: '新しいパスワード（確認）', required: false,
+                                              wrapper_html: { class: 'mb-0' }, input_html: { autocomplete: 'new-password' }
+          = f.input :current_password, required: true, hint: '変更を保存するには、現在のパスワードが必要です。',
+                                       input_html: { autocomplete: 'current-password' }
+          = f.button :submit, '保存する', class: 'btn-primary w-100', data: { turbo_submits_with: '保存中…' }

@@ -1,0 +1,24 @@
+ja:
+  devise:
+    failure:
+      # NOTE: 管理者は画面から登録できないため、Devise 標準の「アカウント登録してください」を案内しない文言に変えている
+      admin:
+        unauthenticated: 管理者としてログインしてください。
+  activerecord:
+    models:
+      user: 利用者
+      admin: 管理者
+    attributes:
+      user:
+        name: 氏名
+        email: メールアドレス
+        phone_number: 電話番号
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        current_password: 現在のパスワード
+        remember_me: ログインしたままにする
+      admin:
+        name: 氏名
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
