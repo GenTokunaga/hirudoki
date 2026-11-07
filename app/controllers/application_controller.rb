@@ -10,9 +10,9 @@ class ApplicationController < ActionController::Base
   helper_method :admin_area?
 
   # ヘッダーを管理画面用に切り替えるかどうか。
-  # 管理画面（Admin::）と、管理者のログイン画面が対象。
+  # 管理画面（Admins::）と、管理者のログイン画面が対象。
   def admin_area?
-    controller_path.start_with?('admin/') || (devise_controller? && resource_name == :admin)
+    controller_path.start_with?('admins/') || (devise_controller? && resource_name == :admin)
   end
 
   private
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    resource.is_a?(Admin) ? admin_root_path : stored_location_for(resource) || root_path
+    resource.is_a?(Admin) ? admins_root_path : stored_location_for(resource) || root_path
   end
 
   def after_sign_out_path_for(scope)

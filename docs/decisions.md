@@ -17,6 +17,7 @@
 | 2026-11-07 | 退会 | 利用者登録のルートを個別に定義し、`DELETE /users`（退会）を作らない | Devise 標準のまま退会ボタンだけ隠す | 退会は対象外。画面から隠すだけだとリクエストを直接送れば消せてしまう |
 | 2026-11-07 | 電話番号の形式 | 数字 10〜11 桁、またはハイフン区切り | 形式チェックなし / 国際形式まで許可 | 配達時の連絡先として日本の固定電話・携帯を想定。異常値を弾くことが評価対象 |
 | 2026-11-07 | 日本語化 | `rails-i18n` と `devise-i18n` を導入し、既定ロケールを ja に | 自前で全メッセージを翻訳 | エラーメッセージを利用者に分かる言葉で出すため。標準の翻訳を使い、項目名だけ `config/locales/ja.yml` で定義 |
+| 2026-11-07 | 管理画面の namespace | `Admins::`（`app/controllers/admins/`）、基底は `Admins::ApplicationController`。URL は `/admin` のまま | `Admin::BaseController`（当初の実装） | プロジェクトのルール（`.claude/rules`）に合わせた。`Admin` モデルと名前が重ならず、Devise の管理者ビュー（`app/views/admins/sessions`）とも同じ場所にまとまる。URL は Devise のログイン画面 `/admin/sign_in` とそろえるため `path: 'admin'` で変えない |
 | 2026-11-07 | テーブルの物理名 | bentos / delivery_areas / daily_menus / subscriptions（定期注文設定）/ orders / reviews | 定期注文設定を regular_orders などにする | Rails の命名規約に合わせ、英語として自然な名前にした |
 | 2026-11-07 | 弁当タイプ・ステータスの保存形式 | 英語の文字列（japanese / ordered など）で保存し、画面では ja.yml の訳を表示。DB にも CHECK 制約 | 日本語のまま保存 / 整数の enum | 仕様の型が string。英語キーにしておくとコード上で扱いやすく、表示名を変えても DB を書き換えなくて済む。整数より DB を直接見たときに意味が分かる |
 | 2026-11-07 | 制約の置き場所 | モデルのバリデーションと DB 制約（NOT NULL・CHECK・一意・外部キー）の両方に書く | モデルだけ / DB だけ | バリデーションは利用者に分かるエラーを出すため、DB 制約はバリデーションを通らない更新（update_column や同時実行）でも整合性を守るため |
