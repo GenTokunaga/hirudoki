@@ -23,6 +23,10 @@ module Hirudoki
     #
     # 注文締切（提供日当日 10:00）を日本時間で判定するため
     config.time_zone = "Tokyo"
+
+    # 画面・エラーメッセージを日本語で表示する
+    config.i18n.default_locale = :ja
+    config.i18n.available_locales = %i[ja en]
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

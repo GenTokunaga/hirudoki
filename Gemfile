@@ -41,6 +41,13 @@ gem "image_processing", "~> 1.2"
 # Active Storage の本番保存先（Heroku の Bucketeer = Amazon S3）
 gem "aws-sdk-s3", require: false
 
+# 認証（利用者・管理者）
+gem "devise"
+
+# 日本語化（Rails 本体と Devise のメッセージ）
+gem "rails-i18n"
+gem "devise-i18n"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

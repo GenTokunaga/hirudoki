@@ -1,0 +1,11 @@
+<%# フォームの入力エラーをまとめて表示する。locals: record %>
+<% if record.errors.any? %>
+  <div class="alert alert-danger" role="alert">
+    <p class="fw-bold mb-2"><%= record.errors.count %> 件の入力エラーがあります。</p>
+    <ul class="mb-0">
+      <% record.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
