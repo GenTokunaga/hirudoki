@@ -1,0 +1,10 @@
+%header
+  %nav.navbar.navbar-expand-md.bg-white.border-bottom{ 'aria-label': 'メインナビゲーション' }
+    .container
+      = link_to 'ひるどき', root_path, class: 'navbar-brand fw-bold'
+      %button.navbar-toggler{ type: 'button', data: { bs_toggle: 'collapse', bs_target: '#global-nav' },
+                              aria: { controls: 'global-nav', expanded: 'false', label: 'メニューを開く' } }
+        %span.navbar-toggler-icon
+      .collapse.navbar-collapse#global-nav
+        %ul.navbar-nav.ms-auto
+          %li.nav-item= nav_link_to '献立', root_path
