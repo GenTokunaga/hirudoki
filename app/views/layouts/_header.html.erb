@@ -1,0 +1,19 @@
+<header>
+  <nav class="navbar navbar-expand-md bg-white border-bottom" aria-label="メインナビゲーション">
+    <div class="container">
+      <%= link_to "ひるどき", root_path, class: "navbar-brand fw-bold" %>
+
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#global-nav"
+              aria-controls="global-nav" aria-expanded="false" aria-label="メニューを開く">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="global-nav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><%= nav_link_to "献立", root_path %></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
