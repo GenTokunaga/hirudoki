@@ -24,3 +24,8 @@
 |  |  |  | 環境構築 | タイムゾーン設定、トップページ作成、RSpec・FactoryBot・Capybara 導入、CI を RSpec に変更 | AI（Claude Code） |
 |  |  |  | 環境構築 | Heroku 向け本番設定（DB を 1 つに統合、Procfile、Bucketeer 用 Active Storage、SSL）、設計判断メモ作成 | AI（Claude Code） |
 |  |  |  | 環境構築 | Heroku CLI 導入、アプリ・アドオン作成、環境変数設定、初回デプロイ | 本人 |
+|  |  |  | 環境構築 | Heroku の環境変数（TZ・RAILS_MASTER_KEY）設定、初回デプロイを確認 | 本人 |
+|  |  |  | 共通レイアウト | ナビバー・フラッシュ・現在地表示、helper spec / system spec（PR #5） | AI（Claude Code） |
+|  |  |  | 認証 | Devise で利用者・管理者の認証、日本語化、シード、model spec / system spec（PR #6） | AI（Claude Code） |
+|  |  |  | DB作成 | 残り6テーブルのマイグレーション・モデル・制約、model spec（PR #7） | AI（Claude Code） |
+|  |  |  | レビュー | PR #5〜#7 の内容確認・マージ | 本人 |
