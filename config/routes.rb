@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   end
 
   devise_for :admins
-
   namespace :admins do
     resource :dashboard, only: :show
   end
