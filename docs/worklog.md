@@ -20,4 +20,7 @@
 |  |  |  | 準備 | 管理者ログインの要否と、シードのパスワード管理方針を検討（環境変数で渡す方針に決定） | 本人 + AI 相談 |
 |  |  |  | 準備 | GitHub に public リポジトリを作成 | AI（Claude Code） |
 |  |  |  | 環境構築 | `rails new hirudoki -d postgresql --css=bootstrap`（Rails 8.1.4 / Ruby 3.4）を実行し、Initial commit | AI（Claude Code） |
-|  |  |  | 環境構築 | Heroku のセットアップ | 本人 |
+|  |  |  | 環境構築 | Heroku のアカウント作成・支払い方法の登録、画像保存先を Bucketeer に決定 | 本人 + AI 相談 |
+|  |  |  | 環境構築 | タイムゾーン設定、トップページ作成、RSpec・FactoryBot・Capybara 導入、CI を RSpec に変更 | AI（Claude Code） |
+|  |  |  | 環境構築 | Heroku 向け本番設定（DB を 1 つに統合、Procfile、Bucketeer 用 Active Storage、SSL）、設計判断メモ作成 | AI（Claude Code） |
+|  |  |  | 環境構築 | Heroku CLI 導入、アプリ・アドオン作成、環境変数設定、初回デプロイ | 本人 |
