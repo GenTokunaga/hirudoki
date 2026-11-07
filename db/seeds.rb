@@ -12,16 +12,13 @@ def seed_value(key, development_default)
   end
 end
 
-admin = Admin.find_or_create_by!(email: seed_value("SEED_ADMIN_EMAIL", "admin@example.com")) do |a|
-  a.name = "管理者"
-  a.password = seed_value("SEED_ADMIN_PASSWORD", "password")
+Admin.find_or_create_by!(email: seed_value('SEED_ADMIN_EMAIL', 'admin@example.com')) do |a|
+  a.name = '管理者'
+  a.password = seed_value('SEED_ADMIN_PASSWORD', 'password')
 end
 
-user = User.find_or_create_by!(email: seed_value("SEED_USER_EMAIL", "user@example.com")) do |u|
-  u.name = "ひるどき 太郎"
-  u.phone_number = "090-1234-5678"
-  u.password = seed_value("SEED_USER_PASSWORD", "password")
+User.find_or_create_by!(email: seed_value('SEED_USER_EMAIL', 'user@example.com')) do |u|
+  u.name = 'ひるどき 太郎'
+  u.phone_number = '090-1234-5678'
+  u.password = seed_value('SEED_USER_PASSWORD', 'password')
 end
-
-puts "管理者: #{admin.email}"
-puts "利用者: #{user.email}"

@@ -5,7 +5,7 @@ RSpec.configure do |config|
   end
 
   # js: true を付けた system spec だけヘッドレス Chrome で動かす
-  config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+  config.before(:each, :js, type: :system) do
+    driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
   end
 end
