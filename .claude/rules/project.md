@@ -22,7 +22,7 @@
 ## ルーティング
 
 - パスは `resources` / `resource` で定義する。`get` / `post` / `patch` などで URL とアクションを個別に結び付けない
-  - 例外：トップページの `root`、Rails 標準のヘルスチェック（`/up`）、Devise の `devise_for`
+  - 例外：トップページの `root`、Devise の `devise_for`
   - 標準の 7 アクションに収まらない操作は、サブリソースとして切り出してネストする（例：`resources :orders do resource :payment, only: :create end`）
   - 使うアクションは `only:` で明示する（不要なルートを作らない）
 - ユーザーから見て 1 つしかないもの（ダッシュボード、マイページなど）は単数の `resource` を使い、URL に id を含めない
