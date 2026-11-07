@@ -1,0 +1,14 @@
+- content_for :title, '管理者ログイン'
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 管理者ログイン
+        = form_with model: resource, as: resource_name, url: session_path(resource_name) do |f|
+          .mb-3
+            = f.label :email, class: 'form-label'
+            = f.email_field :email, autofocus: true, autocomplete: 'email', required: true, class: 'form-control'
+          .mb-4
+            = f.label :password, class: 'form-label'
+            = f.password_field :password, autocomplete: 'current-password', required: true, class: 'form-control'
+          = f.submit 'ログイン', class: 'btn btn-dark w-100', data: { turbo_submits_with: 'ログイン中…' }

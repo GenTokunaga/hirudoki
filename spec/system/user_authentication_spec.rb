@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe '利用者の登録・ログイン', type: :system do
   def fill_in_sign_up_form(email: 'taro@example.com', phone_number: '090-1234-5678')
     fill_in '氏名', with: 'ひるどき 太郎'

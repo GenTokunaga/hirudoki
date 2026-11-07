@@ -1,3 +1,6 @@
+# アイコンだけのボタンなどを、画面に出る文言の代わりに aria-label で探せるようにする
+Capybara.enable_aria_label = true
+
 RSpec.configure do |config|
   # JavaScript を使わない system spec は高速な rack_test で動かす
   config.before(:each, type: :system) do

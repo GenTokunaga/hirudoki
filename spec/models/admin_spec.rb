@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Admin, type: :model do
   it '必要な項目がそろっていれば有効' do
     expect(build(:admin)).to be_valid
