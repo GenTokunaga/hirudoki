@@ -10,6 +10,6 @@ class CreateDeliveryAreas < ActiveRecord::Migration[8.1]
     end
 
     add_index :delivery_areas, :postal_code, unique: true
-    add_check_constraint :delivery_areas, "postal_code ~ '^[0-9]{7}$'", name: "delivery_areas_postal_code_check"
+    add_check_constraint :delivery_areas, "postal_code ~ '^[0-9]{7}$'", name: 'delivery_areas_postal_code_check'
   end
 end

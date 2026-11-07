@@ -15,6 +15,6 @@ class CreateDailyMenus < ActiveRecord::Migration[8.1]
     end
 
     add_index :daily_menus, %i[served_on bento_id], unique: true
-    add_check_constraint :daily_menus, "stock_limit >= 0", name: "daily_menus_stock_limit_check"
+    add_check_constraint :daily_menus, 'stock_limit >= 0', name: 'daily_menus_stock_limit_check'
   end
 end

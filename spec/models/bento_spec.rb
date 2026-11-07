@@ -1,67 +1,64 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Bento, type: :model do
-  it "必要な項目がそろっていれば有効" do
+  it '必要な項目がそろっていれば有効' do
     expect(build(:bento)).to be_valid
   end
 
-  it "販売フラグの既定値は true" do
+  it '販売フラグの既定値は true' do
     expect(Bento.new.on_sale).to be true
   end
 
-  it "弁当名・価格・表示順は必須" do
-    bento = build(:bento, name: "", price: nil, position: nil)
+  it '弁当名・価格・表示順は必須' do
+    bento = build(:bento, name: '', price: nil, position: nil)
 
-    expect(bento).to be_invalid
+    expect(bento).not_to be_valid
     expect(bento.errors.attribute_names).to include(:name, :price, :position)
   end
 
-  describe "弁当タイプ" do
-    it "和食／洋食／中華／ヘルシーの4種類" do
+  describe '弁当タイプ' do
+    it '和食／洋食／中華／ヘルシーの4種類' do
       expect(Bento.bento_types.keys).to eq %w[japanese western chinese healthy]
     end
 
-    it "それ以外の値は無効" do
-      bento = build(:bento, bento_type: "french")
+    it 'それ以外の値は無効' do
+      bento = build(:bento, bento_type: 'french')
 
-      expect(bento).to be_invalid
+      expect(bento).not_to be_valid
       expect(bento.errors[:bento_type]).to be_present
     end
 
-    it "それ以外の値は DB でも弾かれる" do
-      bento = build(:bento)
-      bento.bento_type = "japanese"
-      bento.save!
-      expect { bento.update_column(:bento_type, "french") }.to raise_error(ActiveRecord::StatementInvalid)
+    it 'それ以外の値は DB でも弾かれる' do
+      expect_db_to_reject(build(:bento, bento_type: 'french'))
     end
 
-    it "画面表示用の日本語名がある" do
+    it '画面表示用の日本語名がある' do
       expect(Bento.bento_types.keys.map { |type| Bento.human_enum_name(:bento_type, type) })
         .to eq %w[和食 洋食 中華 ヘルシー]
-      expect(Subscription.human_enum_name(:bento_type, :healthy)).to eq "ヘルシー"
-      expect(Order.human_enum_name(:status, :canceled)).to eq "キャンセル済"
+      expect(Subscription.human_enum_name(:bento_type, :healthy)).to eq 'ヘルシー'
+      expect(Order.human_enum_name(:status, :canceled)).to eq 'キャンセル済'
     end
   end
 
-  describe "価格" do
-    it "0 円は有効" do
+  describe '価格' do
+    it '0 円は有効' do
       expect(build(:bento, price: 0)).to be_valid
     end
 
-    it "マイナスは無効" do
-      expect(build(:bento, price: -1)).to be_invalid
+    it 'マイナスは無効' do
+      expect(build(:bento, price: -1)).not_to be_valid
     end
 
-    it "マイナスは DB でも弾かれる" do
+    it 'マイナスは DB でも弾かれる' do
       expect_db_to_reject(build(:bento, price: -1))
     end
 
-    it "小数は無効" do
-      expect(build(:bento, price: 100.5)).to be_invalid
+    it '小数は無効' do
+      expect(build(:bento, price: 100.5)).not_to be_valid
     end
   end
 
-  it "献立に使われている弁当は削除できない" do
+  it '献立に使われている弁当は削除できない' do
     bento = create(:bento)
     create(:daily_menu, bento: bento)
 

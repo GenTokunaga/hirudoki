@@ -10,6 +10,6 @@ class CreateReviews < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_check_constraint :reviews, "rating BETWEEN 1 AND 5", name: "reviews_rating_check"
+    add_check_constraint :reviews, 'rating BETWEEN 1 AND 5', name: 'reviews_rating_check'
   end
 end

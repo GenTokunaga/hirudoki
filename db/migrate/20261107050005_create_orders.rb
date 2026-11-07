@@ -12,16 +12,16 @@ class CreateOrders < ActiveRecord::Migration[8.1]
       t.integer    :unit_price,        null: false # 注文時点の税抜価格
       t.integer    :discount_per_unit, null: false # 注文時点の 1 個あたり割引額（手動注文は 0）
       t.integer    :total_price,       null: false # 税込の合計金額
-      t.string     :status,            null: false, default: "ordered" # ordered / received / canceled
+      t.string     :status,            null: false, default: 'ordered' # ordered / received / canceled
       t.references :subscription,      foreign_key: true # 値があれば定期注文から生成。手動注文は NULL
 
       t.timestamps
     end
 
-    add_check_constraint :orders, "quantity BETWEEN 1 AND 3", name: "orders_quantity_check"
-    add_check_constraint :orders, "unit_price >= 0", name: "orders_unit_price_check"
-    add_check_constraint :orders, "discount_per_unit >= 0", name: "orders_discount_per_unit_check"
-    add_check_constraint :orders, "total_price >= 0", name: "orders_total_price_check"
-    add_check_constraint :orders, "status IN ('ordered', 'received', 'canceled')", name: "orders_status_check"
+    add_check_constraint :orders, 'quantity BETWEEN 1 AND 3', name: 'orders_quantity_check'
+    add_check_constraint :orders, 'unit_price >= 0', name: 'orders_unit_price_check'
+    add_check_constraint :orders, 'discount_per_unit >= 0', name: 'orders_discount_per_unit_check'
+    add_check_constraint :orders, 'total_price >= 0', name: 'orders_total_price_check'
+    add_check_constraint :orders, "status IN ('ordered', 'received', 'canceled')", name: 'orders_status_check'
   end
 end

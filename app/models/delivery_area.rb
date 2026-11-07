@@ -8,5 +8,5 @@ class DeliveryArea < ApplicationRecord
   validates :postal_code, presence: true,
                           format: { with: /\A\d{7}\z/, allow_blank: true },
                           uniqueness: true
-  validates :active, inclusion: { in: [ true, false ] }
+  validates :active, inclusion: { in: [true, false] }
 end

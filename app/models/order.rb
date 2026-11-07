@@ -1,8 +1,8 @@
 class Order < ApplicationRecord
   enum :status, {
-    ordered: "ordered",   # 注文済
-    received: "received", # 受取済
-    canceled: "canceled"  # キャンセル済
+    ordered: 'ordered',   # 注文済
+    received: 'received', # 受取済
+    canceled: 'canceled', # キャンセル済
   }, default: :ordered, validate: true
 
   belongs_to :user

@@ -13,5 +13,5 @@ class Subscription < ApplicationRecord
   validates :wday, inclusion: { in: WDAYS }, uniqueness: { scope: :user_id }
   validates :quantity, numericality: { only_integer: true, in: 1..3 }
   validates :delivery_address, presence: true, length: { maximum: 255 }
-  validates :active, inclusion: { in: [ true, false ] }
+  validates :active, inclusion: { in: [true, false] }
 end
