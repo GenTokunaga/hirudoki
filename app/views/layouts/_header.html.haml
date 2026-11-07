@@ -2,7 +2,7 @@
   %nav.navbar.navbar-expand-md.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
     .container
       - if admin_area?
-        = link_to admins_root_path, class: 'navbar-brand fw-bold' do
+        = link_to admins_dashboard_path, class: 'navbar-brand fw-bold' do
           ひるどき
           %span.badge.text-bg-warning.align-text-top 管理
       - else
@@ -14,7 +14,7 @@
         %ul.navbar-nav.ms-auto.align-items-md-center
           - if admin_area?
             - if admin_signed_in?
-              %li.nav-item= nav_link_to 'ダッシュボード', admins_root_path
+              %li.nav-item= nav_link_to 'ダッシュボード', admins_dashboard_path
               %li.nav-item
                 = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link btn btn-link'
           - else

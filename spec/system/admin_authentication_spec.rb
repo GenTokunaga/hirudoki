@@ -9,7 +9,7 @@ RSpec.describe '管理者のログイン', type: :system do
     fill_in 'パスワード', with: 'password123'
     click_button 'ログイン'
 
-    expect(page).to have_current_path admins_root_path
+    expect(page).to have_current_path admins_dashboard_path
     expect(page).to have_css 'h1', text: '管理画面'
 
     click_button 'ログアウト'
@@ -28,7 +28,7 @@ RSpec.describe '管理者のログイン', type: :system do
   end
 
   it 'ログインしていないと管理画面に入れない' do
-    visit admins_root_path
+    visit admins_dashboard_path
 
     expect(page).to have_current_path new_admin_session_path
     expect(page).to have_content '管理者としてログインしてください。'
@@ -38,7 +38,7 @@ RSpec.describe '管理者のログイン', type: :system do
   it '利用者としてログインしていても管理画面には入れない' do
     sign_in create(:user)
 
-    visit admins_root_path
+    visit admins_dashboard_path
 
     expect(page).to have_current_path new_admin_session_path
   end
@@ -55,7 +55,7 @@ RSpec.describe '管理者のログイン', type: :system do
   end
 
   it '管理者の登録画面はない' do
-    visit '/admin/sign_up'
+    visit '/admins/sign_up'
 
     expect(page).to have_http_status(:not_found)
   end
