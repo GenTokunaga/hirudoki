@@ -9,15 +9,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :admin_area?
 
-  # ヘッダーを管理画面用に切り替えるかどうか。
-  # 管理画面（Admins::）と、管理者のログイン画面が対象。
   def admin_area?
     controller_path.start_with?('admins/') || (devise_controller? && resource_name == :admin)
   end
 
   private
 
-  # 利用者登録・アカウント編集で、Devise 標準以外の項目（氏名・電話番号）を受け付ける。
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name phone_number])
     devise_parameter_sanitizer.permit(:account_update, keys: %i[name phone_number])
