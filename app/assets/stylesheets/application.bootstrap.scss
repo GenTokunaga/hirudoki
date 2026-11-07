@@ -1,2 +1,13 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+label.required::after {
+  content: '必須';
+  margin-left: $spacer * .5;
+  padding: .125em .5em;
+  border-radius: $border-radius-sm;
+  background-color: $danger;
+  color: $white;
+  font-size: .75em;
+  vertical-align: middle;
+}

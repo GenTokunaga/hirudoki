@@ -4,16 +4,10 @@
     .card.shadow-sm
       .card-body.p-4
         %h1.h4.mb-4 ログイン
-        = form_with model: resource, as: resource_name, url: session_path(resource_name) do |f|
-          .mb-3
-            = f.label :email, class: 'form-label'
-            = f.email_field :email, autofocus: true, autocomplete: 'email', required: true, class: 'form-control'
-          .mb-3
-            = f.label :password, class: 'form-label'
-            = f.password_field :password, autocomplete: 'current-password', required: true, class: 'form-control'
-          .form-check.mb-4
-            = f.check_box :remember_me, class: 'form-check-input'
-            = f.label :remember_me, 'ログインしたままにする', class: 'form-check-label'
-          = f.submit 'ログイン', class: 'btn btn-primary w-100', data: { turbo_submits_with: 'ログイン中…' }
+        = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+          = f.input :email, required: true, autofocus: true, input_html: { autocomplete: 'email' }
+          = f.input :password, required: true, input_html: { autocomplete: 'current-password' }
+          = f.input :remember_me, as: :boolean
+          = f.button :submit, 'ログイン', class: 'btn-primary w-100', data: { turbo_submits_with: 'ログイン中…' }
         %p.text-center.mt-4.mb-0
           はじめての方は #{link_to '新規登録', new_user_registration_path}
