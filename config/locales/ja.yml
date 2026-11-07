@@ -1,4 +1,19 @@
 ja:
+  # enum の値の表示名。ApplicationRecord.human_enum_name で参照する。
+  enums:
+    bento:
+      bento_type: &bento_types
+        japanese: 和食
+        western: 洋食
+        chinese: 中華
+        healthy: ヘルシー
+    subscription:
+      bento_type: *bento_types
+    order:
+      status:
+        ordered: 注文済
+        received: 受取済
+        canceled: キャンセル済
   devise:
     failure:
       # 管理者は画面から登録できないため、「アカウント登録」を案内しない
@@ -8,6 +23,12 @@ ja:
     models:
       user: 利用者
       admin: 管理者
+      bento: 弁当
+      delivery_area: 配達エリア
+      daily_menu: 日別献立
+      subscription: 定期注文設定
+      order: 注文
+      review: 評価
     attributes:
       user:
         name: 氏名
@@ -17,8 +38,57 @@ ja:
         password_confirmation: パスワード（確認）
         current_password: 現在のパスワード
         remember_me: ログインしたままにする
+        orders: 注文
+        subscriptions: 定期注文設定
       admin:
         name: 氏名
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+      bento:
+        name: 弁当名
+        description: 説明
+        bento_type: 弁当タイプ
+        price: 価格（税抜）
+        on_sale: 販売
+        position: 表示順
+        image: 画像
+        daily_menus: 日別献立
+      delivery_area:
+        name: エリア名
+        postal_code: 郵便番号
+        active: 有効
+        orders: 注文
+        subscriptions: 定期注文設定
+      daily_menu:
+        served_on: 提供日
+        bento: 弁当
+        bento_id: 弁当
+        stock_limit: 提供数上限
+        orders: 注文
+      subscription:
+        user: 利用者
+        wday: 曜日
+        bento_type: 弁当タイプ
+        quantity: 個数
+        delivery_area: 配達エリア
+        delivery_address: 配達先住所
+        active: 有効
+        orders: 注文
+      order:
+        user: 利用者
+        daily_menu: 日別献立
+        quantity: 個数
+        delivery_area: 配達エリア
+        delivery_address: 配達先住所
+        unit_price: 単価
+        discount_per_unit: 割引単価
+        total_price: 合計金額
+        status: ステータス
+        subscription: 生成元の定期注文設定
+        review: 評価
+      review:
+        order: 注文
+        order_id: 注文
+        rating: 評価
+        comment: コメント
