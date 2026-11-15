@@ -6,6 +6,5 @@ FactoryBot.define do
     bento_type { :healthy }
     quantity { 2 }
     delivery_address { '東京都渋谷区神南1-1-1' }
-    active { true }
   end
 end
