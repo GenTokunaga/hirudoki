@@ -44,6 +44,7 @@ describe '弁当の管理', type: :system do
 
     expect(page).to have_content '弁当名を入力してください'
     expect(page).to have_content '価格（税抜）は0以上の値にしてください'
+    expect(page).to have_css "a[aria-current='page']", text: '弁当'
     expect(Bento.count).to eq 0
   end
 
