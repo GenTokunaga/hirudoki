@@ -1,0 +1,27 @@
+- content_for :title, '配達エリア'
+.d-flex.flex-wrap.justify-content-between.align-items-center.gap-2.mb-3
+  %h1.h4.mb-0 配達エリア
+  = link_to '配達エリアを登録', new_admins_delivery_area_path, class: 'btn btn-primary'
+- if @delivery_areas.empty?
+  %p.text-body-secondary 登録されている配達エリアはありません。
+- else
+  .table-responsive.bg-white.border.rounded
+    %table.table.align-middle.mb-0
+      %thead.text-nowrap
+        %tr
+          %th{ scope: 'col' }= DeliveryArea.human_attribute_name(:postal_code)
+          %th{ scope: 'col' }= DeliveryArea.human_attribute_name(:name)
+          %th{ scope: 'col' }= DeliveryArea.human_attribute_name(:active)
+          %th{ scope: 'col' }
+            %span.visually-hidden 操作
+      %tbody
+        - @delivery_areas.each do |delivery_area|
+          %tr{ data: { test_id: dom_id(delivery_area) } }
+            %td.text-nowrap= formatted_postal_code(delivery_area.postal_code)
+            %td.text-nowrap= delivery_area.name
+            %td.text-nowrap= delivery_area_status_badge(delivery_area)
+            %td.text-nowrap.text-end
+              = link_to '編集', edit_admins_delivery_area_path(delivery_area), class: 'btn btn-sm btn-outline-secondary'
+              = button_to '削除', admins_delivery_area_path(delivery_area),
+                          method: :delete, form_class: 'd-inline', class: 'btn btn-sm btn-outline-danger',
+                          data: { turbo_confirm: "#{delivery_area.name}を削除しますか？" }

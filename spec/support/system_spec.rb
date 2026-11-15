@@ -1,6 +1,8 @@
 Capybara.enable_aria_label = true
 
 RSpec.configure do |config|
+  config.include ActionView::RecordIdentifier, type: :system
+
   config.before(:each, type: :system) do
     driven_by :rack_test
   end

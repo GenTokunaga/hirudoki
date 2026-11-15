@@ -3,9 +3,13 @@ class DeliveryArea < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
   has_many :subscriptions, dependent: :restrict_with_error
 
+  normalizes :postal_code, with: ->(postal_code) { postal_code.unicode_normalize(:nfkc).delete('-').strip }
+
   validates :name, presence: true, length: { maximum: 50 }
   validates :postal_code, presence: true,
                           format: { with: /\A\d{7}\z/, allow_blank: true },
                           uniqueness: true
   validates :active, inclusion: { in: [true, false] }
+
+  scope :ordered, -> { order(:postal_code) }
 end
