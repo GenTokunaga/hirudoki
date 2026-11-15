@@ -8,9 +8,15 @@ module ApplicationHelper
   end
 
   def nav_link_to(name, path)
-    current = current_page?(path)
+    current = current_page?(path) || within_section?(path)
     link_to name, path,
             class: ['nav-link', { 'active' => current }],
             aria: { current: (current ? 'page' : nil) }
+  end
+
+  private
+
+  def within_section?(path)
+    path != root_path && (request.path == path || request.path.start_with?("#{path}/"))
   end
 end
