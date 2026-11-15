@@ -1,7 +1,7 @@
 = simple_form_for [:admins, bento] do |f|
   = f.error_notification
   = f.input :name, input_html: { maxlength: 50 }
-  = f.input :description, input_html: { rows: 4 }
+  = f.input :description, input_html: { rows: 4, maxlength: 1000 }
   = f.input :bento_type, collection: bento_type_options, include_blank: false
   = f.input :price, hint: '1個あたりの税抜価格を円で入力してください。', input_html: { min: 0, step: 1 }
   = f.input :position, hint: '小さい順に表示します。', input_html: { step: 1 }

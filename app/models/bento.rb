@@ -11,6 +11,7 @@ class Bento < ApplicationRecord
   has_many :daily_menus, dependent: :restrict_with_error
 
   validates :name, presence: true, length: { maximum: 50 }
+  validates :description, length: { maximum: 1000 }
   validates :price, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :on_sale, inclusion: { in: [true, false] }
   validates :position, presence: true, numericality: { only_integer: true }
