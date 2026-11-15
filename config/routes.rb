@@ -13,5 +13,5 @@ Rails.application.routes.draw do
     resources :daily_menus, only: %i[index new edit create update destroy]
   end
 
-  root 'home#index'
+  root 'daily_menus#index'
 end

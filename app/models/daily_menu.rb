@@ -11,6 +11,7 @@ class DailyMenu < ApplicationRecord
 
   scope :served_in, ->(dates) { where(served_on: dates) }
   scope :ordered, -> { joins(:bento).order(:served_on, 'bentos.position', :id) }
+  scope :on_sale, -> { joins(:bento).where(bentos: { on_sale: true }) }
 
   def self.parse_month(text, fallback:)
     year, month = text.to_s.match(MONTH_FORMAT)&.captures
