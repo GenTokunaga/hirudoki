@@ -1,0 +1,33 @@
+- content_for :title, '弁当'
+.d-flex.flex-wrap.justify-content-between.align-items-center.gap-2.mb-3
+  %h1.h4.mb-0 弁当
+  = link_to '弁当を登録', new_admins_bento_path, class: 'btn btn-primary'
+- if @bentos.empty?
+  %p.text-body-secondary 登録されている弁当はありません。
+- else
+  .table-responsive.bg-white.border.rounded
+    %table.table.align-middle.mb-0
+      %thead.text-nowrap
+        %tr
+          %th{ scope: 'col' }= Bento.human_attribute_name(:image)
+          %th{ scope: 'col' }= Bento.human_attribute_name(:name)
+          %th{ scope: 'col' }= Bento.human_attribute_name(:bento_type)
+          %th.text-end{ scope: 'col' }= Bento.human_attribute_name(:price)
+          %th{ scope: 'col' }= Bento.human_attribute_name(:on_sale)
+          %th.text-end.d-none.d-md-table-cell{ scope: 'col' }= Bento.human_attribute_name(:position)
+          %th{ scope: 'col' }
+            %span.visually-hidden 操作
+      %tbody
+        - @bentos.each do |bento|
+          %tr{ data: { test_id: dom_id(bento) } }
+            %td= bento_image_tag(bento, size: 64)
+            %td.text-nowrap= bento.name
+            %td.text-nowrap= Bento.human_enum_name(:bento_type, bento.bento_type)
+            %td.text-end.text-nowrap= number_to_currency(bento.price)
+            %td.text-nowrap= bento_sale_badge(bento)
+            %td.text-end.d-none.d-md-table-cell= bento.position
+            %td.text-nowrap.text-end
+              = link_to '編集', edit_admins_bento_path(bento), class: 'btn btn-sm btn-outline-secondary'
+              = button_to '削除', admins_bento_path(bento),
+                          method: :delete, form_class: 'd-inline', class: 'btn btn-sm btn-outline-danger',
+                          data: { turbo_confirm: "#{bento.name}を削除しますか？" }

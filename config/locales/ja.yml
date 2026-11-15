@@ -25,6 +25,11 @@ ja:
   activerecord:
     errors:
       models:
+        bento:
+          attributes:
+            image:
+              invalid_content_type: は JPEG・PNG・WebP のいずれかにしてください
+              too_large: は %{size} 以下にしてください
         daily_menu:
           attributes:
             base:

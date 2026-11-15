@@ -17,6 +17,6 @@ module ApplicationHelper
   private
 
   def within_section?(path)
-    path != root_path && request.path.start_with?("#{path}/")
+    path != root_path && (request.path == path || request.path.start_with?("#{path}/"))
   end
 end

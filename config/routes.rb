@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   devise_for :admins
   namespace :admins do
     resource :dashboard, only: :show
+    resources :bentos, only: %i[index new edit create update destroy]
     resources :daily_menus, only: %i[index new edit create update destroy]
   end
 
