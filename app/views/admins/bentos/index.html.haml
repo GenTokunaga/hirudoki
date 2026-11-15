@@ -10,8 +10,8 @@
       %thead.text-nowrap
         %tr
           %th{ scope: 'col' }= Bento.human_attribute_name(:image)
-          %th{ scope: 'col' }= Bento.human_attribute_name(:name)
           %th{ scope: 'col' }= Bento.human_attribute_name(:bento_type)
+          %th{ scope: 'col' }= Bento.human_attribute_name(:name)
           %th.text-end{ scope: 'col' }= Bento.human_attribute_name(:price)
           %th{ scope: 'col' }= Bento.human_attribute_name(:on_sale)
           %th.text-end.d-none.d-md-table-cell{ scope: 'col' }= Bento.human_attribute_name(:position)
@@ -21,8 +21,8 @@
         - @bentos.each do |bento|
           %tr{ data: { test_id: dom_id(bento) } }
             %td= bento_image_tag(bento, size: 64)
-            %td.text-nowrap= bento.name
             %td.text-nowrap= Bento.human_enum_name(:bento_type, bento.bento_type)
+            %td.text-nowrap= bento.name
             %td.text-end.text-nowrap= number_to_currency(bento.price)
             %td.text-nowrap= bento_sale_badge(bento)
             %td.text-end.d-none.d-md-table-cell= bento.position
