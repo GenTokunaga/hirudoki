@@ -38,6 +38,14 @@ describe '日別献立の管理', type: :system do
     expect(DailyMenu.count).to eq 1
   end
 
+  it '表示する月の指定が不正なときは今月の献立を表示すること' do
+    travel_to Time.zone.local(2026, 12, 15, 9, 0)
+
+    visit admins_daily_menus_path(month: '2026-13')
+
+    expect(page).to have_css 'h2', text: '2026年12月'
+  end
+
   it '注文がある献立は削除できないこと' do
     daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 1))
     create(:order, daily_menu:)

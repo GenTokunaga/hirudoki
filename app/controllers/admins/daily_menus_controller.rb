@@ -1,4 +1,6 @@
 class Admins::DailyMenusController < Admins::ApplicationController
+  MONTH_PARAM_FORMAT = /\A(\d{4})-(0[1-9]|1[0-2])\z/
+
   before_action :set_daily_menu, only: %i[edit update destroy]
 
   def index
@@ -53,9 +55,10 @@ class Admins::DailyMenusController < Admins::ApplicationController
   end
 
   def selected_month
-    Date.strptime(params[:month].to_s, '%Y-%m')
-  rescue Date::Error
-    Date.current.beginning_of_month
+    year, month = params[:month].to_s.match(MONTH_PARAM_FORMAT)&.captures
+    return Date.current.beginning_of_month if year.nil?
+
+    Date.new(year.to_i, month.to_i)
   end
 
   def month_param(daily_menu)
