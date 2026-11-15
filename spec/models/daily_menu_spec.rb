@@ -5,7 +5,7 @@ describe DailyMenu do
       daily_menu = build(:daily_menu, served_on: Date.new(2026, 12, 1), bento: create(:bento, bento_type: :japanese))
 
       expect(daily_menu).not_to be_valid
-      expect(daily_menu.errors.full_messages).to include '2026/12/01 の和食の献立はすでに登録されています。1日に登録できるのは弁当タイプごとに1件です'
+      expect(daily_menu.errors[:bento_id]).to include 'は、2026/12/01 に同じ弁当タイプ（和食）の献立がすでにあるため選べません'
     end
 
     it '同じ提供日でも弁当タイプが違えば登録できること' do
@@ -131,7 +131,7 @@ describe DailyMenu do
       create(:order, daily_menu:)
 
       expect(daily_menu.update(bento: create(:bento))).to be false
-      expect(daily_menu.errors.full_messages).to include '注文がある献立は、提供日と弁当を変更できません'
+      expect(daily_menu.errors[:bento_id]).to include 'は、注文がある献立のため変更できません'
     end
 
     it '提供日は変更できないこと' do
@@ -139,6 +139,7 @@ describe DailyMenu do
       create(:order, daily_menu:)
 
       expect(daily_menu.update(served_on: Date.new(2026, 12, 2))).to be false
+      expect(daily_menu.errors[:served_on]).to include 'は、注文がある献立のため変更できません'
     end
   end
 end

@@ -35,9 +35,11 @@ ja:
               too_large: は %{size} 以下にしてください
         daily_menu:
           attributes:
-            base:
-              bento_type_taken: '%{served_on} の%{bento_type}の献立はすでに登録されています。1日に登録できるのは弁当タイプごとに1件です'
-              ordered_menu_unchangeable: 注文がある献立は、提供日と弁当を変更できません
+            bento_id:
+              bento_type_taken: 'は、%{served_on} に同じ弁当タイプ（%{bento_type}）の献立がすでにあるため選べません'
+              ordered_menu_unchangeable: は、注文がある献立のため変更できません
+            served_on:
+              ordered_menu_unchangeable: は、注文がある献立のため変更できません
     models:
       user: 利用者
       admin: 管理者
