@@ -15,6 +15,17 @@ label.required::after {
 .header-nav {
   --bs-navbar-nav-link-padding-x: 0;
   --bs-nav-link-padding-y: 0;
+
+  gap: $spacer * .5;
+
+  // NOTE: Bootstrap のブレークポイントは 576px からしかなく、320px 幅の端末ではアイコンの間隔を詰めないとメニューがはみ出すため、360px の区切りを足している
+  @media (min-width: 360px) {
+    gap: $spacer;
+  }
+
+  @include media-breakpoint-up(sm) {
+    gap: $spacer * 1.5;
+  }
 }
 
 .header-nav-item {

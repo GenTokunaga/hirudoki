@@ -5,10 +5,10 @@
         = link_to 'ひるどき', admins_bentos_path, class: 'navbar-brand fw-bold'
       - else
         = link_to 'ひるどき', root_path, class: 'navbar-brand fw-bold'
-      %ul.navbar-nav.header-nav.ms-auto.align-items-center.gap-2.gap-sm-3
+      %ul.navbar-nav.header-nav.ms-auto.align-items-center
         - if admin_area?
           - if admin_signed_in?
-            %li.nav-item= nav_link_to '弁当', admins_bentos_path, icon: 'bi-egg-fried'
+            %li.nav-item= nav_link_to '弁当', admins_bentos_path, icon: 'bi-fork-knife'
             %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path, icon: 'bi-map'
             %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path, icon: 'bi-calendar-week'
             = render 'layouts/account_menu', account: current_admin, settings_path: nil,
