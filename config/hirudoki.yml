@@ -1,5 +1,4 @@
 shared:
-  # NOTE: 0.08 のような小数で持つと浮動小数点の誤差で 1 円ずれることがあるため、パーセントの整数で持っている
   tax_rate_percent: 8
   subscription_discount_per_unit: 50
   order_deadline: '10:00'
