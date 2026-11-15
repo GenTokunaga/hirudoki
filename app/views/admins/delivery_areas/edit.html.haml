@@ -1,0 +1,7 @@
+- content_for :title, '配達エリアの編集'
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 配達エリアの編集
+        = render 'form', delivery_area: @delivery_area, submit_label: '更新する'

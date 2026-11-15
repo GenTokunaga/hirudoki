@@ -16,6 +16,7 @@
             - if admin_signed_in?
               %li.nav-item= nav_link_to 'ダッシュボード', admins_dashboard_path
               %li.nav-item= nav_link_to '弁当', admins_bentos_path
+              %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path
               %li.nav-item
                 = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link btn btn-link'
           - else

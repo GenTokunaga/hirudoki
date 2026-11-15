@@ -1,0 +1,9 @@
+= simple_form_for [:admins, delivery_area] do |f|
+  = f.error_notification
+  = f.input :name, hint: '例：渋谷区神南一丁目', input_html: { maxlength: 50 }
+  = f.input :postal_code, hint: '7桁の数字で入力してください（ハイフンはあってもなくても構いません）。例：150-0041',
+                          input_html: { inputmode: 'numeric', autocomplete: 'postal-code', maxlength: 8 }
+  = f.input :active, label: '有効にする', hint: '外すと利用者の注文・定期注文設定で選べなくなります。'
+  .d-flex.flex-wrap.gap-2
+    = f.button :submit, submit_label, class: 'btn-primary', data: { turbo_submits_with: '保存中…' }
+    = link_to 'キャンセル', admins_delivery_areas_path, class: 'btn btn-outline-secondary'
