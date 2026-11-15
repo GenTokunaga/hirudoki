@@ -1,0 +1,32 @@
+- content_for :title, '献立'
+%h1.h4.mb-3 献立
+= form_with url: root_path, method: :get, class: 'row g-2 align-items-end mb-3', data: { test_id: 'daily-menu-search' } do |f|
+  .col-6.col-md-auto
+    = f.label :served_on, '提供日', class: 'form-label small mb-1'
+    = f.date_field :served_on, value: @search.served_on, class: 'form-control'
+  .col-6.col-md-auto
+    = f.label :bento_type, '弁当タイプ', class: 'form-label small mb-1'
+    = f.select :bento_type, bento_type_options, { include_blank: 'すべて', selected: @search.bento_type }, class: 'form-select'
+  .col-12.col-md-auto.d-flex.gap-2
+    = f.submit '絞り込む', name: nil, class: 'btn btn-primary'
+    = link_to '条件をクリア', root_path, class: 'btn btn-outline-secondary'
+%p.text-body-secondary.mb-4= daily_menu_period_label(@period)
+- if @daily_menus_by_date.empty?
+  %p.text-body-secondary 条件に合う献立はありません。
+- else
+  - @daily_menus_by_date.each do |served_on, daily_menus|
+    %section.mb-4
+      %h2.h5.mb-3= I18n.l(served_on, format: :with_wday)
+      .row.row-cols-1.row-cols-md-2.row-cols-xl-4.g-3
+        - daily_menus.each do |daily_menu|
+          .col
+            .card.h-100{ data: { test_id: dom_id(daily_menu) } }
+              .card-body.d-flex.gap-3
+                = bento_image_tag(daily_menu.bento, size: 88)
+                .flex-grow-1
+                  %span.badge.text-bg-light.border= Bento.human_enum_name(:bento_type, daily_menu.bento.bento_type)
+                  %h3.h6.mt-2.mb-1= daily_menu.bento.name
+                  %p.mb-1
+                    = number_to_currency(daily_menu.bento.price)
+                    %span.small.text-body-secondary （税抜）
+                  %p.small.mb-0= remaining_stock_label(daily_menu)
