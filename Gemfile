@@ -9,11 +9,10 @@ gem 'haml-rails'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'kamal', require: false
-# NOTE: Rails 8.1 が対応する 1.x 系に固定
+# NOTE: Rails の PostgreSQL アダプターは pg 1.x でないと起動時にエラーになるため、bundle update で 2.x に上がらないよう固定している
 gem 'pg', '~> 1.1'
 gem 'propshaft'
-# NOTE: Rails 8.1 が前提とする 5.0 以上
-gem 'puma', '>= 5.0'
+gem 'puma'
 gem 'rails', '~> 8.1.4'
 gem 'rails-i18n'
 gem 'simple_form'
