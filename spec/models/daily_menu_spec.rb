@@ -30,6 +30,24 @@ describe DailyMenu do
     end
   end
 
+  describe '.parse_month' do
+    it '「年-月」の形式なら、その月の 1 日を返すこと' do
+      expect(DailyMenu.parse_month('2026-12', fallback: Date.new(2026, 11, 15))).to eq Date.new(2026, 12, 1)
+    end
+
+    it '存在しない月なら、fallback の月の 1 日を返すこと' do
+      expect(DailyMenu.parse_month('2026-13', fallback: Date.new(2026, 11, 15))).to eq Date.new(2026, 11, 1)
+    end
+
+    it '形式が違えば、fallback の月の 1 日を返すこと' do
+      expect(DailyMenu.parse_month('2026/12', fallback: Date.new(2026, 11, 15))).to eq Date.new(2026, 11, 1)
+    end
+
+    it '指定がなければ、fallback の月の 1 日を返すこと' do
+      expect(DailyMenu.parse_month(nil, fallback: Date.new(2026, 11, 15))).to eq Date.new(2026, 11, 1)
+    end
+  end
+
   describe '#remaining_stock' do
     it '提供数上限からキャンセル済みを除く注文の個数を引いた値になること' do
       daily_menu = create(:daily_menu, stock_limit: 10)

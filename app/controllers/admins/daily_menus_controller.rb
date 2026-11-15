@@ -1,14 +1,9 @@
 class Admins::DailyMenusController < Admins::ApplicationController
-  MONTH_PARAM_FORMAT = /\A(\d{4})-(0[1-9]|1[0-2])\z/
-
   before_action :set_daily_menu, only: %i[edit update destroy]
 
   def index
-    @month = selected_month
-    @daily_menus = DailyMenu.served_in(@month.all_month)
-                            .joins(:bento)
-                            .order(:served_on, 'bentos.position', :id)
-                            .preload(:bento, :orders)
+    @month = DailyMenu.parse_month(params[:month], fallback: Date.current)
+    @daily_menus = DailyMenu.served_in(@month.all_month).ordered.preload(:bento, :orders)
   end
 
   def new
@@ -52,13 +47,6 @@ class Admins::DailyMenusController < Admins::ApplicationController
 
   def daily_menu_params
     params.expect(daily_menu: %i[served_on bento_id stock_limit])
-  end
-
-  def selected_month
-    year, month = params[:month].to_s.match(MONTH_PARAM_FORMAT)&.captures
-    return Date.current.beginning_of_month if year.nil?
-
-    Date.new(year.to_i, month.to_i)
   end
 
   def month_param(daily_menu)

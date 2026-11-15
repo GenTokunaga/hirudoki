@@ -1,4 +1,6 @@
 class DailyMenu < ApplicationRecord
+  MONTH_FORMAT = /\A(\d{4})-(0[1-9]|1[0-2])\z/
+
   belongs_to :bento
   has_many :orders, dependent: :restrict_with_error
 
@@ -8,6 +10,14 @@ class DailyMenu < ApplicationRecord
   validate :served_on_and_bento_must_not_change_after_ordered, on: :update
 
   scope :served_in, ->(dates) { where(served_on: dates) }
+  scope :ordered, -> { joins(:bento).order(:served_on, 'bentos.position', :id) }
+
+  def self.parse_month(text, fallback:)
+    year, month = text.to_s.match(MONTH_FORMAT)&.captures
+    return fallback.beginning_of_month if year.nil?
+
+    Date.new(year.to_i, month.to_i)
+  end
 
   def ordered_quantity
     orders.reject(&:canceled?).sum(&:quantity)
