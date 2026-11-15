@@ -17,7 +17,6 @@
   - 説明が必要に感じたら、まずメソッド名・変数名・メソッドの分割で表現できないか考える
 - spec で検証に使わない値をあえて指定するときは、その理由をコメントで残す
 - gem のバージョンを固定するときは、固定する理由をコメントで残す（関連する issue があればリンクも）
-- 参考：『コードレビューの教科書』5.16「コメントには言い訳を書く」
 
 ## ルーティング
 
@@ -28,14 +27,16 @@
 - ユーザーから見て 1 つしかないもの（ダッシュボード、マイページなど）は単数の `resource` を使い、URL に id を含めない
 - ルーティングをネストしたら `module:` も指定し、コントローラーの配置と対応させる
 - 管理者と利用者は namespace を分ける。管理画面は `namespace :admins`（URL は `/admins`）とし、`path:` で別の URL を付けない
-- 参考：『コードレビューの教科書』3.1・3.7・3.11・3.14
 
 ## 国際化（i18n）
 
 - 日時表示は `I18n.l` を使用
 
-## レビュー観点の参照
+## レビュー観点
 
-- 一般: `doc/agent/code-review.md` / Rails: `doc/agent/code-review-rails.md`
-- 金額計算が絡む場合: `doc/agent/code-review-money.md` / クレジットカード決済: `doc/agent/code-review-credit.md`
-- RSpec: `doc/agent/spec.md`
+`.claude/rules/review/` のチェックリストは、対象のファイルを扱うときに自動で読み込まれる。
+実装を終えたら PR を作る前に、変更したファイルに当てはまる項目を確認し、当てはまらない箇所は直すか、理由を PR に書く。
+
+- 一般: `review/general.md` / Rails: `review/rails.md`
+- 金額計算: `review/money.md`
+- RSpec: `review/rspec.md`

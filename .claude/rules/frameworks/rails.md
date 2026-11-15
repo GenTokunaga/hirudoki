@@ -22,4 +22,4 @@ paths: ["app/**/*.rb"]
 
 ## Examples
 
-詳細な Rails レビュー観点は `doc/agent/code-review-rails.md` を参照。
+詳細な Rails レビュー観点は `.claude/rules/review/rails.md` を参照。
