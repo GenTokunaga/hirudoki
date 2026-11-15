@@ -19,6 +19,13 @@ ja:
       admin:
         unauthenticated: 管理者としてログインしてください。
   activerecord:
+    errors:
+      models:
+        bento:
+          attributes:
+            image:
+              invalid_content_type: は JPEG・PNG・WebP のいずれかにしてください
+              too_large: は %{size} 以下にしてください
     models:
       user: 利用者
       admin: 管理者

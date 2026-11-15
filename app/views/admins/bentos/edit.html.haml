@@ -1,0 +1,7 @@
+- content_for :title, '弁当の編集'
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 弁当の編集
+        = render 'form', bento: @bento, submit_label: '更新する'
