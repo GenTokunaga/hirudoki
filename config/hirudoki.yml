@@ -1,0 +1,5 @@
+shared:
+  tax_rate_percent: 8
+  subscription_discount_per_unit: 50
+  order_deadline: '10:00'
+  orderable_days_ahead: 14
