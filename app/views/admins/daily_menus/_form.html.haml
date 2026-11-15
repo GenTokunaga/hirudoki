@@ -1,0 +1,12 @@
+= simple_form_for [:admins, daily_menu] do |f|
+  = f.error_notification
+  - daily_menu.errors[:base].each do |message|
+    .alert.alert-danger= message
+  = f.input :served_on, as: :date, html5: true
+  = f.association :bento, collection: bento_options_for_daily_menu, include_blank: '選択してください',
+                          hint: '1日に登録できるのは、弁当タイプ（和食／洋食／中華／ヘルシー）ごとに1件です。'
+  = f.input :stock_limit, hint: '利用者が画面から注文できる個数の上限です。定期注文はこの上限を超えても生成されます。',
+                          input_html: { min: 0, step: 1 }
+  .d-flex.flex-wrap.gap-2
+    = f.button :submit, submit_label, class: 'btn-primary', data: { turbo_submits_with: '保存中…' }
+    = link_to 'キャンセル', admins_daily_menus_path, class: 'btn btn-outline-secondary'

@@ -18,6 +18,10 @@ ja:
       # NOTE: 管理者は画面から登録できないため、Devise 標準の「アカウント登録してください」を案内しない文言に変えている
       admin:
         unauthenticated: 管理者としてログインしてください。
+  date:
+    formats:
+      with_wday: '%-m/%-d(%a)'
+      month: '%Y年%-m月'
   activerecord:
     errors:
       models:
@@ -26,6 +30,11 @@ ja:
             image:
               invalid_content_type: は JPEG・PNG・WebP のいずれかにしてください
               too_large: は %{size} 以下にしてください
+        daily_menu:
+          attributes:
+            base:
+              bento_type_taken: '%{served_on} の%{bento_type}の献立はすでに登録されています。1日に登録できるのは弁当タイプごとに1件です'
+              ordered_menu_unchangeable: 注文がある献立は、提供日と弁当を変更できません
     models:
       user: 利用者
       admin: 管理者
@@ -71,6 +80,7 @@ ja:
         bento: 弁当
         bento_id: 弁当
         stock_limit: 提供数上限
+        remaining_stock: 残数
         orders: 注文
       subscription:
         user: 利用者

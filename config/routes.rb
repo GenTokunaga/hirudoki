@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: :show
     resources :bentos, only: %i[index new edit create update destroy]
     resources :delivery_areas, only: %i[index new edit create update destroy]
+    resources :daily_menus, only: %i[index new edit create update destroy]
   end
 
   root 'home#index'
