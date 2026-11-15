@@ -30,6 +30,34 @@ describe DailyMenu do
     end
   end
 
+  describe '提供数上限' do
+    it '0 なら登録できること' do
+      daily_menu = build(:daily_menu, stock_limit: 0)
+
+      expect(daily_menu).to be_valid
+    end
+
+    it '-1 なら登録できないこと' do
+      daily_menu = build(:daily_menu, stock_limit: -1)
+
+      expect(daily_menu).not_to be_valid
+      expect(daily_menu.errors[:stock_limit]).to include 'は0以上の値にしてください'
+    end
+
+    it '1,000 なら登録できること' do
+      daily_menu = build(:daily_menu, stock_limit: 1_000)
+
+      expect(daily_menu).to be_valid
+    end
+
+    it '1,001 なら登録できないこと' do
+      daily_menu = build(:daily_menu, stock_limit: 1_001)
+
+      expect(daily_menu).not_to be_valid
+      expect(daily_menu.errors[:stock_limit]).to include 'は1000以下の値にしてください'
+    end
+  end
+
   describe '.parse_month' do
     it '「年-月」の形式なら、その月の 1 日を返すこと' do
       expect(DailyMenu.parse_month('2026-12', fallback: Date.new(2026, 11, 15))).to eq Date.new(2026, 12, 1)

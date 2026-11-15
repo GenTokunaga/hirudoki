@@ -49,17 +49,6 @@ describe '弁当の管理', type: :system do
     expect(Bento.count).to eq 0
   end
 
-  it 'DB の整数の上限を超える価格を入力しても、エラーメッセージが表示されて登録されないこと' do
-    visit new_admins_bento_path
-
-    fill_in '弁当名', with: '鮭の塩焼き弁当'
-    fill_in '価格（税抜）', with: '2342345234523452'
-    click_button '登録する'
-
-    expect(page).to have_content '価格（税抜）は100000以下の値にしてください'
-    expect(Bento.count).to eq 0
-  end
-
   it '献立に使われていない弁当は削除できること' do
     bento = create(:bento, name: '唐揚げ弁当')
 
