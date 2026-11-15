@@ -29,8 +29,8 @@
               = daily_menu.bento.name
               - unless daily_menu.bento.on_sale?
                 %span.badge.text-bg-secondary 非販売
-            %td.text-end= daily_menu.stock_limit
-            %td.text-end= daily_menu.remaining_stock
+            %td.text-end{ data: { test_id: 'stock-limit' } }= daily_menu.stock_limit
+            %td.text-end{ data: { test_id: 'remaining-stock' } }= daily_menu.remaining_stock
             %td.text-nowrap.text-end
               = link_to '編集', edit_admins_daily_menu_path(daily_menu), class: 'btn btn-sm btn-outline-secondary'
               = button_to '削除', admins_daily_menu_path(daily_menu),

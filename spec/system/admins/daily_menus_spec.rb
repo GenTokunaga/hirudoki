@@ -20,7 +20,8 @@ describe '日別献立の管理', type: :system do
       expect(page).to have_content '12/1(火)'
       expect(page).to have_content '和食'
       expect(page).to have_content '鮭の塩焼き弁当'
-      expect(page).to have_css 'td', text: '20', count: 2
+      expect(page).to have_css "[data-test-id='stock-limit']", text: '20'
+      expect(page).to have_css "[data-test-id='remaining-stock']", text: '20'
     end
   end
 
