@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_07_050006) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_15_125510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,7 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_07_050006) do
 
   create_table "bentos", force: :cascade do |t|
     t.string "name", null: false
-    t.text "description"
+    t.text "description", default: "", null: false
     t.string "bento_type", null: false
     t.integer "price", null: false
     t.boolean "on_sale", default: true, null: false
@@ -113,7 +113,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_07_050006) do
   create_table "reviews", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.integer "rating", null: false
-    t.text "comment"
+    t.text "comment", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_reviews_on_order_id", unique: true
