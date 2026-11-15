@@ -1,0 +1,14 @@
+%li.nav-item.dropdown{ data: { test_id: 'account-menu' } }
+  %button.nav-link.header-nav-item{ type: 'button', class: ('active' if account_settings_page?(settings_path)),
+                                    data: { bs_toggle: 'dropdown' }, aria: { expanded: 'false' } }
+    = header_nav_icon_with_label 'アカウント', icon: 'bi-person-circle'
+  %ul.dropdown-menu.dropdown-menu-end
+    %li
+      .dropdown-item-text
+        .fw-bold= account.name
+        .small.text-body-secondary= account.email
+    - if settings_path
+      %li= link_to 'アカウント設定', settings_path, class: 'dropdown-item', aria: { current: ('page' if account_settings_page?(settings_path)) }
+    %li
+      %hr.dropdown-divider
+    %li= button_to 'ログアウト', sign_out_path, method: :delete, class: 'dropdown-item text-danger'
