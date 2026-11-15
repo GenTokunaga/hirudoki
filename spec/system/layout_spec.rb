@@ -8,12 +8,6 @@ describe '共通レイアウト', type: :system do
     end
   end
 
-  it 'スマホ幅用のメニューボタンがあること' do
-    visit root_path
-
-    expect(page).to have_button 'メニューを開く'
-  end
-
   it 'ページタイトルにサイト名が入ること' do
     visit root_path
 
@@ -39,6 +33,22 @@ describe '共通レイアウト', type: :system do
       click_button 'ログイン'
 
       expect(page).to have_css "[role='alert']", text: 'メールアドレスまたはパスワードが違います。'
+    end
+  end
+
+  describe 'アカウントのメニュー' do
+    it '利用者の氏名とメールアドレスが表示され、アカウント設定の画面へ移動できること' do
+      sign_in create(:user, name: 'ひるどき 太郎', email: 'taro@example.com')
+
+      visit root_path
+      within("[data-test-id='account-menu']") do
+        expect(page).to have_content 'ひるどき 太郎'
+        expect(page).to have_content 'taro@example.com'
+        click_link 'アカウント設定'
+      end
+
+      expect(page).to have_css 'h1', text: 'アカウント'
+      expect(page).to have_css "[data-test-id='account-menu'] a[aria-current='page']", text: 'アカウント設定'
     end
   end
 

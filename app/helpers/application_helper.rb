@@ -7,11 +7,20 @@ module ApplicationHelper
     end
   end
 
-  def nav_link_to(name, path)
+  def nav_link_to(name, path, icon:)
     current = current_page?(path) || within_section?(path)
-    link_to name, path,
-            class: ['nav-link', { 'active' => current }],
-            aria: { current: (current ? 'page' : nil) }
+    link_to path, class: ['nav-link', 'header-nav-item', { 'active' => current }],
+                  aria: { current: (current ? 'page' : nil) } do
+      header_nav_icon_with_label(name, icon:)
+    end
+  end
+
+  def header_nav_icon_with_label(name, icon:)
+    safe_join([tag.i(class: ['bi', icon], 'aria-hidden': true), tag.span(name, class: 'header-nav-label')])
+  end
+
+  def account_settings_page?(settings_path)
+    settings_path.present? && current_page?(settings_path)
   end
 
   private

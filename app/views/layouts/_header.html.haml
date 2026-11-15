@@ -1,30 +1,23 @@
 %header
-  %nav.navbar.navbar-expand-md.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
+  %nav.navbar.navbar-expand.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
     .container
       - if admin_area?
-        = link_to admins_bentos_path, class: 'navbar-brand fw-bold' do
-          ひるどき
-          %span.badge.text-bg-warning.align-text-top 管理
+        = link_to 'ひるどき', admins_bentos_path, class: 'navbar-brand fw-bold'
       - else
         = link_to 'ひるどき', root_path, class: 'navbar-brand fw-bold'
-      %button.navbar-toggler{ type: 'button', data: { bs_toggle: 'collapse', bs_target: '#global-nav' },
-                              aria: { controls: 'global-nav', expanded: 'false', label: 'メニューを開く' } }
-        %span.navbar-toggler-icon
-      .collapse.navbar-collapse#global-nav
-        %ul.navbar-nav.ms-auto.align-items-md-center
-          - if admin_area?
-            - if admin_signed_in?
-              %li.nav-item= nav_link_to '弁当', admins_bentos_path
-              %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path
-              %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path
-              %li.nav-item
-                = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link btn btn-link'
+      %ul.navbar-nav.header-nav.ms-auto.align-items-center.gap-2.gap-sm-3
+        - if admin_area?
+          - if admin_signed_in?
+            %li.nav-item= nav_link_to '弁当', admins_bentos_path, icon: 'bi-egg-fried'
+            %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path, icon: 'bi-map'
+            %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path, icon: 'bi-calendar-week'
+            = render 'layouts/account_menu', account: current_admin, settings_path: nil,
+                                             sign_out_path: destroy_admin_session_path
+        - else
+          %li.nav-item= nav_link_to '献立', root_path, icon: 'bi-calendar-week'
+          - if user_signed_in?
+            = render 'layouts/account_menu', account: current_user, settings_path: edit_user_registration_path,
+                                             sign_out_path: destroy_user_session_path
           - else
-            %li.nav-item= nav_link_to '献立', root_path
-            - if user_signed_in?
-              %li.nav-item= nav_link_to 'アカウント', edit_user_registration_path
-              %li.nav-item
-                = button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'nav-link btn btn-link'
-            - else
-              %li.nav-item= nav_link_to 'ログイン', new_user_session_path
-              %li.nav-item= nav_link_to '新規登録', new_user_registration_path
+            %li.nav-item= nav_link_to 'ログイン', new_user_session_path, icon: 'bi-box-arrow-in-right'
+            %li.nav-item= nav_link_to '新規登録', new_user_registration_path, icon: 'bi-person-plus'

@@ -13,9 +13,7 @@ describe '利用者の登録・ログイン', type: :system do
     click_button '登録する'
 
     expect(page).to have_current_path root_path
-    expect(page).to have_button 'ログアウト'
-
-    click_button 'ログアウト'
+    within("[data-test-id='account-menu']") { click_button 'ログアウト' }
     expect(page).to have_link 'ログイン'
 
     click_link 'ログイン'
@@ -24,7 +22,7 @@ describe '利用者の登録・ログイン', type: :system do
     click_button 'ログイン'
 
     expect(page).to have_content 'ログインしました'
-    expect(page).to have_link 'アカウント'
+    expect(page).to have_button 'アカウント'
   end
 
   it '電話番号の形式が正しくないと登録できず、エラーが表示されること' do

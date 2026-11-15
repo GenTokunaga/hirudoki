@@ -11,3 +11,25 @@ label.required::after {
   font-size: .75em;
   vertical-align: middle;
 }
+
+.header-nav {
+  --bs-navbar-nav-link-padding-x: 0;
+  --bs-nav-link-padding-y: 0;
+}
+
+.header-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .125rem;
+  line-height: 1.2;
+
+  .bi {
+    font-size: 1.25rem;
+  }
+}
+
+.header-nav-label {
+  font-size: .7rem;
+  white-space: nowrap;
+}
