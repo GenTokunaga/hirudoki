@@ -42,6 +42,7 @@ describe '弁当の管理', type: :system do
     fill_in '価格（税抜）', with: '-1'
     click_button '登録する'
 
+    expect(page).to have_content '入力内容に誤りがあります。下記の項目を確認してください。'
     expect(page).to have_content '弁当名を入力してください'
     expect(page).to have_content '価格（税抜）は0以上の値にしてください'
     expect(page).to have_css "a[aria-current='page']", text: '弁当'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_15_125510) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_15_130906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,8 +61,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_125510) do
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.check_constraint "\"position\" >= 1 AND \"position\" <= 9999", name: "bentos_position_check"
     t.check_constraint "bento_type::text = ANY (ARRAY['japanese'::character varying, 'western'::character varying, 'chinese'::character varying, 'healthy'::character varying]::text[])", name: "bentos_bento_type_check"
-    t.check_constraint "price >= 0", name: "bentos_price_check"
+    t.check_constraint "price >= 0 AND price <= 100000", name: "bentos_price_check"
   end
 
   create_table "daily_menus", force: :cascade do |t|
@@ -73,7 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_125510) do
     t.datetime "updated_at", null: false
     t.index ["bento_id"], name: "index_daily_menus_on_bento_id"
     t.index ["served_on", "bento_id"], name: "index_daily_menus_on_served_on_and_bento_id", unique: true
-    t.check_constraint "stock_limit >= 0", name: "daily_menus_stock_limit_check"
+    t.check_constraint "stock_limit >= 0 AND stock_limit <= 1000", name: "daily_menus_stock_limit_check"
   end
 
   create_table "delivery_areas", force: :cascade do |t|

@@ -13,6 +13,7 @@ paths: ["spec/**/*.rb"]
 - `spec/routing` は禁止
 - 認可（admin 権限など）のテストは system spec で実装 - before_action もそこでカバーされる
 - model spec は複雑なビジネスロジック/カスタムバリデーションのみ - presence・length・format 等の単純バリデーションは書かない
+- 数値の範囲（上限・下限）は model spec で境界値を確認する - 下限ちょうど・下限 - 1・上限ちょうど・上限 + 1 の 4 つ。system spec では確認しない
 - `let!` の乱用回避 - 遅延評価のため本当に必要な時のみ使用
 - `action_on_unpermitted_parameters` を `:raise` に設定 - Strong Parameter の設定漏れを検知
 

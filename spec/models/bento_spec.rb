@@ -7,6 +7,62 @@ describe Bento do
     end
   end
 
+  describe '価格' do
+    it '0 円なら登録できること' do
+      bento = build(:bento, price: 0)
+
+      expect(bento).to be_valid
+    end
+
+    it '-1 円なら登録できないこと' do
+      bento = build(:bento, price: -1)
+
+      expect(bento).not_to be_valid
+      expect(bento.errors[:price]).to include 'は0以上の値にしてください'
+    end
+
+    it '100,000 円なら登録できること' do
+      bento = build(:bento, price: 100_000)
+
+      expect(bento).to be_valid
+    end
+
+    it '100,001 円なら登録できないこと' do
+      bento = build(:bento, price: 100_001)
+
+      expect(bento).not_to be_valid
+      expect(bento.errors[:price]).to include 'は100000以下の値にしてください'
+    end
+  end
+
+  describe '表示順' do
+    it '1 なら登録できること' do
+      bento = build(:bento, position: 1)
+
+      expect(bento).to be_valid
+    end
+
+    it '0 なら登録できないこと' do
+      bento = build(:bento, position: 0)
+
+      expect(bento).not_to be_valid
+      expect(bento.errors[:position]).to include 'は1以上の値にしてください'
+    end
+
+    it '9,999 なら登録できること' do
+      bento = build(:bento, position: 9_999)
+
+      expect(bento).to be_valid
+    end
+
+    it '10,000 なら登録できないこと' do
+      bento = build(:bento, position: 10_000)
+
+      expect(bento).not_to be_valid
+      expect(bento.errors[:position]).to include 'は9999以下の値にしてください'
+    end
+  end
+
   describe '画像' do
     it 'PNG 画像は登録できること' do
       bento = build(:bento)

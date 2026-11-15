@@ -1,4 +1,7 @@
 ja:
+  simple_form:
+    error_notification:
+      default_message: 入力内容に誤りがあります。下記の項目を確認してください。
   enums:
     bento:
       bento_type: &bento_types
