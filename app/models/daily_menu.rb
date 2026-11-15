@@ -40,13 +40,14 @@ class DailyMenu < ApplicationRecord
                           .exists?
     return unless duplicated
 
-    errors.add(:base, :bento_type_taken,
+    errors.add(:bento_id, :bento_type_taken,
                served_on: I18n.l(served_on), bento_type: Bento.human_enum_name(:bento_type, bento.bento_type))
   end
 
   def served_on_and_bento_must_not_change_after_ordered
     return unless (will_save_change_to_served_on? || will_save_change_to_bento_id?) && orders.exists?
 
-    errors.add(:base, :ordered_menu_unchangeable)
+    errors.add(:served_on, :ordered_menu_unchangeable) if will_save_change_to_served_on?
+    errors.add(:bento_id, :ordered_menu_unchangeable) if will_save_change_to_bento_id?
   end
 end

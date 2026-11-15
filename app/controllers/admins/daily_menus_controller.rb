@@ -7,7 +7,7 @@ class Admins::DailyMenusController < Admins::ApplicationController
   end
 
   def new
-    @daily_menu = DailyMenu.new(served_on: params[:served_on])
+    @daily_menu = DailyMenu.new
   end
 
   def edit; end

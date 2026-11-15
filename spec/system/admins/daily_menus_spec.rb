@@ -35,7 +35,8 @@ describe '日別献立の管理', type: :system do
     fill_in '提供数上限', with: '20'
     click_button '登録する'
 
-    expect(page).to have_content '2026/12/01 の和食の献立はすでに登録されています。'
+    expect(page).to have_content '入力内容に誤りがあります。下記の項目を確認してください。'
+    expect(page).to have_content '弁当は、2026/12/01 に同じ弁当タイプ（和食）の献立がすでにあるため選べません', count: 1
     expect(DailyMenu.count).to eq 1
   end
 
