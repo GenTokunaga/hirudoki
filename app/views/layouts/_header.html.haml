@@ -2,7 +2,7 @@
   %nav.navbar.navbar-expand-md.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
     .container
       - if admin_area?
-        = link_to admins_dashboard_path, class: 'navbar-brand fw-bold' do
+        = link_to admins_bentos_path, class: 'navbar-brand fw-bold' do
           ひるどき
           %span.badge.text-bg-warning.align-text-top 管理
       - else
@@ -14,7 +14,6 @@
         %ul.navbar-nav.ms-auto.align-items-md-center
           - if admin_area?
             - if admin_signed_in?
-              %li.nav-item= nav_link_to 'ダッシュボード', admins_dashboard_path
               %li.nav-item= nav_link_to '弁当', admins_bentos_path
               %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path
               %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path

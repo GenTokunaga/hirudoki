@@ -9,8 +9,8 @@ describe '管理者のログイン', type: :system do
     fill_in 'パスワード', with: 'password123'
     click_button 'ログイン'
 
-    expect(page).to have_current_path admins_dashboard_path
-    expect(page).to have_css 'h1', text: '管理画面'
+    expect(page).to have_current_path admins_bentos_path
+    expect(page).to have_css 'h1', text: '弁当'
 
     click_button 'ログアウト'
 
@@ -47,7 +47,7 @@ describe '管理者のログイン', type: :system do
   describe '管理画面へのアクセス制限' do
     context 'ログインしていない場合' do
       it '管理者のログイン画面に移動し、管理者としてのログインを促されること' do
-        visit admins_dashboard_path
+        visit admins_bentos_path
 
         expect(page).to have_current_path new_admin_session_path
         expect(page).to have_content '管理者としてログインしてください。'
@@ -58,7 +58,7 @@ describe '管理者のログイン', type: :system do
       it '管理者のログイン画面に移動すること' do
         sign_in create(:user)
 
-        visit admins_dashboard_path
+        visit admins_bentos_path
 
         expect(page).to have_current_path new_admin_session_path
       end

@@ -3,8 +3,8 @@
   = f.input :name, input_html: { maxlength: 50 }
   = f.input :description, input_html: { rows: 4, maxlength: 1000 }
   = f.input :bento_type, collection: bento_type_options, include_blank: false
-  = f.input :price, hint: '1個あたりの税抜価格を円で入力してください。', input_html: { min: 0, step: 1 }
-  = f.input :position, hint: '小さい順に表示します。', input_html: { step: 1 }
+  = f.input :price, hint: '1個あたりの税抜価格を円で入力してください。', input_html: { min: 0, max: 10_000, step: 1 }
+  = f.input :position, hint: '小さい順に表示します。', input_html: { min: 1, max: 9_999, step: 1 }
   = f.input :on_sale, label: '販売する', hint: '外すと利用者の献立一覧に表示されなくなります。'
   - if bento.image.attached? && bento.image.persisted?
     .mb-2= bento_image_tag(bento, size: 120)

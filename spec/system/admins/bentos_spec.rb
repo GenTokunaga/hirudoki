@@ -42,9 +42,21 @@ describe '弁当の管理', type: :system do
     fill_in '価格（税抜）', with: '-1'
     click_button '登録する'
 
+    expect(page).to have_content '入力内容に誤りがあります。下記の項目を確認してください。'
     expect(page).to have_content '弁当名を入力してください'
     expect(page).to have_content '価格（税抜）は0以上の値にしてください'
     expect(page).to have_css "a[aria-current='page']", text: '弁当'
+    expect(Bento.count).to eq 0
+  end
+
+  it 'DB の整数の上限を超える価格を入力しても、エラーメッセージが表示されて登録されないこと' do
+    visit new_admins_bento_path
+
+    fill_in '弁当名', with: '鮭の塩焼き弁当'
+    fill_in '価格（税抜）', with: '2342345234523452'
+    click_button '登録する'
+
+    expect(page).to have_content '価格（税抜）は10000以下の値にしてください'
     expect(Bento.count).to eq 0
   end
 

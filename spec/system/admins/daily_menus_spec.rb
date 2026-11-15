@@ -25,6 +25,19 @@ describe '日別献立の管理', type: :system do
     end
   end
 
+  it 'DB の整数の上限を超える提供数上限を入力しても、エラーメッセージが表示されて登録されないこと' do
+    create(:bento, name: '鮭の塩焼き弁当', bento_type: :japanese)
+
+    visit new_admins_daily_menu_path
+    fill_in '提供日', with: '2026-12-01'
+    select '鮭の塩焼き弁当（和食）', from: '弁当'
+    fill_in '提供数上限', with: '2342345234523452'
+    click_button '登録する'
+
+    expect(page).to have_content '提供数上限は1000以下の値にしてください'
+    expect(DailyMenu.count).to eq 0
+  end
+
   it '同じ提供日に同じ弁当タイプの献立を 2 件目として登録できないこと' do
     create(:daily_menu, served_on: Date.new(2026, 12, 1), bento: create(:bento, bento_type: :japanese))
     create(:bento, name: '肉じゃが弁当', bento_type: :japanese)

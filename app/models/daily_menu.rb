@@ -5,7 +5,7 @@ class DailyMenu < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
 
   validates :served_on, presence: true
-  validates :stock_limit, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :stock_limit, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1_000 }
   validate :bento_type_must_be_unique_on_served_on
   validate :served_on_and_bento_must_not_change_after_ordered, on: :update
 
