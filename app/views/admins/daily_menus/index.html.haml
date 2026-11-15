@@ -1,0 +1,38 @@
+- content_for :title, '日別献立'
+.d-flex.flex-wrap.justify-content-between.align-items-center.gap-2.mb-3
+  %h1.h4.mb-0 日別献立
+  = link_to '献立を登録', new_admins_daily_menu_path, class: 'btn btn-primary'
+%nav.d-flex.justify-content-between.align-items-center.mb-3{ 'aria-label': '表示する月' }
+  = link_to '‹ 前の月', admins_daily_menus_path(month: @month.prev_month.strftime('%Y-%m')), class: 'btn btn-sm btn-outline-secondary'
+  %h2.h5.mb-0= I18n.l(@month, format: :month)
+  = link_to '次の月 ›', admins_daily_menus_path(month: @month.next_month.strftime('%Y-%m')), class: 'btn btn-sm btn-outline-secondary'
+- if @daily_menus.empty?
+  %p.text-body-secondary この月の献立は登録されていません。
+- else
+  .table-responsive.bg-white.border.rounded
+    %table.table.align-middle.mb-0
+      %thead.text-nowrap
+        %tr
+          %th{ scope: 'col' }= DailyMenu.human_attribute_name(:served_on)
+          %th{ scope: 'col' }= Bento.human_attribute_name(:bento_type)
+          %th{ scope: 'col' }= DailyMenu.human_attribute_name(:bento)
+          %th.text-end{ scope: 'col' }= DailyMenu.human_attribute_name(:stock_limit)
+          %th.text-end{ scope: 'col' }= DailyMenu.human_attribute_name(:remaining_stock)
+          %th{ scope: 'col' }
+            %span.visually-hidden 操作
+      %tbody
+        - @daily_menus.each do |daily_menu|
+          %tr{ data: { test_id: dom_id(daily_menu) } }
+            %td.text-nowrap= I18n.l(daily_menu.served_on, format: :with_wday)
+            %td.text-nowrap= Bento.human_enum_name(:bento_type, daily_menu.bento.bento_type)
+            %td.text-nowrap
+              = daily_menu.bento.name
+              - unless daily_menu.bento.on_sale?
+                %span.badge.text-bg-secondary 非販売
+            %td.text-end= daily_menu.stock_limit
+            %td.text-end= daily_menu.remaining_stock
+            %td.text-nowrap.text-end
+              = link_to '編集', edit_admins_daily_menu_path(daily_menu), class: 'btn btn-sm btn-outline-secondary'
+              = button_to '削除', admins_daily_menu_path(daily_menu),
+                          method: :delete, form_class: 'd-inline', class: 'btn btn-sm btn-outline-danger',
+                          data: { turbo_confirm: "#{I18n.l(daily_menu.served_on)} #{daily_menu.bento.name}の献立を削除しますか？" }
