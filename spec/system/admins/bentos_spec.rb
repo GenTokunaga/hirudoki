@@ -56,7 +56,7 @@ describe '弁当の管理', type: :system do
     fill_in '価格（税抜）', with: '2342345234523452'
     click_button '登録する'
 
-    expect(page).to have_content '価格（税抜）は10000以下の値にしてください'
+    expect(page).to have_content '価格（税抜）は100000以下の値にしてください'
     expect(Bento.count).to eq 0
   end
 

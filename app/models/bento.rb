@@ -12,7 +12,7 @@ class Bento < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 50 }
   validates :description, length: { maximum: 1000 }
-  validates :price, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 10_000 }
+  validates :price, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100_000 }
   validates :on_sale, inclusion: { in: [true, false] }
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 9_999 }
   validate :image_must_be_acceptable

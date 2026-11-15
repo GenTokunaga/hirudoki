@@ -63,7 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_130906) do
     t.datetime "updated_at", null: false
     t.check_constraint "\"position\" >= 1 AND \"position\" <= 9999", name: "bentos_position_check"
     t.check_constraint "bento_type::text = ANY (ARRAY['japanese'::character varying, 'western'::character varying, 'chinese'::character varying, 'healthy'::character varying]::text[])", name: "bentos_bento_type_check"
-    t.check_constraint "price >= 0 AND price <= 10000", name: "bentos_price_check"
+    t.check_constraint "price >= 0 AND price <= 100000", name: "bentos_price_check"
   end
 
   create_table "daily_menus", force: :cascade do |t|
