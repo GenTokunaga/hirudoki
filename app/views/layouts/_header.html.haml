@@ -16,6 +16,7 @@
         - else
           %li.nav-item= nav_link_to '献立', root_path, icon: 'bi-calendar-week'
           - if user_signed_in?
+            %li.nav-item= nav_link_to 'マイページ', mypage_path, icon: 'bi-receipt'
             = render 'layouts/account_menu', account: current_user, settings_path: edit_user_registration_path,
                                              sign_out_path: destroy_user_session_path
           - else
