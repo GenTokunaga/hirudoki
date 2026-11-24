@@ -36,19 +36,25 @@ describe '共通レイアウト', type: :system do
     end
   end
 
-  describe 'アカウントのメニュー' do
-    it '利用者の氏名とメールアドレスが表示され、アカウント設定の画面へ移動できること' do
+  describe 'ヘッダーのマイページ' do
+    it '利用者のマイページでアカウント情報を確かめ、変更画面を開いてもマイページが現在地として表示されること' do
       sign_in create(:user, name: 'ひるどき 太郎', email: 'taro@example.com')
 
       visit root_path
-      within("[data-test-id='account-menu']") do
+      within('header') { click_link 'マイページ' }
+
+      within("[data-test-id='account-info']") do
         expect(page).to have_content 'ひるどき 太郎'
         expect(page).to have_content 'taro@example.com'
-        click_link 'アカウント設定'
       end
 
-      expect(page).to have_css 'h1', text: 'アカウント'
-      expect(page).to have_css "[data-test-id='account-menu'] a[aria-current='page']", text: 'アカウント設定'
+      click_link 'アカウント情報を変更する'
+
+      expect(page).to have_css 'h1', text: 'アカウント情報の変更'
+      within('header') do
+        expect(page).to have_css "a[aria-current='page']", text: 'マイページ'
+        expect(page).to have_no_css "a[aria-current='page']", text: '献立'
+      end
     end
   end
 

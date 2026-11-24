@@ -12,7 +12,8 @@ describe '管理者のログイン', type: :system do
     expect(page).to have_current_path admins_bentos_path
     expect(page).to have_css 'h1', text: '弁当'
 
-    within("[data-test-id='account-menu']") { click_button 'ログアウト' }
+    within('header') { click_link 'マイページ' }
+    click_button 'ログアウト'
 
     expect(page).to have_current_path new_admin_session_path
   end
