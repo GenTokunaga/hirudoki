@@ -13,9 +13,7 @@ class Admins::OrdersController < Admins::ApplicationController
     if @order.change_status(params.expect(order: [:status])[:status])
       redirect_to admins_order_path(@order), notice: "ステータスを「#{Order.human_enum_name(:status, @order.status)}」に変更しました。"
     else
-      # NOTE: 保存できなかったステータスがバッジや選択欄に出ないよう、保存されている値に戻してから表示している
-      @order.restore_attributes(%i[status])
-      render :show, status: :unprocessable_content
+      redirect_to admins_order_path(@order), alert: @order.errors.full_messages.to_sentence, status: :see_other
     end
   end
 
