@@ -2,8 +2,8 @@
 %div{ data: { test_id: 'order-change-actions' } }
   - if unchangeable_reason
     .d-flex.flex-wrap.gap-2.mb-2
-      %button.btn.btn-outline-primary{ type: 'button', disabled: true } 個数を変更する
-      %button.btn.btn-outline-danger{ type: 'button', disabled: true } キャンセルする
+      %button.btn.btn-secondary{ type: 'button', disabled: true } 個数を変更する
+      %button.btn.btn-secondary{ type: 'button', disabled: true } キャンセルする
     %p.small.text-body-secondary.mb-0= unchangeable_reason
   - else
     .d-flex.flex-wrap.gap-2.mb-2
