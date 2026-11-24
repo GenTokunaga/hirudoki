@@ -58,6 +58,20 @@ describe '注文の管理', type: :system do
     expect(order.reload).to be_received
   end
 
+  it 'キャンセル済から戻すと残数を超える注文は、戻せずに理由が表示されること' do
+    daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 1), stock_limit: 3)
+    create(:order, daily_menu:, quantity: 2)
+    order = create(:order, :canceled, daily_menu:, quantity: 2)
+
+    visit admins_order_path(order)
+    select '注文済', from: 'ステータス'
+    click_button 'ステータスを変更する'
+
+    expect(page).to have_content 'キャンセル済から戻すと残数を超えるため変更できません（この注文 2 個、残り 1 個）'
+    expect(page).to have_css "[data-test-id='order-status']", text: 'キャンセル済'
+    expect(order.reload).to be_canceled
+  end
+
   it '利用者としてログインしていても、注文の管理画面には入れないこと' do
     sign_out :admin
     sign_in create(:user)
