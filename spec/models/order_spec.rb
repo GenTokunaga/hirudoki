@@ -193,16 +193,16 @@ describe Order do
       expect(order.reload).to have_attributes(quantity: 3, total_price: 1782)
     end
 
-    it '提供日当日の 10:00 ちょうどなら変更できること' do
+    it '提供日当日の 9:59 なら変更できること' do
       order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
 
-      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 10, 0))).to be true
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 9, 59))).to be true
     end
 
-    it '提供日当日の 10:01 には変更できないこと' do
+    it '提供日当日の 10:00 ちょうどには変更できないこと' do
       order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
 
-      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 10, 1))).to be false
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 10, 0))).to be false
       expect(order.errors[:base]).to include '締切（提供日当日 10:00）を過ぎたため、個数の変更やキャンセルができません'
     end
 
@@ -215,17 +215,17 @@ describe Order do
   end
 
   describe '#cancel' do
-    it '締切前ならキャンセル済みになること' do
+    it '提供日当日の 9:59 ならキャンセル済みになること' do
       order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
 
-      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 10, 0))).to be true
+      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 9, 59))).to be true
       expect(order.reload).to be_canceled
     end
 
-    it '締切後はキャンセルできず、ステータスが変わらないこと' do
+    it '提供日当日の 10:00 ちょうどにはキャンセルできず、ステータスが変わらないこと' do
       order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
 
-      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 10, 1))).to be false
+      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 10, 0))).to be false
       expect(order.reload).to be_ordered
     end
 
