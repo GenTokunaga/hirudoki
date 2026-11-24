@@ -1,0 +1,34 @@
+- content_for :title, 'マイページ'
+%h1.h4.mb-3 マイページ
+%section.card.shadow-sm.mb-4
+  .card-body
+    .d-flex.flex-wrap.justify-content-between.align-items-center.gap-2.mb-2
+      %h2.h5.mb-0 アカウント情報
+      = link_to 'アカウント情報を変更する', edit_user_registration_path, class: 'btn btn-sm btn-outline-secondary'
+    %dl.row.mb-0{ data: { test_id: 'account-info' } }
+      %dt.col-sm-3= User.human_attribute_name(:name)
+      %dd.col-sm-9= current_user.name
+      %dt.col-sm-3= User.human_attribute_name(:email)
+      %dd.col-sm-9= current_user.email
+      %dt.col-sm-3= User.human_attribute_name(:phone_number)
+      %dd.col-sm-9.mb-0= current_user.phone_number
+%section
+  %h2.h5.mb-3 注文履歴
+  - if @orders.empty?
+    %p.text-body-secondary
+      まだ注文はありません。
+      = link_to '献立から注文する', root_path
+  - else
+    -# NOTE: スマホ幅で表にすると横にはみ出してステータスが見えなくなるため、どの幅でも折り返せるリストにしている
+    %ul.list-group
+      - @orders.each do |order|
+        %li.list-group-item{ data: { test_id: dom_id(order) } }
+          .d-flex.justify-content-between.align-items-center.gap-2
+            = link_to I18n.l(order.daily_menu.served_on, format: :with_wday), order_path(order), class: 'fw-bold'
+            = order_status_badge(order)
+          .d-flex.flex-wrap.justify-content-between.column-gap-3.mt-1
+            %span= order.daily_menu.bento.name
+            %span.text-nowrap
+              #{order.quantity} 個
+              %span.ms-2= number_to_currency(order.total_price)
+              %span.small.text-body-secondary （税込）

@@ -1,4 +1,8 @@
 - content_for :title, '注文の詳細'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 注文の詳細
 .row.justify-content-center
   .col-md-10.col-lg-8
     .card.shadow-sm

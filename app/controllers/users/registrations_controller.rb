@@ -3,4 +3,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def destroy
     head :not_found
   end
+
+  protected
+
+  def after_update_path_for(_resource)
+    mypage_path
+  end
 end

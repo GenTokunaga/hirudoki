@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :orders, only: %i[new create], module: :daily_menus
   end
   resources :orders, only: :show
+  resource :mypage, only: :show
 
   namespace :admins do
     resources :bentos, only: %i[index new edit create update destroy]
