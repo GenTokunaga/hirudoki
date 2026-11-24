@@ -35,9 +35,6 @@
           %dd.col-sm-8.mb-0= I18n.l(@order.created_at, format: :long)
         %hr.my-4
         = simple_form_for [:admins, @order] do |f|
-          = f.error_notification if field_errors?(@order)
-          - @order.errors[:base].each do |message|
-            .alert.alert-danger{ role: 'alert' }= message
           = f.input :status, collection: order_status_options, include_blank: false,
                              hint: '管理者の変更には、締切や残数の条件は掛かりません。'
           = f.button :submit, 'ステータスを変更する', class: 'btn-primary', data: { turbo_submits_with: '変更中…' }
