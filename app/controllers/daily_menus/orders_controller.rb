@@ -8,7 +8,7 @@ class DailyMenus::OrdersController < ApplicationController
 
   def create
     @order = current_user.orders.build(order_params.merge(daily_menu: @daily_menu))
-    if @order.place(now: Time.current)
+    if @order.submit(now: Time.current)
       redirect_to order_path(@order), notice: '注文しました。'
     else
       render :new, status: :unprocessable_content
