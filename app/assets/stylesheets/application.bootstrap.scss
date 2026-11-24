@@ -71,3 +71,9 @@ fieldset.required > legend::after {
 legend + input[type='hidden'] + * {
   clear: left;
 }
+
+// NOTE: 表の見出しの visually-hidden（position: absolute）は、位置の基準になる要素がないとページ全体を基準に置かれ、
+//       横スクロールする表の切り抜きを抜け出してスマホ幅でページを横にはみ出させるため、表の外枠を基準にしている
+.table-responsive {
+  position: relative;
+}
