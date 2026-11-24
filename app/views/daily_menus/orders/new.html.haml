@@ -18,7 +18,7 @@
               %span.small.text-body-secondary （税抜）
             %p.small.mb-0= remaining_stock_label(@daily_menu)
         = simple_form_for @order, url: daily_menu_orders_path(@daily_menu) do |f|
-          = f.error_notification
+          = f.error_notification if field_errors?(@order)
           - @order.errors[:base].each do |message|
             .alert.alert-danger{ role: 'alert' }= message
           -#
