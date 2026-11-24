@@ -70,12 +70,15 @@ end
 reviewed_bento = Bento.find_by!(name: '鮭の塩焼き弁当')
 delivery_area = DeliveryArea.find_by!(postal_code: '1500041')
 [
-  { rating: 5, comment: "鮭の焼き加減がちょうどよく、ご飯が進みました。\nまた注文します。" },
-  { rating: 4, comment: '副菜の卵焼きが甘めで好みでした。' },
-  { rating: 4, comment: '' },
+  { rating: 5, comment: "鮭の焼き加減がちょうどよく、ご飯が進みました。\nまた注文します。", posted_at: '12:45' },
+  { rating: 4, comment: '副菜の卵焼きが甘めで好みでした。', posted_at: '18:20' },
+  { rating: 4, comment: '', posted_at: '13:10' },
 ].zip(DailyMenu.where(bento: reviewed_bento, served_on: ...Date.current).order(:served_on)).each do |review_attributes, daily_menu|
   # NOTE: 月の初めは提供済みの献立が 3 日分ないため、ある分だけ評価を作る
   break if daily_menu.nil?
+
+  # NOTE: 評価一覧の並び順（新しい順）を画面で確かめられるよう、受け取った日の昼〜夜に投稿した日時にしている
+  posted_at = Time.zone.parse("#{daily_menu.served_on} #{review_attributes[:posted_at]}")
 
   order = Order.find_or_create_by!(user:, daily_menu:) do |o|
     # TODO: 料金計算（PR #43）がマージされたら、合計金額は Order#assign_total_price で計算する
@@ -83,5 +86,7 @@ delivery_area = DeliveryArea.find_by!(postal_code: '1500041')
     o.assign_attributes(delivery_area:, delivery_address: '東京都渋谷区神南1-1-1', quantity: 1, status: :received,
                         unit_price: reviewed_bento.price, discount_per_unit: 0, total_price:)
   end
-  Review.find_or_create_by!(order:) { it.assign_attributes(review_attributes) }
+  Review.find_or_create_by!(order:) do |review|
+    review.assign_attributes(review_attributes.slice(:rating, :comment).merge(created_at: posted_at, updated_at: posted_at))
+  end
 end
