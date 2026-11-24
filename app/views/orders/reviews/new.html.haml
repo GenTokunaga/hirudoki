@@ -1,0 +1,23 @@
+- content_for :title, '評価の投稿'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item= link_to '注文の詳細', order_path(@order)
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 評価の投稿
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 評価の投稿
+        %p.mb-1= I18n.l(@order.daily_menu.served_on, format: :with_wday)
+        %p.fw-bold.mb-4= @order.daily_menu.bento.name
+        = simple_form_for @review, url: order_review_path(@order) do |f|
+          = f.error_notification
+          - @review.errors[:base].each do |message|
+            .alert.alert-danger{ role: 'alert' }= message
+          = f.input :rating, as: :radio_buttons, collection: rating_options
+          = f.input :comment, as: :text, required: false, input_html: { rows: 4, maxlength: 1000 },
+                              hint: '任意です。1000 文字まで入力できます。'
+          .d-flex.flex-wrap.gap-2
+            = f.button :submit, '投稿する', class: 'btn-primary', data: { turbo_submits_with: '投稿中…' }
+            = link_to '戻る', order_path(@order), class: 'btn btn-outline-secondary'

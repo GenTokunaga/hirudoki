@@ -38,6 +38,10 @@ module OrdersHelper
     end
   end
 
+  def rating_options
+    5.downto(1).map { ["#{'★' * it}#{'☆' * (5 - it)}（#{it}）", it] }
+  end
+
   private
 
   def disabled_order_button(reason)

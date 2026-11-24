@@ -29,3 +29,4 @@
           %dd.col-sm-8.fw-bold.mb-0= number_to_currency(@order.total_price)
         %hr.my-4
         = render 'orders/change_actions', order: @order
+    = render 'orders/review', order: @order

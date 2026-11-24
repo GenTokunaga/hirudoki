@@ -1,0 +1,13 @@
+%section.card.shadow-sm.mt-4{ data: { test_id: 'order-review' } }
+  .card-body.p-4
+    %h2.h5.mb-3 評価
+    - if order.review
+      = rating_stars(order.review.rating)
+      - if order.review.comment.present?
+        %p.text-multiline.mt-2.mb-0= order.review.comment
+    - elsif order.reviewable?
+      %p.small.text-body-secondary 弁当の感想を 5 段階で教えてください。評価は弁当の詳細に表示されます。
+      = link_to '評価を投稿する', new_order_review_path(order), class: 'btn btn-primary'
+    - else
+      %button.btn.btn-outline-primary.mb-2{ type: 'button', disabled: true } 評価を投稿する
+      %p.small.text-body-secondary.mb-0 評価は、弁当を受け取った後（受取済みになった注文）に投稿できます。

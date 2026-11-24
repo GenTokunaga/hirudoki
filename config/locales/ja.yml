@@ -40,6 +40,11 @@ ja:
               ordered_menu_unchangeable: は、注文がある献立のため変更できません
             served_on:
               ordered_menu_unchangeable: は、注文がある献立のため変更できません
+        review:
+          order_not_received: 評価は、受取済みの注文にだけ投稿できます
+          attributes:
+            order_id:
+              taken: には、すでに評価を投稿しています
         order:
           bento_not_on_sale: この弁当は現在販売していないため注文できません
           deadline_passed: 注文の締切（提供日当日 %{deadline}）を過ぎているため注文できません
