@@ -14,15 +14,42 @@ describe '利用者の登録・ログイン', type: :system do
 
     expect(page).to have_current_path root_path
     within("[data-test-id='account-menu']") { click_button 'ログアウト' }
-    expect(page).to have_link 'ログイン'
+    expect(page).to have_current_path new_user_session_path
+    expect(page).to have_content 'ログアウトしました'
 
-    click_link 'ログイン'
     fill_in 'メールアドレス', with: 'taro@example.com'
     fill_in 'パスワード', with: 'password123'
     click_button 'ログイン'
 
     expect(page).to have_content 'ログインしました'
     expect(page).to have_button 'アカウント'
+  end
+
+  describe 'トップページ（献立一覧）' do
+    it 'ログインしていないとログイン画面に移動し、ログインすると献立一覧が表示されること' do
+      create(:user, email: 'taro@example.com', password: 'password123')
+
+      visit root_path
+
+      expect(page).to have_current_path new_user_session_path
+      expect(page).to have_content 'ログインもしくはアカウント登録してください'
+
+      fill_in 'メールアドレス', with: 'taro@example.com'
+      fill_in 'パスワード', with: 'password123'
+      click_button 'ログイン'
+
+      expect(page).to have_current_path root_path
+      expect(page).to have_css 'h1', text: '献立'
+    end
+
+    it '管理者としてだけログインしているときは、利用者のログイン画面に移動すること' do
+      sign_in create(:admin), scope: :admin
+
+      visit root_path
+
+      expect(page).to have_current_path new_user_session_path
+      expect(page).to have_content 'ログインもしくはアカウント登録してください'
+    end
   end
 
   it '電話番号の形式が正しくないと登録できず、エラーが表示されること' do

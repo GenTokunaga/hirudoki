@@ -1,4 +1,6 @@
 class DailyMenusController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @search = DailyMenuSearch.new(search_params)
     @period = @search.period(today: Date.current)
