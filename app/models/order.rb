@@ -15,4 +15,13 @@ class Order < ApplicationRecord
   validates :delivery_address, presence: true, length: { maximum: 255 }
   validates :unit_price, :discount_per_unit, :total_price,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  # NOTE: 弁当の現在の価格ではなく、注文時に控えた単価・割引単価で計算する（仕様 3-4。個数変更の再計算でも同じ）
+  def price
+    OrderPrice.new(unit_price:, discount_per_unit:, quantity:)
+  end
+
+  def assign_total_price
+    self.total_price = price.total
+  end
 end
