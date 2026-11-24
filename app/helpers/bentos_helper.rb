@@ -28,6 +28,10 @@ module BentosHelper
     average_rating = bento.average_rating
     return '評価はまだありません' if average_rating.nil?
 
-    "平均 #{number_with_precision(average_rating, precision: 1)}（#{bento.reviews.size}件）"
+    safe_join([
+      tag.span('平均評価', class: 'visually-hidden'),
+      tag.span('★', class: 'text-warning', aria: { hidden: true }),
+      "#{number_with_precision(average_rating, precision: 1)} (#{bento.reviews.size})",
+    ])
   end
 end

@@ -24,7 +24,7 @@ describe '弁当詳細', type: :system do
     expect(page).to have_content '650円 （税抜）'
     expect(page).to have_content '国産の鮭を使っています。'
     expect(page).to have_css "img[alt='鮭の塩焼き弁当']"
-    expect(page).to have_css "[data-test-id='average-rating']", text: '平均 3.5（2件）'
+    expect(page).to have_css "[data-test-id='average-rating']", text: '★3.5 (2)'
     within("[data-test-id='#{dom_id(new_review)}']") do
       expect(page).to have_css "[aria-label='5段階中4']"
       expect(page).to have_content '2026/11/25'
