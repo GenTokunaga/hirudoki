@@ -1,7 +1,9 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-label.required::after {
+// NOTE: ラジオボタン・チェックボックスの一覧では、simple_form が見出しを label ではなく legend で出すため、両方に付けている
+label.required::after,
+fieldset.required > legend::after {
   content: '必須';
   margin-left: $spacer * .5;
   padding: .125em .5em;
