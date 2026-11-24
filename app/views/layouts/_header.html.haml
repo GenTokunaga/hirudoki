@@ -12,6 +12,7 @@
             %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path, icon: 'bi-map'
             %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path, icon: 'bi-calendar-week'
             %li.nav-item= nav_link_to '注文', admins_orders_path, icon: 'bi-receipt'
+            %li.nav-item= nav_link_to '利用者', admins_users_path, icon: 'bi-people'
             = render 'layouts/account_menu', account: current_admin, settings_path: nil,
                                              sign_out_path: destroy_admin_session_path
         - else
