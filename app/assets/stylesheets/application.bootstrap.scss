@@ -44,3 +44,8 @@ label.required::after {
   font-size: .7rem;
   white-space: nowrap;
 }
+
+// NOTE: simple_format は HTML をエスケープしないため、入力された改行は CSS で表示している
+.text-multiline {
+  white-space: pre-line;
+}

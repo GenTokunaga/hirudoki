@@ -9,6 +9,8 @@ class Bento < ApplicationRecord
   # NOTE: 仕様 3-7。販売をやめるときは削除ではなく非販売にする運用のため、献立から参照されていれば削除できなくしている。
   #       注文は献立を参照し、献立は注文があると削除できないので、注文のある弁当もここで削除できなくなる
   has_many :daily_menus, dependent: :restrict_with_error
+  has_many :orders, through: :daily_menus
+  has_many :reviews, through: :orders
 
   validates :name, presence: true, length: { maximum: 50 }
   validates :description, length: { maximum: 1000 }
@@ -18,9 +20,14 @@ class Bento < ApplicationRecord
   validate :image_must_be_acceptable
 
   scope :ordered, -> { order(:position, :id) }
+  scope :on_sale, -> { where(on_sale: true) }
 
   def self.next_position
     maximum(:position).to_i + 1
+  end
+
+  def average_rating
+    reviews.average(:rating)&.round(1)
   end
 
   private
