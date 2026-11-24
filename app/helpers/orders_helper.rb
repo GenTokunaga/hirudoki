@@ -37,6 +37,6 @@ module OrdersHelper
   private
 
   def disabled_order_button(reason)
-    tag.button "注文できません（#{reason}）", type: 'button', class: 'btn btn-sm btn-outline-secondary', disabled: true
+    tag.button reason, type: 'button', class: 'btn btn-sm btn-outline-secondary', disabled: true
   end
 end
