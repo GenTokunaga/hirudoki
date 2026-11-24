@@ -26,6 +26,17 @@ describe '手動注文', type: :system do
     expect(page).to have_content '1,404円'
   end
 
+  it '個数・配達エリア・配達先住所に必須の表示が付くこと' do
+    sign_in create(:user)
+
+    visit new_daily_menu_order_path(create(:daily_menu, served_on: Date.new(2026, 12, 2)))
+
+    # NOTE: 「必須」のバッジは label.required の CSS（::after）で出しているため、クラスで確かめている
+    expect(page).to have_css 'label.required', text: '個数'
+    expect(page).to have_css 'label.required', text: '配達エリア'
+    expect(page).to have_css 'label.required', text: '配達先住所'
+  end
+
   it '配達エリアと住所の初期値が、直近の注文の内容になること' do
     user = create(:user)
     create(:order, user:, delivery_area: create(:delivery_area, name: '渋谷区宇田川町', postal_code: '1500042'),
