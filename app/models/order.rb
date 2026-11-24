@@ -15,4 +15,12 @@ class Order < ApplicationRecord
   validates :delivery_address, presence: true, length: { maximum: 255 }
   validates :unit_price, :discount_per_unit, :total_price,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  def price
+    OrderPrice.new(unit_price:, discount_per_unit:, quantity:)
+  end
+
+  def assign_total_price
+    self.total_price = price.total
+  end
 end
