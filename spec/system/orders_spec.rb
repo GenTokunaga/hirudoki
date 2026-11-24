@@ -76,6 +76,7 @@ describe '手動注文', type: :system do
     click_button '注文する'
 
     expect(page).to have_content '注文の締切（提供日当日 10:00）を過ぎているため注文できません'
+    expect(page).to have_no_content '入力内容に誤りがあります。'
     expect(Order.count).to eq 0
   end
 
@@ -90,6 +91,7 @@ describe '手動注文', type: :system do
     fill_in '配達先住所', with: '東京都渋谷区神南1-1-1'
     click_button '注文する'
 
+    expect(page).to have_content '入力内容に誤りがあります。'
     expect(page).to have_content '個数は残り 1 個以下にしてください'
     expect(Order.count).to eq 0
   end
