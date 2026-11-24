@@ -28,9 +28,9 @@ class DailyMenu < ApplicationRecord
     [stock_limit - ordered_quantity, 0].max
   end
 
-  # NOTE: 仕様の「当日は 10:00 まで」は、10:00 ちょうどまでを受け付けると解釈している（docs/decisions.md 参照）
+  # NOTE: 仕様の「10:00 を過ぎたら利用者は変更できない」に合わせ、10:00 ちょうどを締切後としている（docs/decisions.md 参照）
   def before_deadline?(time)
-    time <= order_deadline
+    time < order_deadline
   end
 
   def within_orderable_days?(date)
