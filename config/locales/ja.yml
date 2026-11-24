@@ -44,6 +44,8 @@ ja:
           bento_not_on_sale: この弁当は現在販売していないため注文できません
           deadline_passed: 注文の締切（提供日当日 %{deadline}）を過ぎているため注文できません
           too_far_ahead: 注文できるのは %{days} 日先の提供日までです
+          unchangeable_status: '%{status}の注文は、個数の変更やキャンセルができません'
+          change_deadline_passed: 締切（提供日当日 %{deadline}）を過ぎたため、個数の変更やキャンセルができません
           attributes:
             delivery_area:
               inactive: は現在配達を受け付けていません

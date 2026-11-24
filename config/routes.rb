@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   resources :daily_menus, only: [] do
     resources :orders, only: %i[new create], module: :daily_menus
   end
-  resources :orders, only: :show
+  resources :orders, only: %i[show edit update] do
+    resource :cancellation, only: :create, module: :orders
+  end
   resource :mypage, only: :show
 
   namespace :admins do

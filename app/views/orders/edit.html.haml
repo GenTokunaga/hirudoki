@@ -1,0 +1,25 @@
+- content_for :title, '個数の変更'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item= link_to '注文の詳細', order_path(@order)
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 個数の変更
+.row.justify-content-center
+  .col-md-8.col-lg-6
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 個数の変更
+        %p.mb-1= I18n.l(@order.daily_menu.served_on, format: :with_wday)
+        %p.fw-bold.mb-1= @order.daily_menu.bento.name
+        %p.small.text-body-secondary.mb-4
+          単価は注文時の #{number_to_currency(@order.unit_price)}（税抜）のまま、合計金額を計算し直します。
+        = simple_form_for @order do |f|
+          = f.error_notification if field_errors?(@order)
+          - @order.errors[:base].each do |message|
+            .alert.alert-danger{ role: 'alert' }= message
+          -# NOTE: simple_form は presence の検証から必須かを判断し、個数は範囲の検証だけのため required を明示している
+          = f.input :quantity, collection: quantity_options, include_blank: '選択してください', required: true,
+                               hint: "1 人 1 日あたり、同じ提供日の注文と合わせて #{Order::DAILY_QUANTITY_LIMIT} 個までです。"
+          .d-flex.flex-wrap.gap-2
+            = f.button :submit, '変更する', class: 'btn-primary', data: { turbo_submits_with: '変更中…' }
+            = link_to '戻る', order_path(@order), class: 'btn btn-outline-secondary'

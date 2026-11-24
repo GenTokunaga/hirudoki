@@ -1,0 +1,14 @@
+- unchangeable_reason = order_unchangeable_reason(order)
+%div{ data: { test_id: 'order-change-actions' } }
+  - if unchangeable_reason
+    .d-flex.flex-wrap.gap-2.mb-2
+      %button.btn.btn-secondary{ type: 'button', disabled: true } 個数を変更する
+      %button.btn.btn-secondary{ type: 'button', disabled: true } キャンセルする
+    %p.small.text-body-secondary.mb-0= unchangeable_reason
+  - else
+    .d-flex.flex-wrap.gap-2.mb-2
+      = link_to '個数を変更する', edit_order_path(order), class: 'btn btn-outline-primary'
+      = button_to 'キャンセルする', order_cancellation_path(order),
+                  class: 'btn btn-outline-danger', data: { turbo_confirm: 'この注文をキャンセルしますか？' }
+    %p.small.text-body-secondary.mb-0
+      締切（提供日当日 #{Rails.configuration.x.hirudoki.order_deadline}）までは、個数の変更やキャンセルができます。

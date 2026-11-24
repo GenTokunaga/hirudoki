@@ -27,3 +27,5 @@
           %dd.col-sm-8= number_to_currency(@order.discount_per_unit)
           %dt.col-sm-4 合計金額（税込）
           %dd.col-sm-8.fw-bold.mb-0= number_to_currency(@order.total_price)
+        %hr.my-4
+        = render 'orders/change_actions', order: @order
