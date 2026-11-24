@@ -10,4 +10,10 @@ class User < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 50 }
   validates :phone_number, presence: true, format: { with: PHONE_NUMBER_FORMAT, allow_blank: true }
+
+  def build_order(daily_menu:)
+    latest_order = orders.recent.first
+    orders.build(daily_menu:, quantity: 1,
+                 delivery_area_id: latest_order&.delivery_area_id, delivery_address: latest_order&.delivery_address)
+  end
 end
