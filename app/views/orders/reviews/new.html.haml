@@ -12,7 +12,7 @@
         %p.mb-1= I18n.l(@order.daily_menu.served_on, format: :with_wday)
         %p.fw-bold.mb-4= @order.daily_menu.bento.name
         = simple_form_for @review, url: order_review_path(@order) do |f|
-          = f.error_notification
+          = f.error_notification if field_errors?(@review)
           - @review.errors[:base].each do |message|
             .alert.alert-danger{ role: 'alert' }= message
           = f.input :rating, as: :radio_buttons, collection: rating_options

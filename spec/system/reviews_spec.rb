@@ -49,7 +49,23 @@ describe '評価の投稿', type: :system do
     visit new_order_review_path(order)
     click_button '投稿する'
 
+    expect(page).to have_content '入力内容に誤りがあります。'
     expect(page).to have_content '評価を入力してください'
+    expect(order.reload.review).to be_nil
+  end
+
+  it '投稿画面を開いた後に注文が受取済みでなくなると、理由だけが表示されて投稿されないこと' do
+    user = create(:user)
+    order = create(:order, :received, user:)
+    sign_in user
+
+    visit new_order_review_path(order)
+    choose '★★★★☆（4）'
+    order.update!(status: :ordered)
+    click_button '投稿する'
+
+    expect(page).to have_content '評価は、受取済みの注文にだけ投稿できます'
+    expect(page).to have_no_content '入力内容に誤りがあります。'
     expect(order.reload.review).to be_nil
   end
 
