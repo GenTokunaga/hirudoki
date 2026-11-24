@@ -24,6 +24,9 @@ class Order < ApplicationRecord
   with_options on: :ordering do
     validate :daily_menu_must_be_orderable
     validate :delivery_area_must_be_active
+  end
+  validate :must_be_changeable, on: %i[quantity_change cancellation]
+  with_options on: %i[ordering quantity_change] do
     validate :quantity_must_be_within_remaining_stock
     validate :quantity_must_be_within_daily_limit
   end
@@ -47,6 +50,23 @@ class Order < ApplicationRecord
     save(context: :ordering)
   end
 
+  def changeable_at?(time)
+    ordered? && daily_menu.before_deadline?(time)
+  end
+
+  def change_quantity(new_quantity, now:)
+    @operated_at = now
+    self.quantity = new_quantity
+    assign_total_price if quantity.present?
+    save(context: :quantity_change)
+  end
+
+  def cancel(now:)
+    @operated_at = now
+    self.status = :canceled
+    save(context: :cancellation)
+  end
+
   private
 
   def daily_menu_must_be_orderable
@@ -56,6 +76,15 @@ class Order < ApplicationRecord
       errors.add(:base, :deadline_passed, deadline: Rails.configuration.x.hirudoki.order_deadline)
     elsif !daily_menu.within_orderable_days?(@operated_at.to_date)
       errors.add(:base, :too_far_ahead, days: Rails.configuration.x.hirudoki.orderable_days_ahead)
+    end
+  end
+
+  # NOTE: キャンセルでは保存前にステータスを書き換えるため、変更前のステータスで判定している
+  def must_be_changeable
+    if status_in_database != 'ordered'
+      errors.add(:base, :unchangeable_status, status: Order.human_enum_name(:status, status_in_database))
+    elsif !daily_menu.before_deadline?(@operated_at)
+      errors.add(:base, :change_deadline_passed, deadline: Rails.configuration.x.hirudoki.order_deadline)
     end
   end
 

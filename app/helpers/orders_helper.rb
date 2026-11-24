@@ -26,6 +26,14 @@ module OrdersHelper
     end
   end
 
+  def order_unchangeable_reason(order, now: Time.current)
+    if !order.ordered?
+      t('activerecord.errors.models.order.unchangeable_status', status: Order.human_enum_name(:status, order.status))
+    elsif !order.daily_menu.before_deadline?(now)
+      t('activerecord.errors.models.order.change_deadline_passed', deadline: Rails.configuration.x.hirudoki.order_deadline)
+    end
+  end
+
   private
 
   def disabled_order_button(reason)

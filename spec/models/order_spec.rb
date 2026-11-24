@@ -152,4 +152,87 @@ describe Order do
       expect(order.reload).to have_attributes(unit_price: 650, discount_per_unit: 0, total_price: 1404)
     end
   end
+
+  describe '#change_quantity' do
+    it '残数は変更前の自分の個数を戻してから判定し、戻した残数ちょうどまでは変更できること' do
+      daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 2), stock_limit: 5)
+      create(:order, daily_menu:, quantity: 2)
+      order = create(:order, daily_menu:, quantity: 1)
+
+      expect(order.change_quantity(3, now: Time.zone.local(2026, 12, 1, 12, 0))).to be true
+    end
+
+    it '自分の個数を戻した残数を超える個数には変更できないこと' do
+      daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 2), stock_limit: 4)
+      create(:order, daily_menu:, quantity: 2)
+      order = create(:order, daily_menu:, quantity: 1)
+
+      expect(order.change_quantity(3, now: Time.zone.local(2026, 12, 1, 12, 0))).to be false
+      expect(order.errors[:quantity]).to include 'は残り 2 個以下にしてください'
+    end
+
+    it '同じ提供日の他の注文と合わせて 4 個になる個数には変更できないこと' do
+      user = create(:user)
+      create(:order, user:, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 2)), quantity: 2)
+      order = create(:order, user:, daily_menu: create(:daily_menu, bento: create(:bento, bento_type: :western), served_on: Date.new(2026, 12, 2)))
+
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 12, 0))).to be false
+      expect(order.errors[:quantity]).to include 'は、同じ提供日の注文と合わせて 3 個までです（注文済み 2 個）'
+    end
+
+    it '弁当の価格を変えた後でも、注文時の単価と割引単価で合計金額を計算し直すこと' do
+      allow(Rails.configuration.x.hirudoki).to receive(:tax_rate_percent).and_return(8)
+      bento = create(:bento, price: 600)
+      order = create(:order, daily_menu: create(:daily_menu, bento:, served_on: Date.new(2026, 12, 2)),
+                             unit_price: 600, discount_per_unit: 50, quantity: 1, total_price: 594)
+      bento.update!(price: 800)
+
+      order.change_quantity(3, now: Time.zone.local(2026, 12, 1, 12, 0))
+
+      expect(order.reload).to have_attributes(quantity: 3, total_price: 1782)
+    end
+
+    it '提供日当日の 10:00 ちょうどなら変更できること' do
+      order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
+
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 10, 0))).to be true
+    end
+
+    it '提供日当日の 10:01 には変更できないこと' do
+      order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
+
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 10, 1))).to be false
+      expect(order.errors[:base]).to include '締切（提供日当日 10:00）を過ぎたため、個数の変更やキャンセルができません'
+    end
+
+    it '受取済みの注文は変更できないこと' do
+      order = create(:order, :received, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 2)))
+
+      expect(order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 12, 0))).to be false
+      expect(order.errors[:base]).to include '受取済の注文は、個数の変更やキャンセルができません'
+    end
+  end
+
+  describe '#cancel' do
+    it '締切前ならキャンセル済みになること' do
+      order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
+
+      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 10, 0))).to be true
+      expect(order.reload).to be_canceled
+    end
+
+    it '締切後はキャンセルできず、ステータスが変わらないこと' do
+      order = create(:order, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
+
+      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 10, 1))).to be false
+      expect(order.reload).to be_ordered
+    end
+
+    it 'キャンセル済みの注文は、もう一度キャンセルできないこと' do
+      order = create(:order, :canceled, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 2)))
+
+      expect(order.cancel(now: Time.zone.local(2026, 12, 1, 12, 0))).to be false
+      expect(order.errors[:base]).to include 'キャンセル済の注文は、個数の変更やキャンセルができません'
+    end
+  end
 end
