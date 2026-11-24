@@ -1,6 +1,7 @@
 describe '献立一覧', type: :system do
   before do
     travel_to Time.zone.local(2026, 12, 1, 9, 0)
+    sign_in create(:user)
   end
 
   it '提供日ごとに献立が表示され、提供日と弁当タイプで絞り込めること' do

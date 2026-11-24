@@ -1,6 +1,6 @@
 describe '共通レイアウト', type: :system do
   it 'ヘッダーにサイト名とナビゲーションが表示されること' do
-    visit root_path
+    visit new_user_session_path
 
     within 'header' do
       expect(page).to have_link 'ひるどき', href: root_path
@@ -9,9 +9,9 @@ describe '共通レイアウト', type: :system do
   end
 
   it 'ページタイトルにサイト名が入ること' do
-    visit root_path
+    visit new_user_session_path
 
-    expect(page).to have_title 'ひるどき'
+    expect(page).to have_title 'ログイン | ひるどき'
   end
 
   describe 'フラッシュメッセージ' do
