@@ -126,4 +126,27 @@ describe Bento do
       expect(Bento.next_position).to eq 1
     end
   end
+
+  describe '#average_rating' do
+    def create_review(bento:, rating:)
+      daily_menu = bento.daily_menus.first || create(:daily_menu, bento:)
+      create(:review, rating:, order: create(:order, daily_menu:, status: :received))
+    end
+
+    it 'その弁当の評価の平均を、小数第 1 位に四捨五入して返すこと' do
+      bento = create(:bento)
+      create_review(bento:, rating: 4)
+      create_review(bento:, rating: 5)
+      create_review(bento:, rating: 5)
+      create_review(bento: create(:bento), rating: 1)
+
+      expect(bento.average_rating).to eq 4.7
+    end
+
+    it '評価がなければ nil を返すこと' do
+      bento = create(:bento)
+
+      expect(bento.average_rating).to be_nil
+    end
+  end
 end
