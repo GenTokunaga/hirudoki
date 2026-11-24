@@ -58,8 +58,11 @@ end
 
 bentos_by_type = bentos.group_by(&:bento_type)
 (Date.current.beginning_of_month..Date.current.next_month.end_of_month).each do |served_on|
-  bentos_by_type.each_value do |bentos_of_type|
-    bento = bentos_of_type[served_on.day % bentos_of_type.size]
-    DailyMenu.find_or_create_by!(served_on:, bento:) { it.stock_limit = 20 }
+  bentos_by_type.each do |bento_type, bentos_of_type|
+    # NOTE: 献立は「同じ提供日に同じ弁当タイプは1件まで」。手で登録した献立や、管理画面で弁当を変えた献立があっても
+    #       止まらずに何度でも流せるよう、（提供日, 弁当）ではなく（提供日, 弁当タイプ）で有無を確かめている
+    next if DailyMenu.joins(:bento).exists?(served_on:, bentos: { bento_type: })
+
+    DailyMenu.create!(served_on:, bento: bentos_of_type[served_on.day % bentos_of_type.size], stock_limit: 20)
   end
 end
