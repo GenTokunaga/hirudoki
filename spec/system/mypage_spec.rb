@@ -42,6 +42,19 @@ describe 'マイページ', type: :system do
     expect(page).to have_http_status :not_found
   end
 
+  it '注文の詳細を開いているときも、ヘッダーのマイページが現在地として表示されること' do
+    user = create(:user)
+    order = create(:order, user:)
+    sign_in user
+
+    visit order_path(order)
+
+    within('header') do
+      expect(page).to have_css "a[aria-current='page']", text: 'マイページ'
+      expect(page).to have_no_css "a[aria-current='page']", text: '献立'
+    end
+  end
+
   it '注文がないときは、その旨が表示されること' do
     sign_in create(:user)
 
