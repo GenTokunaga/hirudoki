@@ -14,7 +14,7 @@
         %p.small.text-body-secondary.mb-4
           単価は注文時の #{number_to_currency(@order.unit_price)}（税抜）のまま、合計金額を計算し直します。
         = simple_form_for @order do |f|
-          = f.error_notification
+          = f.error_notification if field_errors?(@order)
           - @order.errors[:base].each do |message|
             .alert.alert-danger{ role: 'alert' }= message
           -# NOTE: simple_form は presence の検証から必須かを判断し、個数は範囲の検証だけのため required を明示している

@@ -19,6 +19,12 @@ module ApplicationHelper
     safe_join([tag.i(class: ['bi', icon], 'aria-hidden': true), tag.span(name, class: 'header-nav-label')])
   end
 
+  # NOTE: simple_form の共通メッセージは「下記の項目を確認してください」なので、入力欄に紐づかない
+  #       base のエラー（締切後など）だけのときは出さない
+  def field_errors?(record)
+    (record.errors.attribute_names - [:base]).any?
+  end
+
   # NOTE: 注文の詳細などは、ネストを避けるため URL をマイページの下に置いていない（docs/decisions.md 参照）。
   #       画面上はマイページから開くので、ナビではマイページの中として現在地を表示している
   def mypage_section?

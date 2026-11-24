@@ -67,7 +67,23 @@ describe '注文の個数変更とキャンセル', type: :system do
     select '2 個', from: '個数'
     click_button '変更する'
 
+    expect(page).to have_content '入力内容に誤りがあります。'
     expect(page).to have_content '個数は残り 1 個以下にしてください'
+    expect(order.reload.quantity).to eq 1
+  end
+
+  it '変更画面を開いた後に締切を過ぎると、理由だけが表示されて個数が変わらないこと' do
+    user = create(:user)
+    order = create(:order, user:, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)), quantity: 1)
+    sign_in user
+
+    visit edit_order_path(order)
+    select '2 個', from: '個数'
+    travel_to Time.zone.local(2026, 12, 1, 10, 0)
+    click_button '変更する'
+
+    expect(page).to have_content '締切（提供日当日 10:00）を過ぎたため、個数の変更やキャンセルができません'
+    expect(page).to have_no_content '入力内容に誤りがあります。'
     expect(order.reload.quantity).to eq 1
   end
 end
