@@ -28,6 +28,18 @@ describe '評価の投稿', type: :system do
     expect(page).to have_content '鮭の焼き加減がちょうどよかったです。'
   end
 
+  it '評価に必須の表示が付き、コメントには付かないこと' do
+    user = create(:user)
+    order = create(:order, :received, user:)
+    sign_in user
+
+    visit new_order_review_path(order)
+
+    # NOTE: 「必須」のバッジは CSS の ::after で出しているため、バッジが付く要素（必須のクラスの付いた見出し）で確かめている
+    expect(page).to have_css 'fieldset.required > legend', text: '評価'
+    expect(page).to have_no_css 'label.required', text: 'コメント'
+  end
+
   it '受取前の注文は、評価の投稿ボタンが押せず理由が表示されること' do
     user = create(:user)
     order = create(:order, user:, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 4)))
