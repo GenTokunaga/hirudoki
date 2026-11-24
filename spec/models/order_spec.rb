@@ -36,10 +36,11 @@ describe Order do
         expect(order.place(now: Time.zone.local(2026, 12, 1, 9, 59))).to be true
       end
 
-      it '10:00 ちょうどなら注文できること' do
+      it '10:00 ちょうどには注文できないこと' do
         order = build_order(daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 1)))
 
-        expect(order.place(now: Time.zone.local(2026, 12, 1, 10, 0))).to be true
+        expect(order.place(now: Time.zone.local(2026, 12, 1, 10, 0))).to be false
+        expect(order.errors[:base]).to include '注文の締切（提供日当日 10:00）を過ぎているため注文できません'
       end
 
       it '10:01 なら注文できないこと' do
