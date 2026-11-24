@@ -1,6 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  # NOTE: 退会は課題の対象外。devise_for を素直な形のまま使うため、ルートは残してここで拒否している。
-  #       フラッシュ付きでリダイレクトすると退会機能があるように見えるので、ルートがないときと同じ 404 を返す。
+  # NOTE: routes.rbの複雑性回避のためcontrollerで明示的にユーザー削除(退会)処理を除外
   def destroy
     head :not_found
   end
