@@ -17,7 +17,8 @@
           = f.error_notification
           - @order.errors[:base].each do |message|
             .alert.alert-danger{ role: 'alert' }= message
-          = f.input :quantity, collection: quantity_options, include_blank: false,
+          -# NOTE: simple_form は presence の検証から必須かを判断し、個数は範囲の検証だけのため required を明示している
+          = f.input :quantity, collection: quantity_options, include_blank: '選択してください', required: true,
                                hint: "1 人 1 日あたり、同じ提供日の注文と合わせて #{Order::DAILY_QUANTITY_LIMIT} 個までです。"
           .d-flex.flex-wrap.gap-2
             = f.button :submit, '変更する', class: 'btn-primary', data: { turbo_submits_with: '変更中…' }
