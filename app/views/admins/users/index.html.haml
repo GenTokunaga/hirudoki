@@ -1,0 +1,18 @@
+- content_for :title, '利用者'
+%h1.h4.mb-3 利用者
+- if @users.empty?
+  %p.text-body-secondary 利用者はまだ登録されていません。
+- else
+  .table-responsive.bg-white.border.rounded
+    %table.table.align-middle.mb-0
+      %thead.text-nowrap
+        %tr
+          %th{ scope: 'col' }= User.human_attribute_name(:name)
+          %th{ scope: 'col' }= User.human_attribute_name(:email)
+          %th{ scope: 'col' }= User.human_attribute_name(:phone_number)
+      %tbody
+        - @users.each do |user|
+          %tr{ data: { test_id: dom_id(user) } }
+            %td.text-nowrap= link_to user.name, admins_user_path(user)
+            %td.text-nowrap= user.email
+            %td.text-nowrap= user.phone_number

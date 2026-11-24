@@ -11,6 +11,15 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }
   validates :phone_number, presence: true, format: { with: PHONE_NUMBER_FORMAT, allow_blank: true }
 
+  # NOTE: 仕様 3-6。請求は注文日ではなく提供日の月で集計し、キャンセル済みは含めない
+  def billing_amount_for(month)
+    orders_served_in(month).not_canceled.sum(:total_price)
+  end
+
+  def orders_served_in(month)
+    orders.joins(:daily_menu).where(daily_menus: { served_on: month.all_month })
+  end
+
   def build_order(daily_menu:)
     latest_order = orders.recent.first
     orders.build(daily_menu:, quantity: 1,
