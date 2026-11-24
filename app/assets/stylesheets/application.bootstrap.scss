@@ -49,3 +49,10 @@ label.required::after {
 .text-multiline {
   white-space: pre-line;
 }
+
+// NOTE: simple_form はラジオボタン・チェックボックスの一覧で legend の直後に hidden の input を置くため、
+//       Bootstrap の `legend + * { clear: left }` が hidden の input に効き、最初の選択肢が legend の横に回り込む。
+//       その次の要素にも clear を効かせて、選択肢を legend の下にそろえている
+legend + input[type='hidden'] + * {
+  clear: left;
+}
