@@ -29,5 +29,6 @@
                   %p.mb-1
                     = number_to_currency(daily_menu.bento.price)
                     %span.small.text-body-secondary （税抜）
-                  %p.small.mb-2= remaining_stock_label(daily_menu)
+                  - if daily_menu.remaining_stock.positive?
+                    %p.small.mb-2= remaining_stock_label(daily_menu)
                   = daily_menu_order_button(daily_menu)
