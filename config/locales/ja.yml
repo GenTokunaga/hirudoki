@@ -46,6 +46,8 @@ ja:
           too_far_ahead: 注文できるのは %{days} 日先の提供日までです
           unchangeable_status: '%{status}の注文は、個数の変更やキャンセルができません'
           change_deadline_passed: 締切（提供日当日 %{deadline}）を過ぎたため、個数の変更やキャンセルができません
+          restoration_exceeds_remaining_stock: キャンセル済から戻すと残数を超えるため変更できません（この注文 %{quantity} 個、残り %{remaining_stock} 個）
+          restoration_exceeds_daily_limit: キャンセル済から戻すと、この利用者の同じ提供日の注文が %{limit} 個を超えるため変更できません（この注文 %{quantity} 個、注文済み %{ordered_quantity} 個）
           attributes:
             delivery_area:
               inactive: は現在配達を受け付けていません
