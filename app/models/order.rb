@@ -21,7 +21,7 @@ class Order < ApplicationRecord
 
   # NOTE: 締切や残数は利用者が画面から注文するときだけの条件で、管理者のステータス変更や定期注文の生成には掛けない。
   #       そのため通常の検証には入れず、独自の検証コンテキストで確認している
-  with_options on: :ordering do
+  with_options on: :submission do
     validate :daily_menu_must_be_orderable
     validate :delivery_area_must_be_active
   end
@@ -42,12 +42,12 @@ class Order < ApplicationRecord
     self.total_price = price.total
   end
 
-  def place(now:)
+  def submit(now:)
     @operated_at = now
     self.unit_price = daily_menu.bento.price
     self.discount_per_unit = 0
     assign_total_price if quantity.present?
-    save(context: :ordering)
+    save(context: :submission)
   end
 
   def changeable_at?(time)
