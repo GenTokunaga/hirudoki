@@ -1,9 +1,13 @@
-- content_for :title, 'アカウント'
+- content_for :title, 'アカウント情報の変更'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } アカウント情報の変更
 .row.justify-content-center
   .col-md-8.col-lg-6
     .card.shadow-sm
       .card-body.p-4
-        %h1.h4.mb-4 アカウント
+        %h1.h4.mb-4 アカウント情報の変更
         = simple_form_for resource, as: resource_name, url: user_registration_path, method: :patch do |f|
           = f.input :name, input_html: { autocomplete: 'name' }
           = f.input :email, required: true, input_html: { autocomplete: 'email' }

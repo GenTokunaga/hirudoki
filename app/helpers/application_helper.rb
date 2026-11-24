@@ -25,14 +25,10 @@ module ApplicationHelper
     (record.errors.attribute_names - [:base]).any?
   end
 
-  # NOTE: 注文の詳細などは、ネストを避けるため URL をマイページの下に置いていない（docs/decisions.md 参照）。
-  #       画面上はマイページから開くので、ナビではマイページの中として現在地を表示している
+  # NOTE: 注文の詳細やアカウント情報の変更は、ネストを避けたり Devise の URL を使ったりしているため
+  #       URL がマイページの下にない（docs/decisions.md 参照）。画面上はマイページから開くので、ナビではマイページの中として現在地を表示している
   def mypage_section?
-    controller_path.match?(%r{\A(mypages|orders)(/|\z)})
-  end
-
-  def account_settings_page?(settings_path)
-    settings_path.present? && current_page?(settings_path)
+    controller_path.match?(%r{\A(mypages|orders|users/registrations)(/|\z)})
   end
 
   private

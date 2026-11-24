@@ -13,7 +13,8 @@ describe '利用者の登録・ログイン', type: :system do
     click_button '登録する'
 
     expect(page).to have_current_path root_path
-    within("[data-test-id='account-menu']") { click_button 'ログアウト' }
+    within('header') { click_link 'マイページ' }
+    click_button 'ログアウト'
     expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'ログアウトしました'
 
@@ -22,7 +23,7 @@ describe '利用者の登録・ログイン', type: :system do
     click_button 'ログイン'
 
     expect(page).to have_content 'ログインしました'
-    expect(page).to have_button 'アカウント'
+    expect(page).to have_link 'マイページ'
   end
 
   describe 'トップページ（献立一覧）' do

@@ -14,6 +14,13 @@ fieldset.required > legend::after {
   vertical-align: middle;
 }
 
+// NOTE: 管理画面はメニューが 6 つあり、スマホ幅ではロゴと同じ行に収まらずマイページ（ログアウトの入口）が画面の外に出るため、
+//       収まらないときだけメニューを次の行に折り返している
+.navbar > .container {
+  flex-wrap: wrap;
+  row-gap: $spacer * .5;
+}
+
 .header-nav {
   --bs-navbar-nav-link-padding-x: 0;
   --bs-nav-link-padding-y: 0;

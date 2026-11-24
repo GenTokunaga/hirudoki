@@ -1,0 +1,13 @@
+- content_for :title, 'マイページ'
+.d-flex.justify-content-between.align-items-center.gap-2.mb-3
+  %h1.h4.mb-0 マイページ
+  = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'btn btn-sm btn-outline-danger'
+%section.card.shadow-sm
+  .card-body
+    %h2.h5.mb-2 アカウント情報
+    %dl.row.mb-0{ data: { test_id: 'account-info' } }
+      %dt.col-sm-3= Admin.human_attribute_name(:name)
+      %dd.col-sm-9= current_admin.name
+      %dt.col-sm-3= Admin.human_attribute_name(:email)
+      %dd.col-sm-9= current_admin.email
+    %p.small.text-body-secondary.mt-3.mb-0 管理者のアカウントは画面からは変更できません。
