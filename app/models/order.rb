@@ -26,7 +26,7 @@ class Order < ApplicationRecord
     validate :delivery_area_must_be_active
   end
   validate :must_be_changeable, on: %i[quantity_change cancellation]
-  with_options on: %i[ordering quantity_change] do
+  with_options on: %i[submission quantity_change] do
     validate :quantity_must_be_within_remaining_stock
     validate :quantity_must_be_within_daily_limit
   end
