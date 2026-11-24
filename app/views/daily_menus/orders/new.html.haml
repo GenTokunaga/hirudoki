@@ -1,0 +1,32 @@
+- content_for :title, '注文'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to '献立', root_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 注文
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 注文
+        .d-flex.gap-3.mb-4{ data: { test_id: 'order-daily-menu' } }
+          = bento_image_tag(@daily_menu.bento, size: 88)
+          %div
+            %p.mb-1= I18n.l(@daily_menu.served_on, format: :with_wday)
+            %p.fw-bold.mb-1= @daily_menu.bento.name
+            %p.mb-1
+              = number_to_currency(@daily_menu.bento.price)
+              %span.small.text-body-secondary （税抜）
+            %p.small.mb-0= remaining_stock_label(@daily_menu)
+        = simple_form_for @order, url: daily_menu_orders_path(@daily_menu) do |f|
+          = f.error_notification
+          - @order.errors[:base].each do |message|
+            .alert.alert-danger{ role: 'alert' }= message
+          = f.input :quantity, collection: quantity_options, include_blank: false,
+                               hint: "1 人 1 日あたり、同じ提供日の注文と合わせて #{Order::DAILY_QUANTITY_LIMIT} 個までです。"
+          = f.association :delivery_area, collection: delivery_area_options, include_blank: '選択してください'
+          = f.input :delivery_address, input_html: { autocomplete: 'street-address' }
+          %p.small.text-body-secondary
+            お支払いは請求書払いです。締切（提供日当日 #{Rails.configuration.x.hirudoki.order_deadline}）までは、個数の変更やキャンセルができます。
+          .d-flex.flex-wrap.gap-2
+            = f.button :submit, '注文する', class: 'btn-primary', data: { turbo_submits_with: '注文中…' }
+            = link_to '献立に戻る', root_path, class: 'btn btn-outline-secondary'

@@ -40,6 +40,16 @@ ja:
               ordered_menu_unchangeable: は、注文がある献立のため変更できません
             served_on:
               ordered_menu_unchangeable: は、注文がある献立のため変更できません
+        order:
+          bento_not_on_sale: この弁当は現在販売していないため注文できません
+          deadline_passed: 注文の締切（提供日当日 %{deadline}）を過ぎているため注文できません
+          too_far_ahead: 注文できるのは %{days} 日先の提供日までです
+          attributes:
+            delivery_area:
+              inactive: は現在配達を受け付けていません
+            quantity:
+              exceeds_remaining_stock: は残り %{remaining_stock} 個以下にしてください
+              exceeds_daily_limit: は、同じ提供日の注文と合わせて %{limit} 個までです（注文済み %{ordered_quantity} 個）
     models:
       user: 利用者
       admin: 管理者

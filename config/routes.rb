@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   root 'daily_menus#index'
 
   resources :bentos, only: :show
+  resources :daily_menus, only: [] do
+    resources :orders, only: %i[new create], module: :daily_menus
+  end
+  resources :orders, only: :show
 
   namespace :admins do
     resources :bentos, only: %i[index new edit create update destroy]

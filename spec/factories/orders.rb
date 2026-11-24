@@ -8,5 +8,13 @@ FactoryBot.define do
     unit_price { 600 }
     discount_per_unit { 0 }
     total_price { 648 }
+
+    trait :canceled do
+      status { :canceled }
+    end
+
+    trait :received do
+      status { :received }
+    end
   end
 end

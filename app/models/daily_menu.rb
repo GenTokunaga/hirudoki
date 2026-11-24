@@ -28,6 +28,23 @@ class DailyMenu < ApplicationRecord
     [stock_limit - ordered_quantity, 0].max
   end
 
+  # NOTE: 仕様の「当日は 10:00 まで」は、10:00 ちょうどまでを受け付けると解釈している（docs/decisions.md 参照）
+  def before_deadline?(time)
+    time <= order_deadline
+  end
+
+  def within_orderable_days?(date)
+    served_on <= date + Rails.configuration.x.hirudoki.orderable_days_ahead
+  end
+
+  def orderable_at?(time)
+    bento.on_sale? && before_deadline?(time) && within_orderable_days?(time.to_date)
+  end
+
+  def order_deadline
+    Time.zone.parse("#{served_on} #{Rails.configuration.x.hirudoki.order_deadline}")
+  end
+
   private
 
   # NOTE: 弁当タイプは弁当テーブルにしかないため DB の一意制約にできず、アプリ側で確認している（docs/decisions.md 参照）。

@@ -81,10 +81,9 @@ delivery_area = DeliveryArea.find_by!(postal_code: '1500041')
   posted_at = Time.zone.parse("#{daily_menu.served_on} #{review_attributes[:posted_at]}")
 
   order = Order.find_or_create_by!(user:, daily_menu:) do |o|
-    # TODO: 料金計算（PR #43）がマージされたら、合計金額は Order#assign_total_price で計算する
-    total_price = reviewed_bento.price * (100 + Rails.configuration.x.hirudoki.tax_rate_percent) / 100
     o.assign_attributes(delivery_area:, delivery_address: '東京都渋谷区神南1-1-1', quantity: 1, status: :received,
-                        unit_price: reviewed_bento.price, discount_per_unit: 0, total_price:)
+                        unit_price: reviewed_bento.price, discount_per_unit: 0)
+    o.assign_total_price
   end
   Review.find_or_create_by!(order:) do |review|
     review.assign_attributes(review_attributes.slice(:rating, :comment).merge(created_at: posted_at, updated_at: posted_at))

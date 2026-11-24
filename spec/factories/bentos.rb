@@ -4,5 +4,9 @@ FactoryBot.define do
     bento_type { :japanese }
     price { 600 }
     sequence(:position) { |n| n }
+
+    trait :not_on_sale do
+      on_sale { false }
+    end
   end
 end

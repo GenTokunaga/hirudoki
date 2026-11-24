@@ -1,0 +1,25 @@
+- content_for :title, '注文の詳細'
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+          %h1.h4.mb-0 注文の詳細
+          %span{ data: { test_id: 'order-status' } }= order_status_badge(@order)
+        %dl.row.mb-0{ data: { test_id: dom_id(@order) } }
+          %dt.col-sm-4 提供日
+          %dd.col-sm-8= I18n.l(@order.daily_menu.served_on, format: :with_wday)
+          %dt.col-sm-4 弁当
+          %dd.col-sm-8= link_to @order.daily_menu.bento.name, bento_path(@order.daily_menu.bento)
+          %dt.col-sm-4= Order.human_attribute_name(:quantity)
+          %dd.col-sm-8 #{@order.quantity} 個
+          %dt.col-sm-4= Order.human_attribute_name(:delivery_area)
+          %dd.col-sm-8= @order.delivery_area.name
+          %dt.col-sm-4= Order.human_attribute_name(:delivery_address)
+          %dd.col-sm-8= @order.delivery_address
+          %dt.col-sm-4 単価（税抜）
+          %dd.col-sm-8= number_to_currency(@order.unit_price)
+          %dt.col-sm-4= Order.human_attribute_name(:discount_per_unit)
+          %dd.col-sm-8= number_to_currency(@order.discount_per_unit)
+          %dt.col-sm-4 合計金額（税込）
+          %dd.col-sm-8.fw-bold.mb-0= number_to_currency(@order.total_price)
