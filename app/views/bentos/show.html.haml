@@ -1,0 +1,31 @@
+- content_for :title, @bento.name
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to '献立', root_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } }= @bento.name
+.card.shadow-sm.mb-4
+  .card-body.p-4
+    .row.g-4
+      .col-md-auto
+        = bento_image_tag(@bento, size: 240)
+      .col-md
+        %span.badge.text-bg-light.border= Bento.human_enum_name(:bento_type, @bento.bento_type)
+        %h1.h4.mt-2.mb-2= @bento.name
+        %p.mb-2
+          = number_to_currency(@bento.price)
+          %span.small.text-body-secondary （税抜）
+        %p.mb-3{ data: { test_id: 'average-rating' } }= average_rating_label(@bento)
+        %p.text-multiline.mb-0= @bento.description
+%section
+  %h2.h5.mb-3 評価
+  - if @reviews.empty?
+    %p.text-body-secondary 評価はまだありません。
+  - else
+    %ul.list-group
+      - @reviews.each do |review|
+        %li.list-group-item{ data: { test_id: dom_id(review) } }
+          .d-flex.justify-content-between.align-items-center
+            = rating_stars(review.rating)
+            %span.small.text-body-secondary= I18n.l(review.created_at.to_date)
+          - if review.comment.present?
+            %p.text-multiline.mt-2.mb-0= review.comment

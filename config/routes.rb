@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     resources :daily_menus, only: %i[index new edit create update destroy]
   end
 
+  resources :bentos, only: :show
+
   root 'daily_menus#index'
 end

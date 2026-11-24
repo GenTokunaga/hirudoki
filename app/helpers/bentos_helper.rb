@@ -19,4 +19,15 @@ module BentosHelper
       tag.span '非販売', class: 'badge text-bg-secondary'
     end
   end
+
+  def rating_stars(rating)
+    tag.span(('★' * rating) + ('☆' * (5 - rating)), class: 'text-warning', aria: { label: "5段階中#{rating}" })
+  end
+
+  def average_rating_label(bento)
+    average_rating = bento.average_rating
+    return '評価はまだありません' if average_rating.nil?
+
+    "平均 #{number_with_precision(average_rating, precision: 1)}（#{bento.reviews.size}件）"
+  end
 end
