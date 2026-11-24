@@ -60,7 +60,7 @@ describe '手動注文', type: :system do
 
     expect(page).to have_css "[data-test-id='#{dom_id(open_menu)}']", text: '注文する'
     within("[data-test-id='#{dom_id(closed_menu)}']") do
-      expect(page).to have_button '注文できません（受付終了）', disabled: true
+      expect(page).to have_button '受付終了', disabled: true
     end
   end
 
