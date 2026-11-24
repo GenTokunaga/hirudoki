@@ -53,6 +53,10 @@ class Order < ApplicationRecord
     save(context: :submission)
   end
 
+  def reviewable?
+    received? && review.nil?
+  end
+
   def changeable_at?(time)
     ordered? && daily_menu.before_deadline?(time)
   end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
   resources :orders, only: %i[show edit update] do
     resource :cancellation, only: :create, module: :orders
+    resource :review, only: %i[new create], module: :orders
   end
   resource :mypage, only: :show
 

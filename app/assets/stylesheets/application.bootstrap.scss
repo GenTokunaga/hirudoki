@@ -1,7 +1,9 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-label.required::after {
+// NOTE: ラジオボタン・チェックボックスの一覧では、simple_form が見出しを label ではなく legend で出すため、両方に付けている
+label.required::after,
+fieldset.required > legend::after {
   content: '必須';
   margin-left: $spacer * .5;
   padding: .125em .5em;
@@ -48,4 +50,11 @@ label.required::after {
 // NOTE: simple_format は HTML をエスケープしないため、入力された改行は CSS で表示している
 .text-multiline {
   white-space: pre-line;
+}
+
+// NOTE: simple_form はラジオボタン・チェックボックスの一覧で legend の直後に hidden の input を置くため、
+//       Bootstrap の `legend + * { clear: left }` が hidden の input に効き、最初の選択肢が legend の横に回り込む。
+//       その次の要素にも clear を効かせて、選択肢を legend の下にそろえている
+legend + input[type='hidden'] + * {
+  clear: left;
 }
