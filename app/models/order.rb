@@ -32,10 +32,7 @@ class Order < ApplicationRecord
   end
   # NOTE: 管理者のステータス変更は自由にできるが、キャンセル済から戻すと、空いた枠に入った他の注文と合わせて
   #       残数や 1 日の上限を超えることがあるため、戻すときだけ確認している
-  with_options on: :status_change, if: :restored_from_cancellation? do
-    validate :restored_quantity_must_be_within_remaining_stock
-    validate :restored_quantity_must_be_within_daily_limit
-  end
+  validate :restored_quantity_must_be_within_limits, on: :status_change, if: :restored_from_cancellation?
 
   scope :not_canceled, -> { where.not(status: :canceled) }
   scope :recent, -> { order(created_at: :desc, id: :desc) }
@@ -125,13 +122,10 @@ class Order < ApplicationRecord
     status_in_database == 'canceled' && !canceled?
   end
 
-  def restored_quantity_must_be_within_remaining_stock
-    return unless quantity_limit.exceeds_remaining_stock?
-
-    errors.add(:base, :restoration_exceeds_remaining_stock, quantity:, remaining_stock: quantity_limit.remaining_stock)
-  end
-
-  def restored_quantity_must_be_within_daily_limit
+  def restored_quantity_must_be_within_limits
+    if quantity_limit.exceeds_remaining_stock?
+      errors.add(:base, :restoration_exceeds_remaining_stock, quantity:, remaining_stock: quantity_limit.remaining_stock)
+    end
     return unless quantity_limit.exceeds_daily_limit?
 
     errors.add(:base, :restoration_exceeds_daily_limit,
