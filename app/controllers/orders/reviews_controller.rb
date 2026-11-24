@@ -9,7 +9,7 @@ class Orders::ReviewsController < ApplicationController
   end
 
   def create
-    @review = Review.new(review_params.merge(order: @order))
+    @review = @order.build_review(review_params)
     if @review.save
       redirect_to order_path(@order), notice: '評価を投稿しました。'
     else
