@@ -32,7 +32,7 @@ describe '献立一覧', type: :system do
     expect(page).to have_no_content '鮭の塩焼き弁当'
   end
 
-  it '残数と、残数がない献立は売り切れと表示されること' do
+  it '残数があれば残数が、なければ売り切れのボタンだけが表示されること' do
     daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 1), stock_limit: 5)
     create(:order, daily_menu:, quantity: 3)
     sold_out_menu = create(:daily_menu, bento: create(:bento, bento_type: :western), served_on: Date.new(2026, 12, 1), stock_limit: 0)
@@ -40,7 +40,10 @@ describe '献立一覧', type: :system do
     visit root_path
 
     expect(page).to have_css "[data-test-id='#{dom_id(daily_menu)}']", text: '残り 2 個'
-    expect(page).to have_css "[data-test-id='#{dom_id(sold_out_menu)}']", text: '売り切れ'
+    within("[data-test-id='#{dom_id(sold_out_menu)}']") do
+      expect(page).to have_button '売り切れ', disabled: true
+      expect(page).to have_content '売り切れ', count: 1
+    end
   end
 
   it '販売中の弁当の献立は表示され、非販売の弁当の献立は表示されないこと' do
