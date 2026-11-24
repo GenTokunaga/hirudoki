@@ -30,6 +30,9 @@ class Order < ApplicationRecord
     validate :quantity_must_be_within_remaining_stock
     validate :quantity_must_be_within_daily_limit
   end
+  # NOTE: 管理者のステータス変更は自由にできるが、キャンセル済から戻すと、空いた枠に入った他の注文と合わせて
+  #       残数や 1 日の上限を超えることがあるため、戻すときだけ確認している
+  validate :restored_quantity_must_be_within_limits, on: :status_change, if: :restored_from_cancellation?
 
   scope :not_canceled, -> { where.not(status: :canceled) }
   scope :recent, -> { order(created_at: :desc, id: :desc) }
@@ -59,6 +62,11 @@ class Order < ApplicationRecord
     self.quantity = new_quantity
     assign_total_price if quantity.present?
     save(context: :quantity_change)
+  end
+
+  def change_status(new_status)
+    self.status = new_status
+    save(context: :status_change)
   end
 
   def cancel(now:)
@@ -95,26 +103,32 @@ class Order < ApplicationRecord
   end
 
   def quantity_must_be_within_remaining_stock
-    return if quantity.blank?
+    return if quantity.blank? || !quantity_limit.exceeds_remaining_stock?
 
-    remaining_stock = [daily_menu.stock_limit - other_orders_of_daily_menu.sum(:quantity), 0].max
-    errors.add(:quantity, :exceeds_remaining_stock, remaining_stock:) if quantity > remaining_stock
+    errors.add(:quantity, :exceeds_remaining_stock, remaining_stock: quantity_limit.remaining_stock)
   end
 
   def quantity_must_be_within_daily_limit
-    return if quantity.blank?
+    return if quantity.blank? || !quantity_limit.exceeds_daily_limit?
 
-    ordered_quantity = other_orders_of_user_on_served_on.sum(:quantity)
-    return if ordered_quantity + quantity <= DAILY_QUANTITY_LIMIT
-
-    errors.add(:quantity, :exceeds_daily_limit, limit: DAILY_QUANTITY_LIMIT, ordered_quantity:)
+    errors.add(:quantity, :exceeds_daily_limit, limit: DAILY_QUANTITY_LIMIT, ordered_quantity: quantity_limit.ordered_quantity_on_served_on)
   end
 
-  def other_orders_of_daily_menu
-    daily_menu.orders.not_canceled.where.not(id:)
+  def restored_from_cancellation?
+    status_in_database == 'canceled' && !canceled?
   end
 
-  def other_orders_of_user_on_served_on
-    user.orders.not_canceled.where.not(id:).joins(:daily_menu).where(daily_menus: { served_on: daily_menu.served_on })
+  def restored_quantity_must_be_within_limits
+    if quantity_limit.exceeds_remaining_stock?
+      errors.add(:base, :restoration_exceeds_remaining_stock, quantity:, remaining_stock: quantity_limit.remaining_stock)
+    end
+    return unless quantity_limit.exceeds_daily_limit?
+
+    errors.add(:base, :restoration_exceeds_daily_limit,
+               quantity:, limit: DAILY_QUANTITY_LIMIT, ordered_quantity: quantity_limit.ordered_quantity_on_served_on)
+  end
+
+  def quantity_limit
+    OrderQuantityLimit.new(self)
   end
 end

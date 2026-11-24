@@ -1,0 +1,40 @@
+- content_for :title, "注文 ##{@order.id}"
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to '注文', admins_orders_path(served_on: @order.daily_menu.served_on)
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 注文 ##{@order.id}
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+          %h1.h4.mb-0 注文 ##{@order.id}
+          %span{ data: { test_id: 'order-status' } }= order_status_badge(@order)
+        %dl.row
+          %dt.col-sm-4 提供日
+          %dd.col-sm-8= I18n.l(@order.daily_menu.served_on, format: :with_wday)
+          %dt.col-sm-4 弁当
+          %dd.col-sm-8= @order.daily_menu.bento.name
+          %dt.col-sm-4= Order.human_attribute_name(:quantity)
+          %dd.col-sm-8 #{@order.quantity} 個
+          %dt.col-sm-4= Order.human_attribute_name(:user)
+          %dd.col-sm-8= @order.user.name
+          %dt.col-sm-4= User.human_attribute_name(:phone_number)
+          %dd.col-sm-8= @order.user.phone_number
+          %dt.col-sm-4= Order.human_attribute_name(:delivery_area)
+          %dd.col-sm-8= @order.delivery_area.name
+          %dt.col-sm-4= Order.human_attribute_name(:delivery_address)
+          %dd.col-sm-8= @order.delivery_address
+          %dt.col-sm-4 単価（税抜）
+          %dd.col-sm-8= number_to_currency(@order.unit_price)
+          %dt.col-sm-4= Order.human_attribute_name(:discount_per_unit)
+          %dd.col-sm-8= number_to_currency(@order.discount_per_unit)
+          %dt.col-sm-4 合計金額（税込）
+          %dd.col-sm-8.fw-bold= number_to_currency(@order.total_price)
+          %dt.col-sm-4 注文日時
+          %dd.col-sm-8.mb-0= I18n.l(@order.created_at, format: :long)
+        %hr.my-4
+        = simple_form_for [:admins, @order] do |f|
+          = f.input :status, collection: order_status_options, include_blank: false,
+                             hint: '管理者の変更には、締切や残数の条件は掛かりません。'
+          = f.button :submit, 'ステータスを変更する', class: 'btn-primary', data: { turbo_submits_with: '変更中…' }

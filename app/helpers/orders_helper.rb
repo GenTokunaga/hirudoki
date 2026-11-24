@@ -7,6 +7,10 @@ module OrdersHelper
     DeliveryArea.where(active: true).ordered.map { ["#{it.name}（#{formatted_postal_code(it.postal_code)}）", it.id] }
   end
 
+  def order_status_options
+    Order.statuses.keys.map { [Order.human_enum_name(:status, it), it] }
+  end
+
   def order_status_badge(order)
     label = Order.human_enum_name(:status, order.status)
     case order.status

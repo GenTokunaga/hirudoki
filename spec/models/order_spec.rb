@@ -236,4 +236,43 @@ describe Order do
       expect(order.errors[:base]).to include 'キャンセル済の注文は、個数の変更やキャンセルができません'
     end
   end
+
+  describe '#change_status' do
+    it 'キャンセル済から戻すとき、残数ちょうどなら戻せること' do
+      daily_menu = create(:daily_menu, stock_limit: 5)
+      create(:order, daily_menu:, quantity: 3)
+      order = create(:order, :canceled, daily_menu:, quantity: 2)
+
+      expect(order.change_status(:ordered)).to be true
+      expect(order.reload).to be_ordered
+    end
+
+    it 'キャンセル済から戻すと残数を超えるときは、戻せないこと' do
+      daily_menu = create(:daily_menu, stock_limit: 5)
+      create(:order, daily_menu:, quantity: 3)
+      order = create(:order, :canceled, daily_menu:, quantity: 3)
+
+      expect(order.change_status(:ordered)).to be false
+      expect(order.errors[:base]).to include 'キャンセル済から戻すと残数を超えるため変更できません（この注文 3 個、残り 2 個）'
+      expect(order.reload).to be_canceled
+    end
+
+    it 'キャンセル済から戻すと、利用者の同じ提供日の注文が 4 個になるときは、戻せないこと' do
+      user = create(:user)
+      create(:order, user:, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 2)), quantity: 2)
+      order = create(:order, :canceled, user:, daily_menu: create(:daily_menu, bento: create(:bento, bento_type: :western), served_on: Date.new(2026, 12, 2)),
+                                        quantity: 2)
+
+      expect(order.change_status(:received)).to be false
+      expect(order.errors[:base]).to include 'キャンセル済から戻すと、この利用者の同じ提供日の注文が 3 個を超えるため変更できません（この注文 2 個、注文済み 2 個）'
+    end
+
+    it 'キャンセル済から戻すのでなければ、残数を超えていても変更できること' do
+      # NOTE: 管理者が提供数上限を下げた後でも、既存の注文の受取済への変更は止めないことを確かめるため、上限を注文より少なくしている
+      daily_menu = create(:daily_menu, stock_limit: 1)
+      order = create(:order, daily_menu:, quantity: 3)
+
+      expect(order.change_status(:received)).to be true
+    end
+  end
 end
