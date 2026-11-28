@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resource :review, only: %i[new create], module: :orders
   end
   resource :mypage, only: :show
+  resources :subscriptions, only: %i[index new edit create update]
 
   namespace :admins do
     resources :bentos, only: %i[index new edit create update destroy]
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
     resources :daily_menus, only: %i[index new edit create update destroy]
     resources :orders, only: %i[index show update]
     resources :users, only: %i[index show]
+    resource :subscription_order_generation, only: %i[new create]
     resource :delivery_list, only: :show
     resource :mypage, only: :show
   end

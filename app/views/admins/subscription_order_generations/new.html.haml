@@ -1,0 +1,8 @@
+- content_for :title, '定期注文の生成'
+%h1.h4.mb-3 定期注文の生成
+%section.card.shadow-sm
+  .card-body
+    %p.small.text-body-secondary
+      対象日の曜日に一致する有効な定期注文設定から、同じ弁当タイプの販売中の献立で注文を作ります。
+      残数は確認しません。一度生成した設定は、再実行しても作り直しません。
+    = render 'form', generation: @generation

@@ -25,6 +25,24 @@ ja:
     formats:
       with_wday: '%-m/%-d(%a)'
       month: '%Y年%-m月'
+  subscription_order_generation:
+    skip_reasons:
+      already_generated: すでに生成済み（キャンセル済みを含む）
+      no_daily_menu: 同じ弁当タイプの販売中の献立がない
+      inactive_delivery_area: 配達エリアが無効
+      exceeds_daily_limit: 同じ提供日の注文と合わせて 1 日 3 個を超える
+  activemodel:
+    errors:
+      models:
+        subscription_order_generation:
+          attributes:
+            served_on:
+              past: に過去の日付は指定できません
+              deadline_passed: が当日の場合、生成できるのは %{deadline} までです
+              too_far_ahead: は %{days} 日先までにしてください
+    attributes:
+      subscription_order_generation:
+        served_on: 対象日
   activerecord:
     errors:
       models:
@@ -45,6 +63,12 @@ ja:
           attributes:
             order_id:
               taken: には、すでに評価を投稿しています
+        subscription:
+          attributes:
+            wday:
+              taken: の定期注文設定はすでに登録されています。登録済みの設定を編集してください
+            delivery_area:
+              inactive: は現在配達を受け付けていません
         order:
           bento_not_on_sale: この弁当は現在販売していないため注文できません
           deadline_passed: 注文の締切（提供日当日 %{deadline}）を過ぎているため注文できません

@@ -1,0 +1,24 @@
+- content_for :title, '定期注文'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 定期注文
+.d-flex.flex-wrap.justify-content-between.align-items-center.gap-2.mb-3
+  %h1.h4.mb-0 定期注文
+  = link_to '定期注文を登録', new_subscription_path, class: 'btn btn-primary'
+%p.small.text-body-secondary
+  曜日ごとに弁当タイプと個数を登録しておくと、その曜日の注文が作られます。
+- if @subscriptions.empty?
+  %p.text-body-secondary 登録されている定期注文はありません。
+- else
+  -# NOTE: スマホ幅で表にすると横にはみ出すため、マイページの注文履歴と同じく折り返せるリストにしている
+  %ul.list-group
+    - @subscriptions.each do |subscription|
+      %li.list-group-item{ data: { test_id: dom_id(subscription) } }
+        .d-flex.justify-content-between.align-items-center.gap-2
+          = link_to wday_name(subscription.wday), edit_subscription_path(subscription), class: 'fw-bold'
+          = subscription_status_badge(subscription)
+        .d-flex.flex-wrap.column-gap-3.mt-1
+          %span= Subscription.human_enum_name(:bento_type, subscription.bento_type)
+          %span.text-nowrap #{subscription.quantity} 個
+          %span= subscription.delivery_area.name

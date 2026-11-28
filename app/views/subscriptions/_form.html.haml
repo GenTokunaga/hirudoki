@@ -1,0 +1,18 @@
+= simple_form_for subscription do |f|
+  = f.error_notification
+  -#
+    NOTE: simple_form は presence の検証から必須かを判断する。曜日・個数は範囲の検証だけ、配達エリアは belongs_to の
+          関連の検証で、どれも必須と判定されないため required を明示している
+  = f.input :wday, collection: wday_options, include_blank: '選択してください', required: true,
+                   hint: '配達は平日（月〜金）のみです。1 つの曜日に登録できる設定は 1 件です。'
+  = f.input :bento_type, collection: bento_type_options, include_blank: '選択してください',
+                         hint: 'その曜日の献立から、このタイプの弁当が届きます。'
+  = f.input :quantity, collection: quantity_options, include_blank: '選択してください', required: true
+  = f.association :delivery_area, collection: delivery_area_options, include_blank: '選択してください', required: true
+  = f.input :delivery_address, input_html: { autocomplete: 'street-address', maxlength: 255 }
+  = f.input :active, label: '有効にする', hint: '外すと、この曜日の定期注文は作られなくなります。'
+  %p.small.text-body-secondary
+    定期注文は 1 個あたり #{number_to_currency(Rails.configuration.x.hirudoki.subscription_discount_per_unit)} 引きになります。
+  .d-flex.flex-wrap.gap-2
+    = f.button :submit, submit_label, class: 'btn-primary', data: { turbo_submits_with: '保存中…' }
+    = link_to 'キャンセル', subscriptions_path, class: 'btn btn-outline-secondary'

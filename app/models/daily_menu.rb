@@ -20,6 +20,14 @@ class DailyMenu < ApplicationRecord
     Date.new(year.to_i, month.to_i)
   end
 
+  def self.order_deadline_on(served_on)
+    Time.zone.parse("#{served_on} #{Rails.configuration.x.hirudoki.order_deadline}")
+  end
+
+  def self.within_orderable_days?(served_on, today)
+    served_on <= today + Rails.configuration.x.hirudoki.orderable_days_ahead
+  end
+
   def ordered_quantity
     orders.reject(&:canceled?).sum(&:quantity)
   end
@@ -34,7 +42,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def within_orderable_days?(date)
-    served_on <= date + Rails.configuration.x.hirudoki.orderable_days_ahead
+    self.class.within_orderable_days?(served_on, date)
   end
 
   def orderable_at?(time)
@@ -42,7 +50,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def order_deadline
-    Time.zone.parse("#{served_on} #{Rails.configuration.x.hirudoki.order_deadline}")
+    self.class.order_deadline_on(served_on)
   end
 
   private

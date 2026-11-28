@@ -1,0 +1,6 @@
+-# NOTE: 実行結果は保存しておらず、POST のレスポンスでそのまま表示する。Turbo はフォームの送信にリダイレクトを求めるため無効にしている
+= simple_form_for generation, url: admins_subscription_order_generation_path, method: :post, html: { data: { turbo: false } } do |f|
+  = f.error_notification
+  - hint = "当日（#{Rails.configuration.x.hirudoki.order_deadline} まで）から #{Rails.configuration.x.hirudoki.orderable_days_ahead} 日先まで指定できます。"
+  = f.input :served_on, as: :date, html5: true, hint: "#{hint}土日は生成しません。"
+  = f.button :submit, '定期注文を生成する', class: 'btn-primary'
