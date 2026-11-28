@@ -5,9 +5,15 @@
 
 ## 稼働環境
 
-- URL：（提出時に記入）
-- テストアカウント：管理者・利用者を各 1 件、提出時に別途お知らせします
-  - 本番のパスワードをコードや Git の履歴に残さないため、シードは環境変数 `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` / `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` から作ります（本番で未設定ならエラー）
+- URL：https://hirudoki-gen-faf975970d1d.herokuapp.com/
+- テストアカウント
+
+| 種別 | ログイン画面 | メールアドレス | パスワード |
+|---|---|---|---|
+| 管理者 | `/admins/sign_in` | admin@example.com | 提出時にお知らせします |
+| 利用者 | `/users/sign_in` | user@example.com | 提出時にお知らせします |
+
+本番のパスワードをコードや Git の履歴に残さないため、パスワードは README に書いていません。シードは環境変数 `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` / `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` からアカウントを作ります（本番で未設定ならエラー）。
 
 ## 主な機能
 
