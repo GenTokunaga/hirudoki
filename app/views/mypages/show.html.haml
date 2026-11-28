@@ -14,6 +14,12 @@
       %dd.col-sm-9= current_user.email
       %dt.col-sm-3= User.human_attribute_name(:phone_number)
       %dd.col-sm-9.mb-0= current_user.phone_number
+%section.card.shadow-sm.mb-4
+  .card-body.d-flex.flex-wrap.justify-content-between.align-items-center.gap-2
+    %div
+      %h2.h5.mb-1 定期注文
+      %p.small.text-body-secondary.mb-0 曜日を決めて、毎週同じタイプの弁当を届けます。
+    = link_to '定期注文を確認する', subscriptions_path, class: 'btn btn-sm btn-outline-secondary'
 %section
   %h2.h5.mb-3 注文履歴
   - if @orders.empty?

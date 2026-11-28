@@ -10,7 +10,20 @@ class Subscription < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
 
   validates :wday, inclusion: { in: WDAYS }, uniqueness: { scope: :user_id }
-  validates :quantity, numericality: { only_integer: true, in: 1..3 }
+  validates :quantity, numericality: { only_integer: true, in: Order::QUANTITY_RANGE }
   validates :delivery_address, presence: true, length: { maximum: 255 }
   validates :active, inclusion: { in: [true, false] }
+  # NOTE: 管理者があとからエリアを無効にしても、利用者が他の項目を編集できるよう、エリアを選び直すときだけ確認している。
+  #       無効なエリアの設定は、定期注文の生成でスキップする
+  validate :delivery_area_must_be_active, if: :will_save_change_to_delivery_area_id?
+
+  scope :ordered, -> { order(:wday) }
+
+  private
+
+  def delivery_area_must_be_active
+    return if delivery_area.nil? || delivery_area.active?
+
+    errors.add(:delivery_area, :inactive)
+  end
 end
