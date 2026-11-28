@@ -28,7 +28,7 @@ fieldset.required > legend::after {
 
 // NOTE: 項目の幅を文字の長さに任せると、ラベルの文字数（2〜5 文字）でアイコンの間隔がばらつくため、
 //       どの項目も同じ幅にしてアイコンを等間隔に並べている。幅と文字の大きさは、いちばん長い 5 文字のラベルが収まり、
-//       管理画面の 6 項目が 320px 幅の端末でも 1 行に収まるように決めている。
+//       利用者の画面の項目が 320px 幅の端末でも 1 行に収まるように決めている。
 //       Bootstrap のブレークポイントは 576px からしかないため、360px の区切りを足している
 .header-nav-item {
   display: flex;
@@ -48,6 +48,25 @@ fieldset.required > legend::after {
 
   @include media-breakpoint-up(sm) {
     width: 4.5rem;
+  }
+}
+
+// NOTE: 管理画面はナビの項目が多く、md 未満の幅ではロゴと 1 行に収まらずページが横にはみ出すため、
+//       ロゴの下に 4 列で折り返して並べている。横スクロールにすると、隠れた項目に気づきにくいため選ばなかった
+.header-admin {
+  @include media-breakpoint-down(md) {
+    > .container {
+      flex-wrap: wrap;
+    }
+
+    .header-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      justify-items: center;
+      row-gap: .5rem;
+      width: 100%;
+      margin-top: .25rem;
+    }
   }
 }
 

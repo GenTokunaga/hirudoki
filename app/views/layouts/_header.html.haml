@@ -1,5 +1,5 @@
 %header
-  %nav.navbar.navbar-expand.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark' : 'bg-white', 'aria-label': 'メインナビゲーション' }
+  %nav.navbar.navbar-expand.border-bottom{ class: admin_area? ? 'navbar-dark bg-dark header-admin' : 'bg-white', 'aria-label': 'メインナビゲーション' }
     .container
       - if admin_area?
         = link_to 'ひるどき', admins_bentos_path, class: 'navbar-brand fw-bold'
