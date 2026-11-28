@@ -63,6 +63,12 @@ ja:
           attributes:
             order_id:
               taken: には、すでに評価を投稿しています
+        subscription:
+          attributes:
+            wday:
+              taken: の定期注文設定はすでに登録されています。登録済みの設定を編集してください
+            delivery_area:
+              inactive: は現在配達を受け付けていません
         order:
           bento_not_on_sale: この弁当は現在販売していないため注文できません
           deadline_passed: 注文の締切（提供日当日 %{deadline}）を過ぎているため注文できません

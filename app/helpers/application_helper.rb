@@ -28,7 +28,7 @@ module ApplicationHelper
   # NOTE: 注文の詳細やアカウント情報の変更は、ネストを避けたり Devise の URL を使ったりしているため
   #       URL がマイページの下にない（docs/decisions.md 参照）。画面上はマイページから開くので、ナビではマイページの中として現在地を表示している
   def mypage_section?
-    controller_path.match?(%r{\A(mypages|orders|users/registrations)(/|\z)})
+    controller_path.match?(%r{\A(mypages|orders|subscriptions|users/registrations)(/|\z)})
   end
 
   # NOTE: 生成の実行結果は POST の URL（/new が付かない）で表示するため、パスの前方一致では現在地にならない
