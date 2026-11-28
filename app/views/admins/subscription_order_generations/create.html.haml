@@ -4,11 +4,11 @@
   .card-body
     = render 'form', generation: @generation
 %h2.h5.mb-3 #{I18n.l(@generation.served_on, format: :with_wday)} 提供分
+%p{ data: { test_id: 'generation-summary' } }
+  生成 #{@generated_orders.size} 件 / スキップ #{@generation.skips.size} 件
 - if @generation.weekend?
   %p.text-body-secondary{ data: { test_id: 'generation-weekend' } } 土日は配達がないため、定期注文は生成しません。
 - else
-  %p{ data: { test_id: 'generation-summary' } }
-    生成 #{@generated_orders.size} 件 / スキップ #{@generation.skips.size} 件
   %section.mb-4
     %h3.h6 生成した注文
     - if @generated_orders.empty?
