@@ -13,4 +13,13 @@ class Subscription < ApplicationRecord
   validates :quantity, numericality: { only_integer: true, in: 1..3 }
   validates :delivery_address, presence: true, length: { maximum: 255 }
   validates :active, inclusion: { in: [true, false] }
+
+  # NOTE: 生成した注文は設定から独立させる（設定をあとで変えても生成済みの注文は変わらない）ため、参照ではなく値を写している
+  def build_order(daily_menu:)
+    order = user.orders.build(daily_menu:, subscription: self, quantity:, delivery_area:, delivery_address:,
+                              unit_price: daily_menu.bento.price,
+                              discount_per_unit: Rails.configuration.x.hirudoki.subscription_discount_per_unit)
+    order.assign_total_price
+    order
+  end
 end

@@ -25,6 +25,24 @@ ja:
     formats:
       with_wday: '%-m/%-d(%a)'
       month: '%Y年%-m月'
+  subscription_order_generation:
+    skip_reasons:
+      already_generated: すでに生成済み（キャンセル済みを含む）
+      no_daily_menu: 同じ弁当タイプの販売中の献立がない
+      inactive_delivery_area: 配達エリアが無効
+      exceeds_daily_limit: 同じ提供日の注文と合わせて 1 日 3 個を超える
+  activemodel:
+    errors:
+      models:
+        subscription_order_generation:
+          attributes:
+            served_on:
+              past: に過去の日付は指定できません
+              deadline_passed: が当日の場合、生成できるのは %{deadline} までです
+              too_far_ahead: は %{days} 日先までにしてください
+    attributes:
+      subscription_order_generation:
+        served_on: 対象日
   activerecord:
     errors:
       models:

@@ -12,6 +12,9 @@
             %li.nav-item= nav_link_to '配達エリア', admins_delivery_areas_path, icon: 'bi-map'
             %li.nav-item= nav_link_to '日別献立', admins_daily_menus_path, icon: 'bi-calendar-week'
             %li.nav-item= nav_link_to '注文', admins_orders_path, icon: 'bi-receipt'
+            %li.nav-item
+              = nav_link_to '定期注文', new_admins_subscription_order_generation_path,
+                            icon: 'bi-arrow-repeat', current: subscription_order_generation_section?
             %li.nav-item= nav_link_to '利用者', admins_users_path, icon: 'bi-people'
             %li.nav-item= nav_link_to 'マイページ', admins_mypage_path, icon: 'bi-person-circle'
         - else
