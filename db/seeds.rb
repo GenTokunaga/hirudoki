@@ -89,3 +89,45 @@ delivery_area = DeliveryArea.find_by!(postal_code: '1500041')
     review.assign_attributes(review_attributes.slice(:rating, :comment).merge(created_at: posted_at, updated_at: posted_at))
   end
 end
+
+# NOTE: 製造・配達リストや請求額を画面で確かめられるよう、ログインに使わない利用者も 1 人作る。
+#       ログインさせない利用者なので、パスワードは推測できない値にしている
+other_user = User.find_or_create_by!(email: 'hanako@example.com') do |u|
+  u.name = 'ひるどき 花子'
+  u.phone_number = '080-9876-5432'
+  u.password = SecureRandom.base58(24)
+end
+
+[
+  { user:, wday: 1, bento_type: :japanese, quantity: 1, postal_code: '1500041', delivery_address: '東京都渋谷区神南1-1-1' },
+  { user:, wday: 3, bento_type: :healthy, quantity: 2, postal_code: '1500041', delivery_address: '東京都渋谷区神南1-1-1' },
+  { user:, wday: 5, bento_type: :western, quantity: 1, postal_code: '1500041', delivery_address: '東京都渋谷区神南1-1-1', active: false },
+  { user: other_user, wday: 2, bento_type: :chinese, quantity: 1, postal_code: '1500043', delivery_address: '東京都渋谷区道玄坂2-2-2' },
+  { user: other_user, wday: 3, bento_type: :healthy, quantity: 3, postal_code: '1500043', delivery_address: '東京都渋谷区道玄坂2-2-2' },
+].each do |attributes|
+  delivery_area = DeliveryArea.find_by!(postal_code: attributes[:postal_code])
+  Subscription.find_or_create_by!(user: attributes[:user], wday: attributes[:wday]) do |subscription|
+    subscription.assign_attributes(attributes.except(:user, :wday, :postal_code).merge(delivery_area:))
+  end
+end
+
+# NOTE: 太郎の定期注文（月・水）を生成しても 1 日 3 個を超えないよう、火・木の献立に入れる。
+#       花子は火曜の定期注文と手動の注文を合わせて 3 個を超えるため、生成すると「1 日の上限を超える」でスキップされる
+next_tuesday = (Date.tomorrow..).find(&:tuesday?)
+next_thursday = (Date.tomorrow..).find(&:thursday?)
+sample_orders = [
+  { user:, served_on: next_tuesday, bento_type: 'western', quantity: 2, status: :ordered },
+  { user:, served_on: next_thursday, bento_type: 'chinese', quantity: 1, status: :canceled },
+  { user: other_user, served_on: next_tuesday, bento_type: 'western', quantity: 1, status: :ordered },
+  { user: other_user, served_on: next_tuesday, bento_type: 'japanese', quantity: 2, status: :ordered },
+]
+sample_orders.each do |attributes|
+  daily_menu = DailyMenu.joins(:bento).find_by!(served_on: attributes[:served_on], bentos: { bento_type: attributes[:bento_type] })
+  subscription = attributes[:user].subscriptions.first!
+  Order.find_or_create_by!(user: attributes[:user], daily_menu:) do |order|
+    order.assign_attributes(quantity: attributes[:quantity], status: attributes[:status],
+                            delivery_area: subscription.delivery_area, delivery_address: subscription.delivery_address,
+                            unit_price: daily_menu.bento.price, discount_per_unit: 0)
+    order.assign_total_price
+  end
+end
