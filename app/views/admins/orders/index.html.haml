@@ -1,12 +1,6 @@
 - content_for :title, '注文'
 %h1.h4.mb-3 注文
-%nav.d-flex.justify-content-between.align-items-center.mb-3{ 'aria-label': '表示する提供日' }
-  = link_to '‹ 前の日', admins_orders_path(served_on: @served_on.prev_day), class: 'btn btn-sm btn-outline-secondary'
-  = form_with url: admins_orders_path, method: :get, class: 'd-flex gap-2', data: { test_id: 'order-search' } do |f|
-    = f.label :served_on, '提供日', class: 'visually-hidden'
-    = f.date_field :served_on, value: @served_on, class: 'form-control form-control-sm'
-    = f.submit '表示', name: nil, class: 'btn btn-sm btn-primary'
-  = link_to '次の日 ›', admins_orders_path(served_on: @served_on.next_day), class: 'btn btn-sm btn-outline-secondary'
+= render 'admins/shared/served_on_nav', served_on: @served_on
 %h2.h5.mb-3 #{I18n.l(@served_on, format: :with_wday)} 提供分
 - if @orders.empty?
   %p.text-body-secondary この提供日の注文はありません。

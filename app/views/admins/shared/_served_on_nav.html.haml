@@ -1,0 +1,7 @@
+%nav.d-flex.justify-content-between.align-items-center.mb-3{ 'aria-label': '表示する提供日' }
+  = link_to '‹ 前の日', url_for(served_on: served_on.prev_day), class: 'btn btn-sm btn-outline-secondary'
+  = form_with url: url_for, method: :get, class: 'd-flex gap-2', data: { test_id: 'served-on-search' } do |f|
+    = f.label :served_on, '提供日', class: 'visually-hidden'
+    = f.date_field :served_on, value: served_on, class: 'form-control form-control-sm'
+    = f.submit '表示', name: nil, class: 'btn btn-sm btn-primary'
+  = link_to '次の日 ›', url_for(served_on: served_on.next_day), class: 'btn btn-sm btn-outline-secondary'
