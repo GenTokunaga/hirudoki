@@ -67,6 +67,22 @@ describe '定期注文の設定', type: :system do
     expect(user.subscriptions.count).to eq 1
   end
 
+  it '登録後にエリアが無効になっても、エリアを選び直さずに他の項目を変更できること' do
+    user = create(:user)
+    delivery_area = create(:delivery_area, name: '渋谷区神南', postal_code: '1500041')
+    subscription = create(:subscription, user:, wday: 2, delivery_area:, quantity: 1)
+    delivery_area.update!(active: false)
+    sign_in user
+
+    visit edit_subscription_path(subscription)
+    expect(page).to have_select '配達エリア', selected: '渋谷区神南（〒150-0041）※無効'
+    select '2 個', from: '個数'
+    click_button '更新する'
+
+    expect(page).to have_content '火曜日の定期注文を更新しました。'
+    within("[data-test-id='#{dom_id(subscription)}']") { expect(page).to have_content '2 個' }
+  end
+
   it '他の利用者の定期注文は編集できないこと' do
     other_subscription = create(:subscription)
     sign_in create(:user)

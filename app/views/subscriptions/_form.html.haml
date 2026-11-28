@@ -8,7 +8,7 @@
   = f.input :bento_type, collection: bento_type_options, include_blank: '選択してください',
                          hint: 'その曜日の献立から、このタイプの弁当が届きます。'
   = f.input :quantity, collection: quantity_options, include_blank: '選択してください', required: true
-  = f.association :delivery_area, collection: delivery_area_options, include_blank: '選択してください', required: true
+  = f.association :delivery_area, collection: subscription_delivery_area_options(subscription), include_blank: '選択してください', required: true
   = f.input :delivery_address, input_html: { autocomplete: 'street-address', maxlength: 255 }
   = f.input :active, label: '有効にする', hint: '外すと、この曜日の定期注文は作られなくなります。'
   %p.small.text-body-secondary

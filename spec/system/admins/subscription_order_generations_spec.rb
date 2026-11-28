@@ -33,6 +33,17 @@ describe '定期注文の生成', type: :system do
     expect(page).to have_content '彩り野菜弁当'
   end
 
+  it '土日を指定すると、生成 0 件と、土日は生成しない旨が表示されること' do
+    sign_in create(:admin), scope: :admin
+
+    visit new_admins_subscription_order_generation_path
+    fill_in '対象日', with: '2026-12-05'
+    click_button '定期注文を生成する'
+
+    expect(page).to have_css "[data-test-id='generation-summary']", text: '生成 0 件 / スキップ 0 件'
+    expect(page).to have_content '土日は配達がないため、定期注文は生成しません。'
+  end
+
   it '過去の日付は指定できないこと' do
     sign_in create(:admin), scope: :admin
 
