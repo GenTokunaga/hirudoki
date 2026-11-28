@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resource :review, only: %i[new create], module: :orders
   end
   resource :mypage, only: :show
+  resources :subscriptions, only: %i[index new edit create update]
 
   namespace :admins do
     resources :bentos, only: %i[index new edit create update destroy]

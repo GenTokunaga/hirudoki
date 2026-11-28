@@ -1,0 +1,12 @@
+- content_for :title, '定期注文の登録'
+%nav{ aria: { label: 'パンくずリスト' } }
+  %ol.breadcrumb
+    %li.breadcrumb-item= link_to 'マイページ', mypage_path
+    %li.breadcrumb-item= link_to '定期注文', subscriptions_path
+    %li.breadcrumb-item.active{ aria: { current: 'page' } } 定期注文の登録
+.row.justify-content-center
+  .col-md-10.col-lg-8
+    .card.shadow-sm
+      .card-body.p-4
+        %h1.h4.mb-4 定期注文の登録
+        = render 'form', subscription: @subscription, submit_label: '登録する'

@@ -21,8 +21,17 @@ class User < ApplicationRecord
   end
 
   def build_order(daily_menu:)
+    orders.build(daily_menu:, quantity: 1, **latest_delivery_destination)
+  end
+
+  def build_subscription
+    subscriptions.build(quantity: 1, **latest_delivery_destination)
+  end
+
+  private
+
+  def latest_delivery_destination
     latest_order = orders.recent.first
-    orders.build(daily_menu:, quantity: 1,
-                 delivery_area_id: latest_order&.delivery_area_id, delivery_address: latest_order&.delivery_address)
+    { delivery_area_id: latest_order&.delivery_area_id, delivery_address: latest_order&.delivery_address }
   end
 end
