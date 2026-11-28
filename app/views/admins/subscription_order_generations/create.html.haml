@@ -1,0 +1,49 @@
+- content_for :title, '定期注文の生成結果'
+%h1.h4.mb-3 定期注文の生成結果
+%section.card.shadow-sm.mb-4
+  .card-body
+    = render 'form', generation: @generation
+%h2.h5.mb-3 #{I18n.l(@generation.served_on, format: :with_wday)} 提供分
+%p{ data: { test_id: 'generation-summary' } }
+  生成 #{@generated_orders.size} 件 / スキップ #{@generation.skips.size} 件
+- if @generation.weekend?
+  %p.text-body-secondary{ data: { test_id: 'generation-weekend' } } 土日は配達がないため、定期注文は生成しません。
+- else
+  %section.mb-4
+    %h3.h6 生成した注文
+    - if @generated_orders.empty?
+      %p.text-body-secondary 生成した注文はありません。
+    - else
+      .table-responsive.bg-white.border.rounded
+        %table.table.align-middle.mb-0{ data: { test_id: 'generated-orders' } }
+          %thead.text-nowrap
+            %tr
+              %th{ scope: 'col' } 注文番号
+              %th{ scope: 'col' }= Order.human_attribute_name(:user)
+              %th{ scope: 'col' } 弁当
+              %th.text-end{ scope: 'col' }= Order.human_attribute_name(:quantity)
+              %th.text-end{ scope: 'col' } 合計金額（税込）
+          %tbody
+            - @generated_orders.each do |order|
+              %tr{ data: { test_id: dom_id(order) } }
+                %td.text-nowrap= link_to "##{order.id}", admins_order_path(order)
+                %td.text-nowrap= order.user.name
+                %td.text-nowrap= order.daily_menu.bento.name
+                %td.text-end.text-nowrap #{order.quantity} 個
+                %td.text-end.text-nowrap= number_to_currency(order.total_price)
+  %section
+    %h3.h6 スキップした設定
+    - if @generation.skips.empty?
+      %p.text-body-secondary スキップした設定はありません。
+    - else
+      .table-responsive.bg-white.border.rounded
+        %table.table.align-middle.mb-0{ data: { test_id: 'generation-skips' } }
+          %thead.text-nowrap
+            %tr
+              %th{ scope: 'col' }= Subscription.human_attribute_name(:user)
+              %th{ scope: 'col' } 理由
+          %tbody
+            - @generation.skips.each do |skip|
+              %tr{ data: { test_id: dom_id(skip.subscription) } }
+                %td.text-nowrap= skip.subscription.user.name
+                %td= t("subscription_order_generation.skip_reasons.#{skip.reason}")

@@ -106,8 +106,10 @@ class Order < ApplicationRecord
     errors.add(:delivery_area, :inactive)
   end
 
+  # NOTE: 定期注文の生成は残数を見ないため（仕様 3-3）、残数を超えた献立の注文もある。仕様 1-3 で生成した注文も
+  #       個数を変更できるため、減らす変更まで止めないよう、新しく注文するときと個数を増やすときだけ確認している
   def quantity_must_be_within_remaining_stock
-    return if quantity.blank? || !quantity_limit.exceeds_remaining_stock?
+    return if quantity.blank? || (persisted? && quantity <= quantity_in_database) || !quantity_limit.exceeds_remaining_stock?
 
     errors.add(:quantity, :exceeds_remaining_stock, remaining_stock: quantity_limit.remaining_stock)
   end

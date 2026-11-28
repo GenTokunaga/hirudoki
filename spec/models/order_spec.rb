@@ -172,6 +172,23 @@ describe Order do
       expect(order.errors[:quantity]).to include 'は残り 2 個以下にしてください'
     end
 
+    it '定期注文の生成で残数を超えた献立でも、個数を減らす変更はできること' do
+      daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 2), stock_limit: 3)
+      create(:order, daily_menu:, quantity: 3)
+      generated_order = create(:order, daily_menu:, quantity: 3, subscription: create(:subscription))
+
+      expect(generated_order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 12, 0))).to be true
+    end
+
+    it '残数を超えた献立では、個数を増やす変更はできないこと' do
+      daily_menu = create(:daily_menu, served_on: Date.new(2026, 12, 2), stock_limit: 3)
+      create(:order, daily_menu:, quantity: 3)
+      generated_order = create(:order, daily_menu:, quantity: 1, subscription: create(:subscription))
+
+      expect(generated_order.change_quantity(2, now: Time.zone.local(2026, 12, 1, 12, 0))).to be false
+      expect(generated_order.errors[:quantity]).to include 'は残り 0 個以下にしてください'
+    end
+
     it '同じ提供日の他の注文と合わせて 4 個になる個数には変更できないこと' do
       user = create(:user)
       create(:order, user:, daily_menu: create(:daily_menu, served_on: Date.new(2026, 12, 2)), quantity: 2)

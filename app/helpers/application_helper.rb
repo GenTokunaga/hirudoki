@@ -31,6 +31,11 @@ module ApplicationHelper
     controller_path.match?(%r{\A(mypages|orders|subscriptions|users/registrations)(/|\z)})
   end
 
+  # NOTE: 生成の実行結果は POST の URL（/new が付かない）で表示するため、パスの前方一致では現在地にならない
+  def subscription_order_generation_section?
+    controller_path == 'admins/subscription_order_generations'
+  end
+
   private
 
   def within_section?(path)

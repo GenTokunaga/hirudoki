@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :daily_menus, only: %i[index new edit create update destroy]
     resources :orders, only: %i[index show update]
     resources :users, only: %i[index show]
+    resource :subscription_order_generation, only: %i[new create]
     resource :mypage, only: :show
   end
 end
