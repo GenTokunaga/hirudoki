@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :orders, only: %i[index show update]
     resources :users, only: %i[index show]
     resource :subscription_order_generation, only: %i[new create]
+    resource :delivery_list, only: :show
     resource :mypage, only: :show
   end
 end

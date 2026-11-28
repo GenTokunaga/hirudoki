@@ -2,7 +2,7 @@ class Admins::OrdersController < Admins::ApplicationController
   before_action :set_order, only: %i[show update]
 
   def index
-    @served_on = ActiveModel::Type::Date.new.cast(params[:served_on]) || Date.current
+    @served_on = served_on_param
     @orders = Order.joins(:daily_menu).where(daily_menus: { served_on: @served_on })
                    .preload(:user, :delivery_area, daily_menu: :bento).order(:id)
   end

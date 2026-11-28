@@ -1,0 +1,47 @@
+- content_for :title, '製造・配達リスト'
+%h1.h4.mb-3 製造・配達リスト
+= render 'admins/shared/served_on_nav', served_on: @served_on
+%h2.h5.mb-3 #{I18n.l(@served_on, format: :with_wday)} 提供分
+%p.small.text-body-secondary キャンセル済みの注文は含みません。
+%section.mb-4
+  %h3.h6 製造リスト
+  - if @bentos.empty?
+    %p.text-body-secondary 製造する弁当はありません。
+  - else
+    .table-responsive.bg-white.border.rounded
+      %table.table.align-middle.mb-0{ data: { test_id: 'production-list' } }
+        %thead.text-nowrap
+          %tr
+            %th{ scope: 'col' } 弁当
+            %th{ scope: 'col' }= Bento.human_attribute_name(:bento_type)
+            %th.text-end{ scope: 'col' } 合計個数
+        %tbody
+          - @bentos.each do |bento|
+            %tr{ data: { test_id: dom_id(bento) } }
+              %td.text-nowrap= bento.name
+              %td.text-nowrap= Bento.human_enum_name(:bento_type, bento.bento_type)
+              %td.text-end.text-nowrap{ data: { test_id: 'total-quantity' } } #{bento.total_quantity} 個
+%section
+  %h3.h6 配達リスト
+  - if @orders.empty?
+    %p.text-body-secondary 配達する注文はありません。
+  - else
+    .table-responsive.bg-white.border.rounded
+      %table.table.align-middle.mb-0{ data: { test_id: 'delivery-list' } }
+        %thead.text-nowrap
+          %tr
+            %th{ scope: 'col' }= Order.human_attribute_name(:delivery_area)
+            %th{ scope: 'col' }= Order.human_attribute_name(:delivery_address)
+            %th{ scope: 'col' }= Order.human_attribute_name(:user)
+            %th{ scope: 'col' }= User.human_attribute_name(:phone_number)
+            %th{ scope: 'col' } 弁当
+            %th.text-end{ scope: 'col' }= Order.human_attribute_name(:quantity)
+        %tbody
+          - @orders.each do |order|
+            %tr{ data: { test_id: dom_id(order) } }
+              %td.text-nowrap= order.delivery_area.name
+              %td= order.delivery_address
+              %td.text-nowrap= order.user.name
+              %td.text-nowrap= order.user.phone_number
+              %td.text-nowrap= order.daily_menu.bento.name
+              %td.text-end.text-nowrap #{order.quantity} 個

@@ -15,6 +15,7 @@
             %li.nav-item
               = nav_link_to '定期注文', new_admins_subscription_order_generation_path,
                             icon: 'bi-arrow-repeat', current: subscription_order_generation_section?
+            %li.nav-item= nav_link_to '製造・配達', admins_delivery_list_path, icon: 'bi-truck'
             %li.nav-item= nav_link_to '利用者', admins_users_path, icon: 'bi-people'
             %li.nav-item= nav_link_to 'マイページ', admins_mypage_path, icon: 'bi-person-circle'
         - else
